@@ -1,6 +1,7 @@
 #!/bin/bash
-#  Script de compilacion y ejecucion de proceso de prueba
-
+#  
+#	This script compiles parallel port test programs and changes its permissions
+#
 echo "Compiling Parallel Port Tests"
 
 rm -f 01_test_puerto_paralelo
