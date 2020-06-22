@@ -1,0 +1,11 @@
+
+ Solicitando acceso al puerto paralelo: ...[OK]
+	data   : 1111 1111
+	status : 0111 1xxx
+	control: xx1x 1010
+
+	data   : 1010 1010
+	status : 0111 1xxx
+	control: xx1x 1010
+
+ Liberando acceso al puerto paralelo: ...[OK]
