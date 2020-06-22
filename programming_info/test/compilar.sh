@@ -1,6 +1,7 @@
 #!/bin/bash
-#  Script de compilacion y ejecucion de proceso de prueba
-
+#  
+#	This script compile test programs and execute them
+#
 echo "Compiling Programming Info Test"
 
 rm -f test
