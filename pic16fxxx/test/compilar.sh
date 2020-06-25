@@ -1,6 +1,7 @@
 #!/bin/bash
-#  Script de compilacion y ejecucion de proceso de prueba
-
+#
+# This script compiles and execute test programs
+#
 echo "Compiling PIC16FXXX Programmer Test"
 
 rm -f test
