@@ -8,7 +8,7 @@
 int main( void) {
     struct sockaddr_un address;
 
-    int sockfd = socket( AF_UNIX. SOCK_STREAM, 0);
+    int sockfd = socket( AF_UNIX, SOCK_STREAM, 0);
 
     address.sun_family = AF_UNIX;
     strcpy( address.sun_path, "server_socket");
