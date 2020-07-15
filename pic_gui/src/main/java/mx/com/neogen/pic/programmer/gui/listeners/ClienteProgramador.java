@@ -1,5 +1,6 @@
-package mx.com.neogen.pic.programmmer.gui.listeners;
+package mx.com.neogen.pic.programmer.gui.listeners;
 
+import com.eurk.core.util.UtilText;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.InputStream;
@@ -11,26 +12,23 @@ import javax.swing.JTextField;
 
 
 
-public class ClienteFirmaElectronica implements ActionListener {
+public class ClienteProgramador extends BaseListener implements ActionListener  {
 	
-	private Map<String, ?> modelo;
 	
-    
-	public ClienteFirmaElectronica( Map<String, ?> modelo) {
-		super();
-		this.modelo = modelo;
+	public ClienteProgramador( Map<String, ?> modelo) {
+		super( modelo);
 	}
 	
     
     @Override
 	public void actionPerformed(ActionEvent e) {
-		JTextArea textArea = ((JTextArea) modelo.get( "consola"));
-		String buffer = textArea.getText();
+	        
+		String buffer = getText( "consola");
 		String servidor = ((JTextField) modelo.get( "cadena")).getText();
 		
         System.out.println("connecting to " + servidor);
         
-        textArea.setText( program_device( servidor, buffer));
+        toConsole( program_device( servidor, buffer));
 	}
     
    
@@ -60,12 +58,10 @@ public class ClienteFirmaElectronica implements ActionListener {
             return strb.toString();
             
         } catch ( Exception ex) {
-            StringBuilder strb = new StringBuilder();
-            printStackTrace( strb, ex);
-            
-            return strb.toString();
-            
+            return UtilText.stackTraceToString( ex);
+               
         } finally {
+            
             if( socket != null && !socket.isClosed()) {
                 try {
                     socket.close(); 
@@ -77,23 +73,6 @@ public class ClienteFirmaElectronica implements ActionListener {
     }
     
 
-	private void printStackTrace( StringBuilder strb, Throwable tirable) {
 	
-		if ( tirable != null) {
-			strb.append( "\n - - - - - - - - - - - - - - - - - - - - - - - - - -");
-			strb.append( "\n\t[CAUSA]: ").append( tirable.getMessage());
-			strb.append( "\n - - - - - - - - - - - - - - - - - - - - - - - - - -");
-			
-			StackTraceElement[] stack = tirable.getStackTrace();
-			
-			if ( stack != null) {
-				for ( int i = 0; i < stack.length; ++i) {
-					strb.append( "\n").append( stack[i]);
-				}
-			}
-			
-			printStackTrace(strb, tirable.getCause());
-		}
-	}
 
 }

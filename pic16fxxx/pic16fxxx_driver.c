@@ -31,10 +31,9 @@
 
 #define COMMAND_EXECUTION_TIME                3000      // tiempo para ejecución de comando
 #define COMMAND_SETUP_TIME                    1000      // tiempo antes de envio de dato
-#define COMMAND_PROGRAMMING_EXECUTION_TIME 8000000
+#define COMMAND_PROGRAMMING_EXECUTION_TIME 4000000
 #define INTER_COMMAND_TIME                    1000
     
-
 //
 //  Métodos de manipulación de señales de control
 //
