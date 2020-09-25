@@ -3,6 +3,7 @@ package mx.com.neogen.pic.hexfile;
 import com.eurk.core.util.UtilBinary;
 import com.eurk.core.util.UtilStream;
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.text.MessageFormat;
@@ -71,19 +72,24 @@ public class INHX8MFileReader {
 	 * 	<p>	Creates a reader from a file path.</p>
 	 */
 	public INHX8MFileReader( final String pathFile) {
+		this( new File( pathFile));
+	}
+	
+    public INHX8MFileReader( File hexFile) {
 		super();
 		
 		try {
-			reader = new BufferedReader( new FileReader( pathFile));
+			reader = new BufferedReader( new FileReader( hexFile));
 			lineNumber = 0;
 			
 		} catch (Exception ex) {
 			throw new OperacionNoRealizadaException( 
-				MessageFormat.format(MSG_OPEN_ERROR, pathFile), ex
+				MessageFormat.format(MSG_OPEN_ERROR, hexFile.getAbsolutePath()), ex
 			);
 		}
 	}
 	
+    
 	/**
 	 * 	<p> Reads the next data line from the file </p>
 	 *
@@ -106,7 +112,6 @@ public class INHX8MFileReader {
 		}
 
 		if ( isEOFLine(line)) {					// valid EOF line
-            UtilStream.close( reader);
 			return null;						
 		}
 		
@@ -131,6 +136,11 @@ public class INHX8MFileReader {
 
 	}
 
+    public void close() {
+        UtilStream.close( reader);
+        reader = null;
+    }
+    
 	/**
 	 *	Validates an INHX8M data line.
 	 *
