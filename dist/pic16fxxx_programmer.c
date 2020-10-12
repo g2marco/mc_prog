@@ -14,6 +14,7 @@ FILE * log_file = NULL;
 char REQUEST_FILE_PATH[]  = "/tmp/programmer_request.txt";
 char RESPONSE_FILE_PATH[] = "/tmp/programmer_response.txt";
 
+unsigned char ALIVE_REQUEST[] = "ggma";
 
 
 void save_request_file( int client_sockfd) {
@@ -30,6 +31,23 @@ void save_request_file( int client_sockfd) {
 	fclose (fp);
 }
 
+int is_alive_request( void) {
+	unsigned char ch;
+	FILE *fp = fopen( REQUEST_FILE_PATH, "r");
+	
+	int i;
+	int isAlive = 1;
+	for ( i = 0; i < 4; ++i) {
+		ch = fgetc( fp);
+		if ( ch != ALIVE_REQUEST[i]) {
+			isAlive = 0;  
+		}
+	}
+	
+	fclose (fp);
+	return isAlive;
+}
+
 void write_response_file( int client_sockfd) {
 	unsigned char ch;
 	FILE *fp = fopen( RESPONSE_FILE_PATH, "r");
@@ -43,6 +61,16 @@ void write_response_file( int client_sockfd) {
 	fclose (fp);
 }
 
+void generate_alive_response() {
+	FILE *fp = fopen( RESPONSE_FILE_PATH, "w");
+	
+	int i;
+	for( i = 0; i < 4; ++i) {
+		fputc( ALIVE_REQUEST[i], fp);
+	}
+	
+	fclose (fp);
+}
 
 void program_device( void) {
 
@@ -81,7 +109,11 @@ int main( void) {
 		
 		save_request_file( client_sockfd);
 		
-		program_device();
+		if ( is_alive_request() ) {
+			generate_alive_response();
+		} else {
+			program_device();
+		}
 		
 		write_response_file( client_sockfd);
 		
