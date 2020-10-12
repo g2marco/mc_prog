@@ -6,6 +6,8 @@ import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.ActionListener;
+import java.awt.event.AdjustmentEvent;
+import java.awt.event.AdjustmentListener;
 import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
@@ -28,14 +30,8 @@ public class Main {
             @Override
             public void run() {
                 createAndShowGUI();
-                info( "GUI creado");
-
                 AppProperties.load( obtenerPathConfigFile( args));
-                info( "propieades cargadas");
-
                 searchServer();
-                info( "servicio invocado");
-
             }
         });
     }
@@ -131,8 +127,10 @@ public class Main {
         final JTextArea console = new JTextArea( 20, 60);
         console.setBorder(BorderFactory.createLineBorder(Color.black));
         modelo.put( "consola", console);
-        
-        panel.add(new JScrollPane( console));
+
+        JScrollPane scrollPane = new JScrollPane( console);
+        panel.add( scrollPane);
+        setAutomaticScroolDown( scrollPane, executar);
 
         frame.pack();
         frame.setVisible(true);
@@ -172,7 +170,27 @@ public class Main {
         }).start();
     }
 
-    private static void info( String data) {
-        System.out.println( data);
+    static void setAutomaticScroolDown( JScrollPane scrollPane, final JButton btnAction) {
+        final JScrollBar bar = scrollPane.getVerticalScrollBar();
+
+        bar.addAdjustmentListener( new AdjustmentListener() {
+            private final BoundedRangeModel brm = bar.getModel();
+            private boolean wasAtBottom = true;
+
+            @Override
+            public void adjustmentValueChanged( AdjustmentEvent e) {
+                if ( btnAction.isEnabled()) {
+                    return;
+                }
+
+                if (!brm.getValueIsAdjusting()) {
+                    if (wasAtBottom) {
+                        brm.setValue( brm.getMaximum());
+                    } else {
+                        wasAtBottom = ((brm.getValue() + brm.getExtent()) == brm.getMaximum());
+                    }
+                }
+            }
+        });
     }
 }

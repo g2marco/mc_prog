@@ -9,7 +9,7 @@ public class GUILogger implements Logger {
     private final JTextArea item;
 
 
-    public GUILogger(JTextArea textArea) {
+    public GUILogger( JTextArea textArea) {
         super();
         this.item = textArea;
     }

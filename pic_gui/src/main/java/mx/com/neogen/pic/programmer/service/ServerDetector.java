@@ -52,7 +52,7 @@ public class ServerDetector {
 
         try {
             socket = new Socket();
-            socket.connect( new InetSocketAddress( serverIP, 9734), 500);
+            socket.connect( new InetSocketAddress( serverIP, 9734), 2000);
 
             OutputStream outputStream = socket.getOutputStream();
 

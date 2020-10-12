@@ -2,33 +2,33 @@ package mx.com.neogen.pic.programmer.service;
 
 import com.eurk.core.util.UtilBean;
 import com.eurk.core.util.UtilStream;
+import mx.com.neogen.pic.beans.DeviceBuffer;
+import mx.com.neogen.pic.beans.metadata.DeviceBufferMetadata;
+import mx.com.neogen.pic.hexfile.RawDataToBuffer;
+
+import javax.swing.*;
+import javax.swing.filechooser.FileFilter;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Map;
-import javax.swing.JComboBox;
-import javax.swing.JFileChooser;
-import javax.swing.JTextField;
-import javax.swing.filechooser.FileFilter;
-import mx.com.neogen.commons.messages.AppLogger;
-import mx.com.neogen.pic.beans.DeviceBuffer;
-import mx.com.neogen.pic.beans.metadata.DeviceBufferMetadata;
-import mx.com.neogen.pic.hexfile.RawDataToBuffer;
 
 public class SelectorArchivos extends BaseListener implements ActionListener {
 
-	public SelectorArchivos( Map<String, Object> modelo) {
+	public SelectorArchivos( Map<String, ? super Object> modelo) {
 		super( modelo);
 	}
 
 
     @Override
-	public void actionPerformed(ActionEvent e) {
-		JFileChooser browser = new JFileChooser();
+	public void actionPerformed( ActionEvent e) {
+	    init();
+
+		final JFileChooser browser = new JFileChooser();
 		
-        browser.setCurrentDirectory( new File( "D:\\home\\work\\electronics"));
+        browser.setCurrentDirectory( new File( AppProperties.getProperty( "path")));
         browser.setFileFilter( new FileFilter() {
             @Override
             public boolean accept(File file) {
@@ -47,22 +47,29 @@ public class SelectorArchivos extends BaseListener implements ActionListener {
 		int returnValue = browser.showOpenDialog( null);
         
         if (returnValue == JFileChooser.APPROVE_OPTION) {
-            
             try {
                 
                 final DeviceBufferMetadata metadata = obtenerMetadata();
                 LOG.info( metadata);
             
                 File selectedFile = browser.getSelectedFile();
-                ((JTextField) modelo.get( e.getActionCommand())).setText( selectedFile.getAbsolutePath());
+                String path = selectedFile.getAbsolutePath();
+
+                AppProperties.setProperty( "path", path);
+                AppProperties.update();
+
+                setText( "archivo", path);
             
                 final RawDataToBuffer data = new RawDataToBuffer();
-                
                 final DeviceBuffer buffer = data.initDeviceBuffer( selectedFile, metadata);
-                
-                LOG.info( data.createRequest( metadata, buffer));
+
+                final Object request = data.createRequest( metadata, buffer);
+                setPropiedad( "request", request);
+
+                LOG.info( request);
                 
             } catch( Exception ex) {
+                ex.printStackTrace();
                 LOG.error( "Imposible crear buffer de dispositivo", ex);
             }
         }
