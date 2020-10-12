@@ -1,15 +1,14 @@
-package mx.com.neogen.pic.programmer.gui.listeners;
+package mx.com.neogen.pic.programmer.service;
 
 import com.eurk.core.util.UtilText;
+
+import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.Socket;
 import java.util.Map;
-import javax.swing.JTextArea;
-import javax.swing.JTextField;
-
 
 
 public class ClienteProgramador extends BaseListener implements ActionListener  {
@@ -26,9 +25,9 @@ public class ClienteProgramador extends BaseListener implements ActionListener  
 		String buffer = getText( "consola");
 		String servidor = ((JTextField) modelo.get( "cadena")).getText();
 		
-        System.out.println("connecting to " + servidor);
-        
-        toConsole( program_device( servidor, buffer));
+        LOG.info( "connecting to " + servidor + " ...");
+        LOG.info( "[respuesta] ");
+        LOG.info( program_device( servidor, buffer));
 	}
     
    
@@ -71,8 +70,5 @@ public class ClienteProgramador extends BaseListener implements ActionListener  
             }
         }
     }
-    
-
-	
 
 }

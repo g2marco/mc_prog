@@ -1,38 +1,23 @@
-package mx.com.neogen.pic.programmer.gui.listeners;
+package mx.com.neogen.pic.programmer.service;
 
 import com.eurk.core.util.UtilText;
+
+import javax.swing.*;
 import java.util.Map;
-import javax.swing.JTextArea;
-import javax.swing.JTextField;
 
 
 public class BaseListener {
 
     protected final Map<String, ?> modelo;
-    
+    protected final Logger LOG;
+
     
     public BaseListener( Map<String, ?> modelo) {
 		super();
 		this.modelo = modelo;
+		this.LOG = new GUILogger( getPropiedad( "consola"));
 	}
-	
-    
-    protected void toConsole( Object data) {
-        final JTextArea textArea = getPropiedad( "consola");
-        
-        if ( data == null) {
-            textArea.setText( "null");
-        } 
-        
-        if ( data instanceof Throwable) {
-            textArea.setText( UtilText.stackTraceToString( (Throwable) data));
-            
-        } else {
-            textArea.setText( data.toString());
-        
-        }
-    }
-    
+
     protected String getText( String name) {
         final Object item = getPropiedad( name);
         

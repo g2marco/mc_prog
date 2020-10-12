@@ -9,10 +9,7 @@ public class Datagram {
     private static DatagramSocket socket = null;
  
     public static void main(String[] args) throws Exception {   
-        
-        // envia peticiones
-        //broadcast( "a", InetAddress.getByName( "255.255.255.255"));
-        
+
         // escucha respuestas
         DatagramSocket escucha = new DatagramSocket();
         

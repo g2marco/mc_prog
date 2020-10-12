@@ -1,4 +1,4 @@
-package mx.com.neogen.pic.programmer.gui.listeners;
+package mx.com.neogen.pic.programmer.service;
 
 import com.eurk.core.util.UtilBean;
 import com.eurk.core.util.UtilStream;
@@ -18,10 +18,7 @@ import mx.com.neogen.pic.beans.metadata.DeviceBufferMetadata;
 import mx.com.neogen.pic.hexfile.RawDataToBuffer;
 
 public class SelectorArchivos extends BaseListener implements ActionListener {
-    
-    private static final AppLogger LOG = AppLogger.getLogger( SelectorArchivos.class);
-    
-    
+
 	public SelectorArchivos( Map<String, Object> modelo) {
 		super( modelo);
 	}
@@ -54,7 +51,7 @@ public class SelectorArchivos extends BaseListener implements ActionListener {
             try {
                 
                 final DeviceBufferMetadata metadata = obtenerMetadata();
-                LOG.debug( metadata);
+                LOG.info( metadata);
             
                 File selectedFile = browser.getSelectedFile();
                 ((JTextField) modelo.get( e.getActionCommand())).setText( selectedFile.getAbsolutePath());
@@ -63,11 +60,10 @@ public class SelectorArchivos extends BaseListener implements ActionListener {
                 
                 final DeviceBuffer buffer = data.initDeviceBuffer( selectedFile, metadata);
                 
-                toConsole( data.createRequest( metadata, buffer));
+                LOG.info( data.createRequest( metadata, buffer));
                 
             } catch( Exception ex) {
-                toConsole( ex);
-            
+                LOG.error( "Imposible crear buffer de dispositivo", ex);
             }
         }
 	}
@@ -81,6 +77,5 @@ public class SelectorArchivos extends BaseListener implements ActionListener {
             return UtilBean.parseBean(inputStream,  DeviceBufferMetadata.class);
         }
     }
-    
-    
+
 }

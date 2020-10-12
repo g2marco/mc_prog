@@ -1,142 +1,178 @@
 package mx.com.neogen.pic.programmer.gui;
 
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Container;
-import java.awt.FlowLayout;
-import java.awt.GridLayout;
+import mx.com.neogen.pic.programmer.service.*;
+
+import javax.swing.*;
+import javax.swing.border.EmptyBorder;
+import java.awt.*;
 import java.awt.event.ActionListener;
+import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
-import javax.swing.BorderFactory;
-import javax.swing.JButton;
-import javax.swing.JComboBox;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTextArea;
-import javax.swing.JTextField;
-import javax.swing.border.EmptyBorder;
-import mx.com.neogen.pic.programmer.gui.listeners.ClienteProgramador;
-import mx.com.neogen.pic.programmer.gui.listeners.SelectorArchivos;
 
 
 public class Main {
-	
+    private static final Map<String, Object> modelo;
+    private static final ActionListener FILE_BROWSER_ACTION_LISTENER;
+    private static final ActionListener FIRMA_ELECTRONICA_ACTION_LISTENER;
+
+    static {
+        modelo = new HashMap<>();
+        FILE_BROWSER_ACTION_LISTENER      = new SelectorArchivos( modelo);
+        FIRMA_ELECTRONICA_ACTION_LISTENER = new ClienteProgramador( modelo);
+    }
+
+
     public static void main(String[] args) {
-        javax.swing.SwingUtilities.invokeLater(new Runnable() {
+        javax.swing.SwingUtilities.invokeLater( new Runnable() {
             @Override
-            public void run() { createAndShowGUI(); }
+            public void run() {
+                createAndShowGUI();
+                info( "GUI creado");
+
+                AppProperties.load( obtenerPathConfigFile( args));
+                info( "propieades cargadas");
+
+                searchServer();
+                info( "servicio invocado");
+
+            }
         });
     }
     
     private static void createAndShowGUI() {
-    	final Map<String, Object> modelo = new HashMap<String, Object>();
 
-        final ActionListener FILE_BROWSER_ACTION_LISTENER      = new SelectorArchivos( modelo);
-    	final ActionListener FIRMA_ELECTRONICA_ACTION_LISTENER = new ClienteProgramador( modelo);
-    	
-        JFrame frame = new JFrame("Programador de PIC");
+        final JFrame frame = new JFrame("Programador de PIC");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         
-        Container pane = frame.getContentPane();
+        final Container pane = frame.getContentPane();
         
         // Crea los componentes gráficos
-        JPanel labelPanel = new JPanel(new GridLayout(4, 1));
+        final JPanel labelPanel = new JPanel(new GridLayout(4, 1));
         labelPanel.setBorder( new EmptyBorder(10, 10, 10, 0));
         
-        JPanel fieldPanel = new JPanel(new GridLayout(4, 1));
+        final JPanel fieldPanel = new JPanel(new GridLayout(4, 1));
         fieldPanel.setBorder( new EmptyBorder(10, 0, 10, 10));
         
         pane.add(labelPanel, BorderLayout.WEST);
         pane.add(fieldPanel, BorderLayout.CENTER);
-        
-        
-        JLabel prompt;
-        JComboBox inputControl;
-        JPanel p;
-        
+
+        JPanel panel;
+        JLabel etiqueta;
         //  --
- 
-        inputControl = new JComboBox( new Object[] { "PIC12F683", "PIC16F627A"});
+
+        final JComboBox<String> inputControl = new JComboBox<>( new String[] { "PIC12F683", "PIC16F627A"});
         modelo.put( "dispositivo", inputControl);
-        
-        prompt = new JLabel( "Dispositivo: ", JLabel.RIGHT);
-        prompt.setLabelFor( inputControl);
+
+        etiqueta = new JLabel( "Dispositivo: ", JLabel.RIGHT);
+        etiqueta.setLabelFor( inputControl);
            
-        labelPanel.add( prompt);
-        p = new JPanel( new FlowLayout(FlowLayout.LEFT));
-        p.add( inputControl);
-        fieldPanel.add( p);
+        labelPanel.add( etiqueta);
+        panel = new JPanel( new FlowLayout(FlowLayout.LEFT));
+        panel.add( inputControl);
+        fieldPanel.add( panel);
                
         //  --
         
-        JTextField pathArchivo = new JTextField();
+        final JTextField pathArchivo = new JTextField();
         pathArchivo.setColumns( 20);
         pathArchivo.setToolTipText( "ruta archivo *.hex");
         pathArchivo.setEditable( false);
-        
-        JButton browseArchivo = new JButton( "Buscar");
+        modelo.put( "archivo", pathArchivo);
+
+        final JButton browseArchivo = new JButton( "Buscar");
         browseArchivo.setSize( browseArchivo.getSize().width,(int)(0.8 * browseArchivo.getSize().height));
         browseArchivo.setActionCommand( "archivo");
-        modelo.put( "archivo", pathArchivo);
         browseArchivo.addActionListener( FILE_BROWSER_ACTION_LISTENER);
         
-        JLabel etiqueta = new JLabel( "Archivo *.HEX: ", JLabel.RIGHT);
+        etiqueta = new JLabel( "Archivo *.HEX: ", JLabel.RIGHT);
         etiqueta.setLabelFor( pathArchivo);
            
         labelPanel.add( etiqueta);
-        p = new JPanel( new FlowLayout(FlowLayout.LEFT));
-        p.add( pathArchivo);
-        p.add( browseArchivo);
-        fieldPanel.add(p);
+        panel = new JPanel( new FlowLayout(FlowLayout.LEFT));
+        panel.add( pathArchivo);
+        panel.add( browseArchivo);
+        fieldPanel.add( panel);
         
         //  --
         
-        JTextField cadenaTexto = new JTextField();
-        cadenaTexto.setColumns( 20);
-        cadenaTexto.setText( "192.168.1.79");
-        cadenaTexto.setToolTipText( "Ingrese la IP del servidor de programación");
-        
-        modelo.put( "cadena", cadenaTexto);
+        final JTextField ipServidor = new JTextField();
+        ipServidor.setColumns( 20);
+        ipServidor.setToolTipText( "Ingrese la IP del servidor de programación");
+        modelo.put( "ipServidor", ipServidor);
         
         etiqueta = new JLabel( "IP Servidor: ", JLabel.RIGHT);
-        etiqueta.setLabelFor( cadenaTexto);
+        etiqueta.setLabelFor( ipServidor);
            
         labelPanel.add(etiqueta);
-        p = new JPanel( new FlowLayout(FlowLayout.LEFT));
-        p.add( cadenaTexto);
-        fieldPanel.add(p);
+        panel = new JPanel( new FlowLayout(FlowLayout.LEFT));
+        panel.add( ipServidor);
+        fieldPanel.add( panel);
         
         //  ---
                
-        JButton executar = new JButton( "Firma");
-        executar.setToolTipText( "Invoca al servidor");
+        JButton executar = new JButton( "Programar");
+        executar.setToolTipText( "Programar Dispositivo");
         executar.setActionCommand( "ejecutar" );
         executar.addActionListener( FIRMA_ELECTRONICA_ACTION_LISTENER);
-        
+        executar.setEnabled( false);
+        modelo.put( "action", executar);
+
         labelPanel.add( new JLabel(""));
-        p = new JPanel( new FlowLayout(FlowLayout.LEFT));
-        p.add( executar);
-        fieldPanel.add(p);
-              
+        panel = new JPanel( new FlowLayout(FlowLayout.LEFT));
+        panel.add( executar);
+        fieldPanel.add( panel);
+
+        panel = new JPanel();
+        panel.setBorder( new EmptyBorder(10, 0, 10, 10));
         
-        JPanel firmaPanel = new JPanel();
-        firmaPanel.setBorder( new EmptyBorder(10, 0, 10, 10));
+        pane.add( panel, BorderLayout.SOUTH);
         
-        pane.add(firmaPanel, BorderLayout.SOUTH);
+        final JTextArea console = new JTextArea( 20, 60);
+        console.setBorder(BorderFactory.createLineBorder(Color.black));
+        modelo.put( "consola", console);
         
-        JTextArea firma = new JTextArea( 20, 60);
-        firma.setBorder(BorderFactory.createLineBorder(Color.black));
-        modelo.put( "consola", firma);
-        
-        firmaPanel.add(new JScrollPane( firma));
-        
-        
+        panel.add(new JScrollPane( console));
+
         frame.pack();
         frame.setVisible(true);
         frame.setResizable( false);
     }
 
+    private static String obtenerPathConfigFile( String[] args) {
+        if( args.length == 0) {
+            // ruta no definida en linea de comandos, utiliza ubicación y nombre por default
+            return "." + File.separator + "app_properties.xml";
+
+        } else {
+            // ruta definida en linea de comandos
+            return args[0];
+        }
+    }
+
+    private static void searchServer() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                final Logger log = new GUILogger( (JTextArea) modelo.get( "consola"));
+
+                ServerDetector detector = new ServerDetector( log);
+                try {
+                    final String servidor = detector.find( AppProperties.getProperty( "server"));
+                    ((JTextField) modelo.get( "ipServidor")).setText( servidor);
+                    AppProperties.setProperty( "server", servidor);
+                    AppProperties.update();
+
+                    ((JButton) modelo.get( "action")).setEnabled( true);
+
+                } catch( Exception ex) {
+                    log.error( "Error al buscar y establecer al servidor", ex);
+                }
+            }
+        }).start();
+    }
+
+    private static void info( String data) {
+        System.out.println( data);
+    }
 }
