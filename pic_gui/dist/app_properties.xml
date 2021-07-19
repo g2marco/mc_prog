@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
 <properties>
-<comment>Propiedades de aplicacion [12/10/2020 02:34:055]</comment>
-<entry key="server">192.168.1.69</entry>
-<entry key="path">D:\home\work\electronics\microcontrollers\pic12f683\01_led\01_led_blink.hex</entry>
+<comment>Propiedades de aplicacion [18/07/2021 21:07:079]</comment>
+<entry key="server">192.168.1.66</entry>
+<entry key="path">D:\tmp\proyect\target\main.hex</entry>
 </properties>
