@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
 <properties>
-<comment>Propiedades de aplicacion [18/07/2021 21:07:079]</comment>
-<entry key="server">192.168.1.66</entry>
-<entry key="path">D:\tmp\proyect\target\main.hex</entry>
+<comment>Propiedades de aplicacion [22/05/2022 18:35:419]</comment>
+<entry key="server">192.168.1.74</entry>
+<entry key="path">D:\home\ework\microcontrollers\pic12f683\04_neogen_codegen\target\target\main.hex</entry>
 </properties>
