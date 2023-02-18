@@ -1,6 +1,4 @@
-
-﻿#include "adaptador_pp.h"
-
+#include "adaptador_pp.h"
 #include "../puerto_paralelo/puerto_paralelo.h"
 
 

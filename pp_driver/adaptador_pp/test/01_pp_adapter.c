@@ -19,7 +19,7 @@ void signalHandler(int sig) {
 
 int test_modo_trabajo( enum Modo_Operacion_Adaptador modo) {
 
-	int resultado = init_adaptador_pp( BASE, modo);
+    int resultado = init_adaptador_pp( BASE, modo);
     if ( resultado != 0) {
         return resultado;
     }
