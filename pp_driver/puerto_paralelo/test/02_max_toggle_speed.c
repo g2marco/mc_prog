@@ -1,3 +1,4 @@
+
 #include <stdio.h>
 #include <inttypes.h>
 #include <signal.h>
@@ -43,7 +44,7 @@ int rutina_principal() {
 int main(void) {
     signal( SIGINT, signalHandler);
 
-    printf("Conmutación de Linea D4 de puerto paralelo (Base: 0x%x)\n", BASE);
+    printf("Toggling D4 line of parallel port (Base: 0x%x)\n", BASE);
 
     rutina_principal();
 
