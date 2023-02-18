@@ -1,9 +1,10 @@
+
 ﻿#include <stdio.h>
 #include <inttypes.h>
 #include <signal.h>
 
-#include "../puerto_paralelo/puerto_paralelo.h"
-#include "adaptador_pp.h"
+#include "../../puerto_paralelo/puerto_paralelo.h"
+#include "../adaptador_pp.h"
 
 #define BASE 0x378
 
