@@ -8,7 +8,7 @@ rm -f 01_puerto_paralelo.test
 rm -f 02_max_toggle_speed.test
 
 gcc 01_puerto_paralelo.c   ../puerto_paralelo.c -o 01_puerto_paralelo.test
-gcc 02_max_toggle_sp[edd.c ../puerto_paralelo.c -o 02_max_toggle_speed.test
+gcc 02_max_toggle_speed.c ../puerto_paralelo.c -o 02_max_toggle_speed.test
 
 sudo chown root.root 01_puerto_paralelo.test
 sudo chmod +s 01_puerto_paralelo.test
