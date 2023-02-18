@@ -1,5 +1,5 @@
-/**/*.test
-/**/*.log
-/**/target/
-/**/.idea/
-/**/*.jar
+**/*.test
+**/*.log
+**/target/
+**/.idea/
+**/*.jar
