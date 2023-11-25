@@ -1,3 +1,6 @@
+/**
+ *      MAX TOGGLE SPEED
+ */
 
 #include <stdio.h>
 #include <inttypes.h>
@@ -5,15 +8,33 @@
 
 #include "../puerto_paralelo.h"
 
-#define BASE 0x378
+/**
+ *  
+ *  Test maximum toggle speed of a parallel port pin
+ * 
+ *    - Configures data port as output 
+ *    - No uses log file
+ *    - Toggles D4 in an infinite loop
+ * 
+ *  You should use the following command in order to run this program
+ * 
+ *  > sudo 02_max_toggle_speed.x
+ *  
+ *  Once started, you should use CTRL-C in order to exit de program
+ */
 
-FILE * log_file = NULL;
+#define BASE 0x378                                  // parallel port registers base address
 
-int running = 1;
+FILE * log_file = NULL;                             // log file path
 
-void signalHandler(int sig) {
+int running = 1;                                    // init status
+
+
+void signalHandler( int sig) {
    running = 0;
    release_puerto_paralelo();
+   
+   printf( "\n");
 }
 
 int rutina_principal() {
@@ -44,9 +65,11 @@ int rutina_principal() {
 int main(void) {
     signal( SIGINT, signalHandler);
 
-    printf("Toggling D4 line of parallel port (Base: 0x%x)\n", BASE);
+    printf( "Toggling D4 line of parallel port (Base: 0x%x)\n", BASE);
 
     rutina_principal();
+
+    printf( "\n");
 
     return 0;
 }

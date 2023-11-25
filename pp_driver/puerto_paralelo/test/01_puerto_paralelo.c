@@ -1,3 +1,6 @@
+/**
+ *      PARALLEL PORT GENERAL TEST
+ */
 
 #include <stdio.h>
 #include <inttypes.h>
@@ -5,15 +8,28 @@
 
 #include "../puerto_paralelo.h"
 
-#define BASE 0x378
+/**
+ *  
+ *  Writes and reads the parallel port registers using the API (puerto paralelo)
+ *
+ *    - Writes data to data register
+ *    - Reports port registers
+ * 
+ *    - Writes data to control register
+ *    - Reports port registers
+ * 
+ * 
+ *  You should use the following command in order to run this program
+ * 
+ *  > sudo 01_puerto_paralelo.x
+ */
 
-FILE * log_file = NULL;
+#define BASE 0x378                                  // parallel port registers base address
 
-int running = 1;
+FILE * log_file = NULL;                             // log file path
 
-void signalHandler(int sig) {
-   running = 0;
-}
+int running = 1;                                    // init status
+
 
 int rutina_principal() {
 
@@ -22,26 +38,28 @@ int rutina_principal() {
 		return resultado;
     }
 
-    printf( "\n\nEstado inicial del Puerto\n");
+    printf( "\n\nInitial state of the port\n");
     print_registros();
     
+    
+    printf( "\t- Writing 0xAA to data port\n");
     port.data.value = 0xAA;
     write_data_port();
     
-    port.control.value = 0xAA;
+    
+    printf( "\t- Writing 0x0A to control port\n");
+    port.control.value = 0x0A;
     write_control_port();
    
-    printf( "\nEstado final del Puerto (0xAA)\n");
+
+    printf( "\n\nEnd state of the port\n");
     print_registros();
 
     return release_puerto_paralelo();
-
 }
 
 int main(void) {
-    signal(SIGINT, signalHandler);
-
-    printf("Prueba de Interface de Puerto Paralelo (Base: 0x%x)\n", BASE);
+    printf( "Prueba de Interface de Puerto Paralelo (Base: 0x%x)\n", BASE);
     
     printf( "\n\ta) Usando standard streams:\n");
     
@@ -55,6 +73,7 @@ int main(void) {
 
     fclose( log_file);
 
-    return 0;
+    printf( "\n");
 
+    return 0;
 }
