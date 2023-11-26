@@ -142,7 +142,7 @@ tarea read_params( int argc, char* argv[]) {
                     t.idx    = char_to_int( argv[1][1]);
                     t.value  = char_to_int( argv[2][0]);
 
-                    if ( t.idx < 0 || t.idx > 3 || t.value < 0 || t.value > 1) {
+                    if ( t.idx < 0 || t.idx > 5 || t.idx == 4 || t.value < 0 || t.value > 1) {
                         // error > valores no permitidos
                         t.estatus = 1;
                     }
