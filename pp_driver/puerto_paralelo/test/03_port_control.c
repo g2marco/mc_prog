@@ -79,9 +79,10 @@ void read_and_print() {
 }
 
 typedef struct {  
-    unsigned short opcion;
-    unsigned short idx;
-    unsigned short value;
+    unsigned short estatus;         // 0 tarea valida, 1 tarea invalida
+    unsigned short opcion;          // 0 write data, 1 write data bit, 2 write control bit, 3 print status
+    unsigned short idx;             // data: 0 - 7, control 0 - 3
+    unsigned short value;           // register 0 -55, bit 0 : 1
 } tarea;
 
 tarea read_params( int argc, char* argv[]) {
@@ -89,8 +90,8 @@ tarea read_params( int argc, char* argv[]) {
 
     printf( "parametros: %i", argc);
 
-    t.opcion = -1;
-    
+    t.opcion = 3;
+
     return t;
 }
 
@@ -104,7 +105,7 @@ int main( int argc, char* argv[]) {
 
     tarea t = read_params( argc, argv);
 
-    if ( t.opcion == -1) {
+    if ( t.estatus != 0) {
         printf( "\n\tWrong invocation / parameters, please correct");
         return 0;
     }
