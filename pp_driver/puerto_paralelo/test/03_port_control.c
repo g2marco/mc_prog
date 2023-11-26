@@ -73,6 +73,7 @@ void update_control_bit ( unsigned int idx, unsigned int value) {
         case 1: port.control.bits.C1 = value; break;
         case 2: port.control.bits.C2 = value; break;
         case 3: port.control.bits.C3 = value; break;
+        case 5: port.control.bits.C5 = value; break;
     }
 
     printf( "\nupdating control[%i] = %i\n", idx, value);
