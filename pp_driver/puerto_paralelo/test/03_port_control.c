@@ -168,8 +168,6 @@ int main( int argc, char* argv[]) {
     
     printf( "Prueba de Interface de Puerto Paralelo (Base: 0x%x)\n", BASE);
     
-    printf( "\n\ta) Usando standard streams:\n");
-    
     // analiza argumentos
 
     tarea t = read_params( argc, argv);
@@ -181,6 +179,8 @@ int main( int argc, char* argv[]) {
 
     // va a realizar una tarea
 
+    printf( "\n\ta) Usando standard streams:\n");
+    
     int resultado = init_puerto_paralelo( BASE);
     if ( resultado != 0) {
         return resultado;
