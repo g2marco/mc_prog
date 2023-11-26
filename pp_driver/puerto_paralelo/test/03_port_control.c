@@ -88,10 +88,23 @@ typedef struct {
 tarea read_params( int argc, char* argv[]) {
     tarea t;
 
-    printf( "parametros: %i", argc);
+    t.estatus = 0;
 
-    t.opcion = 3;
+    swtich ( argc) {
+        case 1:     // no params
+            t.opcion = 3;
+            break;
 
+        case 3:     // data 0xAA | D1 0 | C3 0
+            t.opcion = 1;
+            t.value  = 255;
+            break;
+
+        default:    // invocation not allowed
+            t.estatus = 1;
+
+    }
+    
     return t;
 }
 
