@@ -85,9 +85,11 @@ typedef struct {
 } tarea;
 
 tarea read_params( int argc, char* argv) {
+    tarea t;
+
     printf( "parametros: %i", argc);
 
-    return NULL;
+    return t;
 }
 
 int main( int argc, char* argv[]) {

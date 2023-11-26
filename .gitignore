@@ -1,5 +1,4 @@
 *.test
 *.log
 **/target/
-**/.idea/
 *.jar
