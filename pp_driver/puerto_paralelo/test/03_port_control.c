@@ -84,11 +84,13 @@ typedef struct {
     unsigned short value;
 } tarea;
 
-tarea read_params( int argc, char* argv) {
+tarea read_params( int argc, char* argv[]) {
     tarea t;
 
     printf( "parametros: %i", argc);
 
+    t.opcion = -1;
+    
     return t;
 }
 
@@ -100,9 +102,9 @@ int main( int argc, char* argv[]) {
     
     // analiza argumentos
 
-    t = read_params( argc. argv);
+    tarea t = read_params( argc, argv);
 
-    if ( t == NULL) {
+    if ( t.opcion == -1) {
         printf( "\n\tWrong invocation / parameters, please correct");
         return 0;
     }
