@@ -1,4 +1,4 @@
-﻿#include "puerto_paralelo.h"
+﻿#include "parallel_port.h"
 
 #include <stdio.h>
 #include <sys/io.h>
