@@ -3,8 +3,8 @@
 #include <inttypes.h>
 #include <signal.h>
 
-#include "../../parallel_port/parallel_port.h"
-#include "../port_adapter.h"
+#include "parallel_port.h"
+#include "port_adapter.h"
 
 #define BASE 0x378
 

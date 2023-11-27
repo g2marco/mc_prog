@@ -1,12 +1,24 @@
 #!/bin/bash
 #  Script de compilacion y ejecucion de proceso de prueba
 
-echo "Compiling Adaptador PP Test"
+MODULES_PATH=../../modules
+INCLUDE_LIBS=-I../../libs
 
-rm -f 01_pp_adapter.test
-gcc 01_pp_adapter.c  ../adaptador_pp.c ../../puerto_paralelo/puerto_paralelo.c -o 01_pp_adapter.test
 
-sudo chown root.root 01_pp_adapter.test
-sudo chmod +s        01_pp_adapter.test
+echo "Compiling Port Adapter Tests"
+
+# delete object files
+
+rm -f 01_port_adapter.x
+
+# compile tests
+
+gcc 01_port_adapter.c  $MODULES_PATH/01_port_adapter.c $MODULES_PATH/parallel_port.c -o 01_port_adapter.x $INCLUDE_LIBS 
+
+
+# prepare for execution
+
+sudo chown root.root 01_port_adapter.x
+sudo chmod +s        01_port_adapter.x
 
 echo " [done] Tests compiled!"
