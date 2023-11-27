@@ -13,7 +13,7 @@ rm -f 01_port_adapter.x
 
 # compile tests
 
-gcc 01_port_adapter.c  $MODULES_PATH/01_port_adapter.c $MODULES_PATH/parallel_port.c -o 01_port_adapter.x $INCLUDE_LIBS 
+gcc 01_port_adapter.c  $MODULES_PATH/port_adapter.c $MODULES_PATH/parallel_port.c -o 01_port_adapter.x $INCLUDE_LIBS 
 
 
 # prepare for execution
