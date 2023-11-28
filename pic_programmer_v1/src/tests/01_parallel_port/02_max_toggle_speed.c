@@ -2,7 +2,10 @@
  *      MAX TOGGLE SPEED
  */
 
+#include <errno.h> 
 #include <stdio.h>
+#include <stdlib.h> 
+#include <time.h> 
 #include <inttypes.h>
 #include <signal.h>
 
@@ -16,10 +19,14 @@
  *    - No uses log file
  *    - Toggles D4 in an infinite loop
  * 
- *  You should use the following command in order to run this program
+ *  You should use the following command in order to run this program (max toggle speed)
  * 
  *  > sudo 02_max_toggle_speed.x
- *  
+ * 
+ *  You can indicate the delay between changes using the following command
+ * 
+ *  > sudo 02_max_toggle_speed.x NNN  
+ * 
  *  Once started, you should use CTRL-C in order to exit de program
  */
 
@@ -29,6 +36,9 @@ FILE * log_file = NULL;                             // log file path
 
 int running = 1;                                    // init status
 
+unsigned int tmillis = 0;                           // delay in millis (invocation defines)
+
+
 
 void signalHandler( int sig) {
    running = 0;
@@ -36,6 +46,34 @@ void signalHandler( int sig) {
    
    printf( "\n");
 }
+
+
+void wait_for( unsigned int tmillis) {
+    if ( tmillis == 0) {
+        return;
+    }
+
+    struct timespec remaining, request = { 0, tmillis}; 
+    
+    errno = 0; 
+
+    if ( nanosleep( &request, &remaining) == -1) { 
+        switch (errno) { 
+            case EINTR: 
+                printf("interrupted by a signal handler\n"); 
+                break; 
+  
+            case EINVAL: 
+                printf("tv_nsec - not in range or tv_sec is negative\n"); 
+                break; 
+  
+            default: 
+                perror( "nanosleep"); 
+                break; 
+        } 
+    } 
+}
+
 
 int rutina_principal() {
 
@@ -58,14 +96,27 @@ int rutina_principal() {
     while( running == 1) {
         port.data.bits.D4 = !port.data.bits.D4;
         write_data_port();
-    }
 
+        wait_for( tmillis);
+    }
 }
 
-int main(void) {
+void set_delay_time( int argc, char* argv[]) {
+    if ( argc < 2) {
+        tmillis = 0;
+        return;
+    }
+
+    tmillis = (int) strtol( argv[1]);
+}
+
+int main( int argc, char* argv[]) {
+
     signal( SIGINT, signalHandler);
 
     printf( "Toggling D4 line of parallel port (Base: 0x%x)\n", BASE);
+
+    set_delay_time( argc, argv);
 
     rutina_principal();
 

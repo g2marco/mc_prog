@@ -4,8 +4,8 @@
 
 //  declaraciones de tipos
 enum Tipo_Comando {
-    COMANDO_SIMPLE,
-    COMANDO_PROGRAMACION,
+    COMANDO_SIMPLE        ,
+    COMANDO_PROGRAMACION  ,
     COMANDO_ESCRITURA_DATO,
     COMANDO_LECTURA_DATO
 };

@@ -1,21 +1,22 @@
-﻿#include "pic16fxxx_driver.h"
-
+﻿
 #include <stdio.h>
 
-#include "../puerto_paralelo/puerto_paralelo.h"
-#include "../adaptador_pp/adaptador_pp.h"
+#include "parallel_port.h"
+#include "port_adapter.h"
+#include "driver_pic16f.h"
+
 
 //
 // Valores que provocan un estado alto/bajo en cada señal de salida
 //
+#define VPP_HIGH    0
+#define VPP_LOW     1
+
 #define VCC_HIGH    1
 #define VCC_LOW     0
 
 #define CLK_HIGH    1
 #define CLK_LOW     0
-
-#define VPP_HIGH    0
-#define VPP_LOW     1
 
 #define COMMAND_SIZE             6              // número de bits de comando
 #define DATA_SIZE               16              // número de bits de dato
@@ -38,12 +39,8 @@
 //  Métodos de manipulación de señales de control
 //
 
-static void wait_for( unsigned int ciclosRetardo) {
-    unsigned int i;
-    unsigned valor = 0;
-    for( i = 0; i < ciclosRetardo; ++i) {
-       valor = i;
-    }
+static void wait_for( unsigned milliseconds) {
+    TODO : implementar rutina de retardo usando nanoSleep()
 }
 
 static void set_vcc( unsigned valor) {         
@@ -75,14 +72,29 @@ static unsigned short get_data() {                  // D3 (0000 1000)
     return ((0x0008 & valor) == 0)? 0 : 1;
 }
 
-static void rise_vcc() { set_vcc( VCC_HIGH); }
-static void fall_vcc() { set_vcc(  VCC_LOW); }
+static void rise_vcc() {
+    set_vcc( VCC_HIGH);
+}
 
-static void rise_clk() { set_clk( CLK_HIGH); }
-static void fall_clk() { set_clk(  CLK_LOW); }
+static void fall_vcc() {
+    set_vcc(  VCC_LOW);
+}
 
-static void rise_vpp() { set_vpp( VPP_HIGH); }
-static void fall_vpp() { set_vpp(  VPP_LOW); }   
+static void rise_clk() {
+    set_clk( CLK_HIGH);
+}
+
+static void fall_clk() {
+    set_clk(  CLK_LOW);
+}
+
+static void rise_vpp() {
+    set_vpp( VPP_HIGH);
+}
+
+static void fall_vpp() {
+    set_vpp(  VPP_LOW);
+}   
 
 
 //  definiciones internas
@@ -164,35 +176,39 @@ void init_HVP_mode() {
 
 unsigned short execute_command( unsigned short command, enum Tipo_Comando tipoComando, unsigned short data) {
     
-    if( tipoComando == COMANDO_SIMPLE) {
-        write_serial_data( command, COMMAND_SIZE);
-        wait_for( COMMAND_EXECUTION_TIME);
+    unsigned short data = 0;
+
+    swtich( tipoComando) {
+        case COMANDO_SIMPLE:
+            write_serial_data( command, COMMAND_SIZE);
+            wait_for( COMMAND_EXECUTION_TIME);
+            
+            break;
+            
+        case COMANDO_PROGRAMACION:
+            write_serial_data( command, COMMAND_SIZE);
+            wait_for( COMMAND_PROGRAMMING_EXECUTION_TIME);
+
+            break;
         
-        return 0;
+        case COMANDO_ESCRITURA_DATO:
+            write_serial_data( command, COMMAND_SIZE);
+            wait_for( COMMAND_SETUP_TIME);
+        
+            write_serial_data( data, DATA_SIZE);
+            wait_for( COMMAND_EXECUTION_TIME);
     
-    } else if( tipoComando == COMANDO_PROGRAMACION) {
-        write_serial_data( command, COMMAND_SIZE);
-        wait_for( COMMAND_PROGRAMMING_EXECUTION_TIME);
+            break;
         
-        return 0;
+        case COMANDO_LECTURA_DATO:
+            write_serial_data( command, COMMAND_SIZE);
+            wait_for( COMMAND_SETUP_TIME);
         
-    } else if( tipoComando == COMANDO_ESCRITURA_DATO) {
-        write_serial_data( command, COMMAND_SIZE);
-        wait_for( COMMAND_SETUP_TIME);
-        
-        write_serial_data( data, DATA_SIZE);
-        wait_for( COMMAND_EXECUTION_TIME);
-    
-        return 0;
-        
-    } else if( tipoComando == COMANDO_LECTURA_DATO) {
-        write_serial_data( command, COMMAND_SIZE);
-        wait_for( COMMAND_SETUP_TIME);
-        
-        unsigned short inputData = read_serial_data( DATA_SIZE, READ_DATA_SIZE);
-        wait_for( INTER_COMMAND_TIME);
-    
-        return inputData;
+            data = read_serial_data( DATA_SIZE, READ_DATA_SIZE);
+            wait_for( INTER_COMMAND_TIME);
+
+            break;
     }
-    return 0;
+
+    return data;
 }

@@ -7,19 +7,31 @@
 static enum Modo_Operacion_Adaptador modo_operacion;
 
 static void set_write_mode_adaptador() {
-    port.control.bits.C3 = 1;
-    write_control_port();
+    /**
+     *  [27/11/2023]
+     *      No adapter is present in this implementation, h
+     *      However, this module is kept in order to not modify higher leve code
+     */
+
+    //port.control.bits.C3 = 1;
+    //write_control_port();
     
-    port.control.bits.C5 = 0;
-    write_control_port();
+    //port.control.bits.C5 = 0;
+    //write_control_port();
 }
 
 static void set_read_mode_adaptador() {
-    port.control.bits.C5 = 1;
-    write_control_port();
+    /**
+     *  [27/11/2023]
+     *      No adapter is present in this implementation, h
+     *      However, this module is kept in order to not modify higher leve code
+     */
+
+    //port.control.bits.C5 = 1;
+    //write_control_port();
     
-    port.control.bits.C3 = 0;
-    write_control_port();
+    //port.control.bits.C3 = 0;
+    //write_control_port();
 }
 
 // variables externas
