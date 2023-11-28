@@ -108,6 +108,8 @@ void set_delay_time( int argc, char* argv[]) {
     }
 
     tmillis = (int) strtol( argv[1]);
+
+    printf( "\nsetting t[millis] = %i\n", tmillis);
 }
 
 int main( int argc, char* argv[]) {
