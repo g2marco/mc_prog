@@ -1,4 +1,4 @@
-*.test
+*.x
 *.log
 **/target/
 *.jar
