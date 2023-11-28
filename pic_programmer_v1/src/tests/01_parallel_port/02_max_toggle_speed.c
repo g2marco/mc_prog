@@ -36,7 +36,7 @@ FILE * log_file = NULL;                             // log file path
 
 int running = 1;                                    // init status
 
-unsigned int tmillis = 0;                           // delay in millis (invocation defines)
+unsigned int tnanos = 0;                           // delay in millis (invocation defines)
 
 
 
@@ -48,12 +48,12 @@ void signalHandler( int sig) {
 }
 
 
-void wait_for( unsigned int tmillis) {
-    if ( tmillis == 0) {
+void wait_for( unsigned int tnanos) {
+    if ( tnanos == 0) {
         return;
     }
 
-    struct timespec remaining, request = { 0, tmillis}; 
+    struct timespec remaining, request = { 0, tnanos}; 
     
     errno = 0; 
 
@@ -97,19 +97,19 @@ int rutina_principal() {
         port.data.bits.D4 = !port.data.bits.D4;
         write_data_port();
 
-        wait_for( tmillis);
+        wait_for( tnanos);
     }
 }
 
 void set_delay_time( int argc, char* argv[]) {
     if ( argc < 2) {
-        tmillis = 0;
+        tnanos = 0;
         return;
     }
 
-    tmillis = (int) strtol( argv[1], NULL, 0);
+    tnanos = (int) (strtol( argv[1], NULL, 0) * 1000);
 
-    printf( "\nsetting t[millis] = %i\n", tmillis);
+    printf( "\nsetting t[millis] = %f\n", tnanos / 1000000.0);
 }
 
 int main( int argc, char* argv[]) {
