@@ -107,7 +107,7 @@ void set_delay_time( int argc, char* argv[]) {
         return;
     }
 
-    tmillis = (int) strtol( argv[1]);
+    tmillis = (int) strtol( argv[1], NULL, 0);
 
     printf( "\nsetting t[millis] = %i\n", tmillis);
 }
