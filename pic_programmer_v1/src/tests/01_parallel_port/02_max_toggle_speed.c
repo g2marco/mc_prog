@@ -106,10 +106,11 @@ void set_delay_time( int argc, char* argv[]) {
         tnanos = 0;
         return;
     }
+    long tmicros = strtol( argv[1], NULL, 0);
 
-    tnanos = (int) (strtol( argv[1], NULL, 0) * 1000);
+    tnanos = (int) ( tmicros * 1000);
 
-    printf( "\nsetting t[millis] = %f\n", tnanos / 1000000.0);
+    printf( "\nsetting t[millis] = %f\n", (tmicros / 1000.0));
 }
 
 int main( int argc, char* argv[]) {
