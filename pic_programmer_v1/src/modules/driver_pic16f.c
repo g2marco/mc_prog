@@ -1,4 +1,4 @@
-﻿
+
 #include <stdio.h>
 
 #include "parallel_port.h"
@@ -9,10 +9,10 @@
 //
 // Valores que provocan un estado alto/bajo en cada señal de salida
 //
-#define VPP_HIGH    0
+#define VPP_HIGH    0                           // CO (Vpp_control)
 #define VPP_LOW     1
 
-#define VCC_HIGH    1
+#define VCC_HIGH    1                           // C1 (Vcc_control)
 #define VCC_LOW     0
 
 #define CLK_HIGH    1

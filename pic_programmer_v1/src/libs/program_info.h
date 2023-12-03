@@ -1,6 +1,6 @@
-#ifndef PROGRAMMING_INFO_HEADER
+#ifndef PROGRAM_INFO_HEADER
 
-#define PROGRAMMING_INFO_HEADER
+#define PROGRAM_INFO_HEADER
 
 
 // tipos de datos

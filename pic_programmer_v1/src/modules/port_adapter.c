@@ -1,5 +1,7 @@
-#include "port_adapter.h"
+
+
 #include "parallel_port.h"
+#include "port_adapter.h"
 
 
 // definiciones internas

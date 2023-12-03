@@ -1,8 +1,9 @@
-#include "pic16fxxx_programmer.h"
 
 #include <stdio.h>
-#include "../programming_info/programming_info.h"
-#include "pic16fxxx_driver.h"
+
+#include "driver_pic16f.h"
+#include "program_info.h"
+#include "program_pic16f.h"
 
 
 #define BASE 0x378

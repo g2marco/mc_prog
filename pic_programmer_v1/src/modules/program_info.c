@@ -1,7 +1,9 @@
-#include "programming_info.h"
 
 #include <stdio.h>
 #include <stdlib.h>
+
+#include "program_info.h"
+
 
 static void create_program_buffer( int longitud, DeviceBuffer * buffer) {
 	ArrayBancoMemoria * array = &(buffer->program);

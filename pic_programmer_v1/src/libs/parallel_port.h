@@ -1,6 +1,6 @@
-#ifndef PUERTO_PARALELO_HEADER
+#ifndef PARALLEL_PORT_HEADER
 
-#define PUERTO_PARALELO_HEADER
+#define PARALLEL_PORT_HEADER
 
 // tipos de datos
 
