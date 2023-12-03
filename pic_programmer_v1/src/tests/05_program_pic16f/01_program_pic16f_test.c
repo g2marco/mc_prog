@@ -1,7 +1,7 @@
 #include <stdio.h>
 
-#include "../../programming_info/programming_info.h"
-#include "../pic16fxxx_programmer.h"
+#include "programm_info.h"
+#include "program_pic16f.h"
 
 FILE * log_file = NULL;
 

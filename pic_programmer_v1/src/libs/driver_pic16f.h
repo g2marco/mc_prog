@@ -1,6 +1,6 @@
-#ifndef PIC16FXXX_DRIVER_HEADER
+#ifndef DRIVER_PIC16F_HEADER
 
-#define PIC16FXXX_DRIVER_HEADER
+#define DRIVER_PIC16F_HEADER
 
 //  declaraciones de tipos
 enum Tipo_Comando {

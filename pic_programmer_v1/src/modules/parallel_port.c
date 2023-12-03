@@ -1,7 +1,9 @@
-﻿#include "parallel_port.h"
-
-#include <stdio.h>
+﻿#include <stdio.h>
 #include <sys/io.h>
+
+#include "parallel_port.h"
+
+
 
 //  definiciones internas
 

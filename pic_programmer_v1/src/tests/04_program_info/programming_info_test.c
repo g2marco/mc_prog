@@ -1,5 +1,5 @@
 #include <stdio.h>
-#include "programming_info.h"
+#include "program_info.h"
 
 FILE * log_file = NULL;
 
