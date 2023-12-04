@@ -1,13 +1,10 @@
-/**
- *      Data Control
- */
 
+#include <errno.h> 
 #include <stdio.h>
-#include <stdlib.h>
+#include <stdlib.h> 
+#include <time.h> 
 #include <inttypes.h>
 #include <signal.h>
-
-#include "parallel_port.h"
 
 /**
  *  Uses command line arguments to send specific driver methods
