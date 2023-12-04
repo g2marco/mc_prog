@@ -10,84 +10,83 @@
 #include "parallel_port.h"
 
 /**
- *  Uses command line arguments to control individual parallel port pins  
+ *  Uses command line arguments to send specific driver methods in a loop
  * 
  *  - Options:
  * 
- *    a) whole data register:  data 0xAA
- *    b) individual pins    :  D1   1; C0 1; D7 0;  etc
- *    c) with no arguments, it reads the status port and prints the current state of all registers
- *    
- * 
- *  > sudo 02_max_toggle_speed.x
- *  
- *  Once started, you should use CTRL-C in order to exit de program
+ *      - init          => reset_device() - delay 1 - init_HVP_mode() - delay 2
+ *      - execute       => execute_command( command, tipoComando[, data]);
  */
 
-#define BASE 0x378                                  // parallel port registers base address
+#define BASE_PP_ADDR 0x378
 
-FILE * log_file = NULL;                             // log file path
+FILE * log_file = NULL;
+
+int running = 1;
 
 
+void signalHandler( int sig) {
+    running = 0;
+
+    release_driver();
+    printf( "\n");
+}
+
+/*
 unsigned short char_to_int( char n) {
     return (unsigned short) ( n - '0');
 }
 
 
-//  updates whole data register with a value
+void wait_for( unsigned int tnanos) {
+    if ( tnanos == 0) {
+        return;
+    }
 
-void update_data_port( unsigned int value) {
-    port.data.value = value;
+    struct timespec remaining, request = { 0, tnanos}; 
     
-    printf( "\nupdating data[:] = %i", value);
+    errno = 0; 
 
-    write_data_port();
+    if ( nanosleep( &request, &remaining) == -1) { 
+        switch (errno) { 
+            case EINTR: 
+                printf("interrupted by a signal handler\n"); 
+                break; 
+  
+            case EINVAL: 
+                printf("tv_nsec - not in range or tv_sec is negative\n"); 
+                break; 
+  
+            default: 
+                perror( "nanosleep"); 
+                break; 
+        } 
+    } 
 }
 
 
-//  updates an individual bit of data register
+//  init / reset loop
 
-void update_data_bit( unsigned int idx, unsigned int value) {
-    switch( idx) {
-        case 0: port.data.bits.D0 = value; break;
-        case 1: port.data.bits.D1 = value; break;
-        case 2: port.data.bits.D2 = value; break;
-        case 3: port.data.bits.D3 = value; break;
-        case 4: port.data.bits.D4 = value; break;
-        case 5: port.data.bits.D5 = value; break;
-        case 6: port.data.bits.D6 = value; break;
-        case 7: port.data.bits.D7 = value; break;
+void init_reset_loop() {
+
+    while( running == 1) {
+        reset_device();
+
+        wait_for( 600);
+
+        init_HVP_mode();
+
+        wait_for( 300);
     }
-
-    printf( "\nupdating data[%i] = %i\n", idx, value);
-
-    write_data_port();
 }
 
 
-//  updates an individual bit of control register
+//  execute simple command loop
 
-void update_control_bit ( unsigned int idx, unsigned int value) {
-    switch( idx) {
-        case 0: port.control.bits.C0 = value; break;
-        case 1: port.control.bits.C1 = value; break;
-        case 2: port.control.bits.C2 = value; break;
-        case 3: port.control.bits.C3 = value; break;
-        case 5: port.control.bits.C5 = value; break;
+void execute_loop() {
+    while( running == 1) {
+        execute_command( command, tipo, 0);
     }
-
-    printf( "\nupdating control[%i] = %i\n", idx, value);
-
-    write_control_port();
-}
-
-
-//  reads status port and prints current status of all registers
-
-void read_and_print() {
-    read_status_port();
-
-    print_registros();
 }
 
 typedef struct {
@@ -167,7 +166,7 @@ tarea read_params( int argc, char* argv[]) {
 
 int main( int argc, char* argv[]) {
     
-    printf( "Prueba de Interface de Puerto Paralelo (Base: 0x%x)\n", BASE);
+    printf( "Prueba de Interface de Puerto Paralelo (Base: 0x%x)\n", BASE_PP_ADDR);
     
     // analiza argumentos
 
@@ -182,25 +181,47 @@ int main( int argc, char* argv[]) {
 
     printf( "\n\ta) Usando standard streams:\n");
     
-    int resultado = init_puerto_paralelo( BASE);
+    int resultado = init_driver( BASE_PP_ADDR);
     if ( resultado != 0) {
         return resultado;
     }
 
-    // configura como salida
+    // configura como salida puerto de control
+    
     port.control.bits.C3 = 1;
     port.control.bits.C5 = 0;
     write_control_port();
 
     switch( t.opcion) {
-        case 0: update_data_port(          t.value); break;
-        case 1: update_data_bit(    t.idx, t.value); break;
-        case 2: update_control_bit( t.idx, t.value); break;
+        case 0: reset_device();     break;
+        case 1: init_reset_loop();  break;
+        case 2: execute_cmd_loop(); break;
     }
 
-    read_and_print();
+    release_driver();
     
-    release_puerto_paralelo();
+    printf( "\n");
+
+    return 0;
+}
+
+*/
+
+int main( int argc, char* argv[]) {
+    
+    printf( "PIC programmer driver test  (Parallel Port Base Addr: 0x%x)\n", BASE_PP_ADDR);
+    
+    
+    int resultado = init_driver( BASE_PP_ADDR);
+    if ( resultado != 0) {
+        return resultado;
+    }
+
+    printf( "resetting programmer device");
+
+    reset_device();
+
+    release_driver();
     
     printf( "\n");
 

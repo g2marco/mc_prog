@@ -2,26 +2,17 @@
 #  
 #	This script compiles parallel port test programs and changes its permissions
 #
-echo "Compiling Parallel Port Tests"
+echo "Compiling PIC programmer driver tests"
 
-rm -f 01_parallel_port.x
-rm -f 02_max_toggle_speed.x
-rm -f 03_port_control.x
+rm -f 01_driver_pic16f.x
 
 MODULES_PATH=../../modules
 INCLUDE_LIBS=-I../../libs
 
-gcc 01_parallel_port.c    $MODULES_PATH/parallel_port.c  -o 01_parallel_port.x    $INCLUDE_LIBS 
-gcc 02_max_toggle_speed.c $MODULES_PATH/parallel_port.c  -o 02_max_toggle_speed.x $INCLUDE_LIBS 
-gcc 03_port_control.c     $MODULES_PATH/parallel_port.c  -o 03_port_control.x     $INCLUDE_LIBS 
+gcc 01_driver_pic16f.c  $MODULES_PATH/driver_pic16f.c $MODULES_PATH/port_adapter.c $MODULES_PATH/parallel_port.c  -o 01_driver_pic16f.x $INCLUDE_LIBS 
 
-sudo chown root.root 01_parallel_port.x
-sudo chmod +s        01_parallel_port.x
 
-sudo chown root.root 02_max_toggle_speed.x
-sudo chmod +s        02_max_toggle_speed.x
-
-sudo chown root.root 03_port_control.x
-sudo chmod +s        03_port_control.x
+sudo chown root.root 01_driver_pic16f.x
+sudo chmod +s        01_driver_pic16f.x
 
 echo " [done] Tests compiled!"

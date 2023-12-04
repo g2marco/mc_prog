@@ -9,18 +9,18 @@
 //
 // Valores que provocan un estado alto/bajo en cada señal de salida
 //
-#define VPP_HIGH    0                           // CO (Vpp_control)
-#define VPP_LOW     1
+#define VPP_HIGH        0                           // CO
+#define VPP_LOW         1
 
-#define VCC_HIGH    1                           // C1 (Vcc_control)
-#define VCC_LOW     0
+#define VCC_HIGH        1                           // C1
+#define VCC_LOW         0
 
-#define CLK_HIGH    1
-#define CLK_LOW     0
+#define CLK_HIGH        0                           // C2
+#define CLK_LOW         1
 
-#define COMMAND_SIZE             6              // número de bits de comando
-#define DATA_SIZE               16              // número de bits de dato
-#define READ_DATA_SIZE          14              // número de bits leidos de memoria
+#define COMMAND_SIZE    6                           // número de bits de comando
+#define DATA_SIZE      16                           // número de bits de dato
+#define READ_DATA_SIZE 14                           // número de bits leidos de memoria
 
 //
 //  Tiempos de retardo requeridos por el dispositivo
@@ -43,33 +43,33 @@ static void wait_for( unsigned milliseconds) {
     TODO : implementar rutina de retardo usando nanoSleep()
 }
 
-static void set_vcc( unsigned valor) {         
-    port.control.bits.C0 = ((valor == 0)? 0:1);     // C0 (Vcc)
+
+static void set_vpp( unsigned valor) {
+    port.control.bits.C0 = valor == 0? 0 : 1;       // C0 -- VPP
+    write_control_port();
+    wait_for( VPP_SETUP_TIME);
+}
+
+static void set_vcc( unsigned valor) {
+    port.control.bits.C1 = valor == 0? 0 : 1;       // C1 -- Vcc
     write_control_port();
     wait_for( VCC_SETUP_TIME);
 }
 
 static void set_clk( unsigned valor) {
-    port.control.bits.C1 = ((valor == 0)? 0:1);     // C1 (clock)
+    port.control.bits.C2 = valor == 0? 0 : 1;       // C2 -- CLK
     write_control_port();
     wait_for( CLK_HOLD_TIME);
 }
 
-static void set_vpp( unsigned valor) {
-    port.control.bits.C2 = ((valor == 0)? 0:1);     // C2 (Vpp)
-    write_control_port();
-    wait_for( VPP_SETUP_TIME);
-}
-
 static void set_data( unsigned short valor) {
-    port.data.bits.D3 = ((valor == 0)? 0:1);        // D3 (data)
+    port.data.bits.D0 = valor == 0? 0:1;            // D0 -- DATA
     write_data_port();
 }
 
-static unsigned short get_data() {                  // D3 (0000 1000) 
-    read_data_port();
-    unsigned short valor = port.data.value;
-    return ((0x0008 & valor) == 0)? 0 : 1;
+static unsigned short get_data() {                  // S3 (0000 1000)  -- DATA IN
+    read_status_port();
+    return port.status.bits.S3;
 }
 
 static void rise_vcc() {
@@ -146,13 +146,7 @@ static unsigned short read_serial_data(unsigned short totalBits, unsigned short 
 //
 
 int init_driver( unsigned short baseAddress) {
-    int resultado = init_adaptador_pp( baseAddress, SERVER_WRITE);
-    
-    if ( resultado == 0) {
-        reset_device();
-    }
-    
-    return resultado;
+    return init_adaptador_pp( baseAddress, SERVER_WRITE);
 }
 
 int release_driver() {
@@ -161,12 +155,10 @@ int release_driver() {
 
 
 void reset_device() {
-	printf("\n\tresetting_device");
     set_data( 0);
     fall_clk();
     fall_vpp();
     fall_vcc();
-    printf("\n\tdevice is reseted\n");
 }
 
 void init_HVP_mode() {
