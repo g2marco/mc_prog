@@ -40,7 +40,7 @@
 //
 
 static void wait_for( unsigned milliseconds) {
-    TODO : implementar rutina de retardo usando nanoSleep()
+    //TODO : implementar rutina de retardo usando nanoSleep()
 }
 
 
