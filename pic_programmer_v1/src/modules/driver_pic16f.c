@@ -168,8 +168,6 @@ void init_HVP_mode() {
 
 unsigned short execute_command( unsigned short command, enum Tipo_Comando tipoComando, unsigned short data) {
     
-    unsigned short data = 0;
-
     swtich( tipoComando) {
         case COMANDO_SIMPLE:
             write_serial_data( command, COMMAND_SIZE);
@@ -196,11 +194,11 @@ unsigned short execute_command( unsigned short command, enum Tipo_Comando tipoCo
             write_serial_data( command, COMMAND_SIZE);
             wait_for( COMMAND_SETUP_TIME);
         
-            data = read_serial_data( DATA_SIZE, READ_DATA_SIZE);
+            unsigned short dataIn = read_serial_data( DATA_SIZE, READ_DATA_SIZE);
             wait_for( INTER_COMMAND_TIME);
 
-            break;
+            return dataIn;
     }
 
-    return data;
+    return 0;
 }
