@@ -63,7 +63,7 @@ static void set_clk( unsigned valor) {
 }
 
 static void set_data( unsigned short valor) {
-    port.data.bits.D0 = valor == 0? 0:1;            // D0 -- DATA
+    port.data.bits.D0 = valor == 0? 1 : 0;            // D0 -- DATA
     write_data_port();
 }
 
