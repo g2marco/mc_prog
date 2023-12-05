@@ -1,5 +1,9 @@
 
+#include <errno.h> 
 #include <stdio.h>
+#include <stdlib.h> 
+#include <time.h> 
+#include <inttypes.h>
 
 #include "parallel_port.h"
 #include "port_adapter.h"
@@ -25,22 +29,44 @@
 //
 //  Tiempos de retardo requeridos por el dispositivo
 //
-#define VCC_SETUP_TIME         20000
-#define VPP_SETUP_TIME         20000
-#define CLK_HOLD_TIME            100
+#define VCC_SETUP_TIME         2000                 //   2 ms
+#define VPP_SETUP_TIME         2000                 //   2 ms
+#define CLK_HOLD_TIME           400                 // 0.4 ms
 
 
-#define COMMAND_EXECUTION_TIME                3000      // tiempo para ejecución de comando
-#define COMMAND_SETUP_TIME                    1000      // tiempo antes de envio de dato
+#define COMMAND_EXECUTION_TIME                 3000      // tiempo para ejecución de comando
+#define COMMAND_SETUP_TIME                     1000      // tiempo antes de envio de dato
 #define COMMAND_PROGRAMMING_EXECUTION_TIME 4000000
-#define INTER_COMMAND_TIME                    1000
+#define INTER_COMMAND_TIME                     1000
     
 //
 //  Métodos de manipulación de señales de control
 //
 
-static void wait_for( unsigned milliseconds) {
-    //TODO : implementar rutina de retardo usando nanoSleep()
+void wait_for( unsigned int tmicros) {
+    if ( tmicros == 0) {
+        return;
+    }
+
+    struct timespec remaining, request = { 0, tmicros * 1000}; 
+    
+    errno = 0; 
+
+    if ( nanosleep( &request, &remaining) == -1) { 
+        switch (errno) { 
+            case EINTR:
+                printf("interrupted by a signal handler\n"); 
+                break; 
+  
+            case EINVAL:
+                printf("tv_nsec - not in range or tv_sec is negative\n"); 
+                break;
+  
+            default:
+                perror( "nanosleep"); 
+                break;
+        } 
+    } 
 }
 
 
@@ -167,7 +193,9 @@ void init_HVP_mode() {
 }
 
 unsigned short execute_command( unsigned short command, enum Tipo_Comando tipoComando, unsigned short data) {
-    
+
+    unsigned short dataIn = 0;
+
     switch( tipoComando) {
         case COMANDO_SIMPLE:
             write_serial_data( command, COMMAND_SIZE);
@@ -194,11 +222,11 @@ unsigned short execute_command( unsigned short command, enum Tipo_Comando tipoCo
             write_serial_data( command, COMMAND_SIZE);
             wait_for( COMMAND_SETUP_TIME);
         
-            unsigned short dataIn = read_serial_data( DATA_SIZE, READ_DATA_SIZE);
+            dataIn = read_serial_data( DATA_SIZE, READ_DATA_SIZE);
             wait_for( INTER_COMMAND_TIME);
 
-            return dataIn;
+            break;
     }
 
-    return 0;
+    return dataIn;
 }

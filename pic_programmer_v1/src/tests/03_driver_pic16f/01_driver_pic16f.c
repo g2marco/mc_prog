@@ -31,38 +31,6 @@ void signalHandler( int sig) {
     printf( "\n");
 }
 
-unsigned short char_to_int( char n) {
-    return (unsigned short) ( n - '0');
-}
-
-
-void wait_for( unsigned int tnanos) {
-    if ( tnanos == 0) {
-        return;
-    }
-
-    struct timespec remaining, request = { 0, tnanos}; 
-    
-    errno = 0; 
-
-    if ( nanosleep( &request, &remaining) == -1) { 
-        switch (errno) { 
-            case EINTR: 
-                printf("interrupted by a signal handler\n"); 
-                break; 
-  
-            case EINVAL: 
-                printf("tv_nsec - not in range or tv_sec is negative\n"); 
-                break; 
-  
-            default: 
-                perror( "nanosleep"); 
-                break; 
-        } 
-    } 
-}
-
-
 //
 //  device driver routines
 //
@@ -76,19 +44,18 @@ void execute_init_device() {
 }
 
 void execute_init_reset_loop() {
-
     while( running == 1) {
         reset_device();
-        wait_for( 600);
+        wait_for( 400);
 
         init_HVP_mode();
-        wait_for( 300);
+        wait_for( 800);
     }
 }
 
 void execute_comman_loop() {
     while( running == 1) {
-        //execute_command( command, tipo, 0);
+        execute_command( 0x55, COMANDO_SIMPLE, 0);
     }
 }
 
