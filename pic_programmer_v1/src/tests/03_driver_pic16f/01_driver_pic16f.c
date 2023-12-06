@@ -6,6 +6,8 @@
 #include <inttypes.h>
 #include <signal.h>
 
+#include "driver_pic16f.h"
+
 /**
  *  Uses command line arguments to send specific driver methods
  * 
