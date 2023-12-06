@@ -48,7 +48,7 @@ void execute_init_device() {
 void execute_init_reset_loop() {
     while( running == 1) {
         reset_device();
-        wait_for( 400);
+        wait_for( 4000);
 
         init_HVP_mode();
         wait_for( 800);
