@@ -57,7 +57,7 @@ void execute_init_reset_loop() {
 
 void execute_comman_loop() {
     while( running == 1) {
-        execute_command( 0x55, COMANDO_SIMPLE, 0);
+        execute_command( 0x31, COMANDO_SIMPLE, 0);
     }
 }
 
