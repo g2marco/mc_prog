@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include "program_info.h"
 
+FILE * log_file = NULL;
 
 int main(void) {
 	printf( "\nPrueba de Lectura y escritura de Tarea de programacion\n");
