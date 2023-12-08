@@ -31,12 +31,12 @@
 //
 #define VCC_SETUP_TIME         2000                 //   2 ms
 #define VPP_SETUP_TIME         2000                 //   2 ms
-#define CLK_HOLD_TIME           400                 // 0.4 ms
+#define CLK_HOLD_TIME           500                 // 0.4 ms
 
 
 #define COMMAND_EXECUTION_TIME                 3000      // tiempo para ejecución de comando
 #define COMMAND_SETUP_TIME                     1000      // tiempo antes de envio de dato
-#define COMMAND_PROGRAMMING_EXECUTION_TIME 4000000
+#define COMMAND_PROGRAMMING_EXECUTION_TIME    10000
 #define INTER_COMMAND_TIME                     1000
     
 //
@@ -68,7 +68,6 @@ void wait_for( unsigned int tmicros) {
         } 
     } 
 }
-
 
 static void set_vpp( unsigned valor) {
     port.control.bits.C0 = valor == 0? 0 : 1;       // C0 -- VPP
@@ -178,7 +177,6 @@ int init_driver( unsigned short baseAddress) {
 int release_driver() {
     return release_adaptador_pp();
 }
-
 
 void reset_device() {
     set_data( 0);

@@ -93,6 +93,7 @@ tarea read_params( int argc, char* argv[]) {
 }
 
 int main( int argc, char* argv[]) {
+    signal( SIGINT, signalHandler);
     
     printf( "PIC programmer driver test  (Parallel Port Base Addr: 0x%x)\n", BASE_PP_ADDR);
     

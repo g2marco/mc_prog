@@ -2,10 +2,17 @@
 #  
 #	This script compile test programs and execute them
 #
-echo "Compiling Programming Info Test"
 
-rm -f test
-gcc programming_info_test.c programming_info.c -o test
+MODULES_PATH=../../modules
+INCLUDE_LIBS=-I../../libs
 
-echo "Executing Programming Info Test"
-./test
+echo "Compiling program info tests"
+
+rm -f 01_program_info.x
+
+gcc 01_program_info.c  $MODULES_PATH/program_info.c -o 01_program_info.x $INCLUDE_LIBS 
+
+sudo chown root.root 01_program_info.x
+sudo chmod +s        01_program_info.x
+
+echo " [done] Tests compiled!"
