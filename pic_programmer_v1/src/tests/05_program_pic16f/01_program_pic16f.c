@@ -1,6 +1,6 @@
 #include <stdio.h>
 
-#include "programm_info.h"
+#include "program_info.h"
 #include "program_pic16f.h"
 
 FILE * log_file = NULL;
