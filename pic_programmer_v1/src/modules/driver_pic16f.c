@@ -31,13 +31,13 @@
 //
 #define VCC_SETUP_TIME        10000                 //   10 ms
 #define VPP_SETUP_TIME        10000                 //   10 ms
-#define CLK_HOLD_TIME           500                 // 0.4 ms
+#define CLK_HOLD_TIME           500                 // 0.5 ms
 
 
-#define COMMAND_EXECUTION_TIME                10000      // tiempo para ejecución de comando
-#define COMMAND_SETUP_TIME                    10000      // tiempo antes de envio de dato
+#define COMMAND_EXECUTION_TIME                 1000      // tiempo para ejecución de comando
+#define COMMAND_SETUP_TIME                     1000      // tiempo antes de envio de dato
 #define COMMAND_PROGRAMMING_EXECUTION_TIME    10000
-#define INTER_COMMAND_TIME                    10000
+#define INTER_COMMAND_TIME                     1000
     
 //
 //  Métodos de manipulación de señales de control
