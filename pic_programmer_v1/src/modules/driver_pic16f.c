@@ -229,6 +229,9 @@ unsigned short execute_command( unsigned short command, enum Tipo_Comando tipoCo
             wait_for( COMMAND_SETUP_TIME);
         
             dataIn = read_serial_data( DATA_SIZE, READ_DATA_SIZE);
+            
+            printf( "\n\t reading: %d", dataIn);
+
             wait_for( INTER_COMMAND_TIME);
 
             break;
