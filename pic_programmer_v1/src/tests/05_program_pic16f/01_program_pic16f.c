@@ -9,7 +9,7 @@ int main(void) {
 
     printf("\nPrueba de Programador PIC16FXXX");
 
-    ProgrammingInfo info;
+    ProgramInfo info;
 
     printf( "\n\t - Lectura de archivo de peticion");
     read_programming_info( &info, "./programming_info_request.txt");
