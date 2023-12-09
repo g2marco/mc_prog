@@ -29,15 +29,15 @@
 //
 //  Tiempos de retardo requeridos por el dispositivo
 //
-#define VCC_SETUP_TIME         2000                 //   2 ms
-#define VPP_SETUP_TIME         2000                 //   2 ms
+#define VCC_SETUP_TIME        10000                 //   10 ms
+#define VPP_SETUP_TIME        10000                 //   10 ms
 #define CLK_HOLD_TIME           500                 // 0.4 ms
 
 
-#define COMMAND_EXECUTION_TIME                 3000      // tiempo para ejecución de comando
-#define COMMAND_SETUP_TIME                     1000      // tiempo antes de envio de dato
+#define COMMAND_EXECUTION_TIME                10000      // tiempo para ejecución de comando
+#define COMMAND_SETUP_TIME                    10000      // tiempo antes de envio de dato
 #define COMMAND_PROGRAMMING_EXECUTION_TIME    10000
-#define INTER_COMMAND_TIME                     1000
+#define INTER_COMMAND_TIME                    10000
     
 //
 //  Métodos de manipulación de señales de control
@@ -88,13 +88,13 @@ static void set_clk( unsigned valor) {
 }
 
 static void set_data( unsigned short valor) {
-    port.data.bits.D0 = valor == 0? 1 : 0;            // D0 -- DATA
+    port.data.bits.D0 = valor == 0? 1 : 0;            // NOT( D0) -- DATA
     write_data_port();
 }
 
-static unsigned short get_data() {                  // S3 (0000 1000)  -- DATA IN
+static unsigned short get_data() {                  // S3 (0000 1000)  -- NOT (DATA IN)
     read_status_port();
-    return port.status.bits.S3;
+    return port.status.bits.S3 == 0? 1 : 0;
 }
 
 static void rise_vcc() {
@@ -143,7 +143,7 @@ static void write_serial_data( unsigned short data, unsigned short bits) {
     set_data( 0);
 }
 
-static unsigned short read_serial_data(unsigned short totalBits, unsigned short readBits) {
+static unsigned short read_serial_data( unsigned short totalBits, unsigned short readBits) {
     
     unsigned short data = 0;
     unsigned int i;
