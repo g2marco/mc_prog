@@ -146,18 +146,24 @@ static void write_serial_data( unsigned short data, unsigned short bits) {
 static unsigned short read_serial_data( unsigned short totalBits, unsigned short readBits) {
     
     unsigned short data = 0;
-    unsigned int i;
-   
+    unsigned int i, bit;
+
     for ( i = 0; i < totalBits; ++i) {
-        if( i == 1) {   start_read_mode(); }
+        if( i == 1) {
+            start_read_mode();
+        }
+
         rise_clk();
-        get_data();
+        bit = get_data();
         
-        if( i == (totalBits - 1)) { end_read_mode(); }
+        if( i == (totalBits - 1)) {
+            end_read_mode();
+        }
         
         fall_clk();
+        
         data >>= 1;
-        if( get_data() == 1) {
+        if( bit == 1) {
             data |= 0x8000;
         }
     }
