@@ -42,6 +42,6 @@ c6r=t
 c6w=f
 c7a=8199
 c7i=Configuration
-c7v=16152
+c7v=12484
 c7r=t
 c7w=t
