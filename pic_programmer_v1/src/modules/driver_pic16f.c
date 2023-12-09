@@ -171,7 +171,7 @@ static unsigned short read_serial_data( unsigned short totalBits, unsigned short
         }
     }
     
-    return (data && 0x7FFF) >> 1;
+    return (data & 0x7FFF) >> 1;
 }
 
 //
