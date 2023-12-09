@@ -88,7 +88,7 @@ static void set_clk( unsigned valor) {
 }
 
 static void set_data( unsigned short valor) {
-    port.data.bits.D0 = valor == 0? 1 : 0;            // NOT( D0) -- DATA
+    port.data.bits.D0 = valor == 0? 1 : 0;          // NOT( D0) -- DATA
     write_data_port();
 }
 
@@ -148,17 +148,16 @@ static unsigned short read_serial_data( unsigned short totalBits, unsigned short
     unsigned short data = 0;
     unsigned int i, bit;
 
+    set_data(0);
+    
     for ( i = 0; i < totalBits; ++i) {
         if( i == 1) {
             start_read_mode();
         }
 
         rise_clk();
-        bit = get_data();
         
-        if( i == (totalBits - 1)) {
-            end_read_mode();
-        }
+        bit = get_data();
         
         fall_clk();
         
@@ -166,10 +165,13 @@ static unsigned short read_serial_data( unsigned short totalBits, unsigned short
         if( bit == 1) {
             data |= 0x8000;
         }
+
+        if( i == (totalBits - 1)) {
+            end_read_mode();
+        }
     }
     
-    set_data(0);
-    return data >> 1;
+    return (data && 0x7FFF) >> 1;
 }
 
 //
