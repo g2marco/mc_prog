@@ -33,5 +33,16 @@
 |           | reset_device()                                     |
 |           | init_HVP_mode()                                    |
 |           | execute_command( cmd, tipo, data)    : unsgd short |
-|           |                                                    |
 
+### program_info
+
+| Variables | Methods                                        |
+| --------- | ---------------------------------------------- |
+|           | read_program_info( ProgramInfo *, filePath *)  |
+|           | write_program_info( ProgramInfo *, filePath *) |
+
+### program_pic16f
+
+| Variables | Methods                                            |
+| --------- | -------------------------------------------------- |
+|           | execute_programming_task( ProgramInfo *)     : int |

@@ -21,7 +21,6 @@ typedef struct {
 
 } LocalidadMemoria;
 
-
 typedef struct {
     BancoMemoria *  banks;
     unsigned short length;
@@ -45,18 +44,20 @@ typedef struct {
 typedef struct {
 	char values[10];
 	int length;
+
 } Arreglo;
 
 typedef struct {
-	char operation;
-	Arreglo areas;
-	Arreglo voltages;
+	char      operation;
+	Arreglo       areas;
+	Arreglo    voltages;
 	DeviceBuffer buffer;
-} ProgrammingInfo;
+
+} ProgramInfo;
 
 
-void read_programming_info( ProgrammingInfo * ptrInfo, const char * filePath);
+void read_program_info( ProgramInfo * ptrInfo, const char * filePath);
 
-void write_programming_info( ProgrammingInfo * ptrInfo, const char * filePath);
+void write_program_info( ProgramInfo * ptrInfo, const char * filePath);
 
 #endif

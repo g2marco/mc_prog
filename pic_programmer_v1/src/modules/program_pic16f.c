@@ -144,7 +144,7 @@ static void write_config_memory( DeviceBuffer * bufferPtr) {
 }
 
 
-int execute_programming_task( ProgrammingInfo * ptrInfo) {
+int execute_programming_task( ProgramInfo * ptrInfo) {
 
 	int resultado = init_driver( BASE);
 	if ( resultado != 0) {

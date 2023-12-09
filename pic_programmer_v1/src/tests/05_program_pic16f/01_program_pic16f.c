@@ -17,6 +17,10 @@ int main(void) {
 	printf( "\n\t - Ejecución de tarea de programacion");
     execute_programming_task( &info);
 
+    info.operation = 'r';
+
+    execute_programming_task( &info);
+
     printf( "\n\t - Escritura de archivo de respuesta");
     write_programming_info( &info, "programming_info_response.txt");
 

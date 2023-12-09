@@ -210,6 +210,7 @@ static void write_device_buffer( FILE * file, DeviceBuffer * buffer) {
 	int j = 0;
 
 	array = &(buffer->program);
+
 	for( i = 0; i < array->length; ++i) {
 		banco = &(array->banks[i]);
 
@@ -226,6 +227,7 @@ static void write_device_buffer( FILE * file, DeviceBuffer * buffer) {
 	}
 
 	array = &(buffer->data);
+	
 	for( i = 0; i < array->length; ++i) {
 		banco = &(array->banks[i]);
 
@@ -258,7 +260,7 @@ static void write_device_buffer( FILE * file, DeviceBuffer * buffer) {
 
 extern FILE * log_file;
 
-void read_programming_info( ProgrammingInfo * ptrInfo, const char * filePath) {
+void read_programming_info( ProgramInfo * ptrInfo, const char * filePath) {
 
 	FILE * file = fopen( filePath, "r");
 
@@ -301,14 +303,12 @@ void read_programming_info( ProgrammingInfo * ptrInfo, const char * filePath) {
 			init_arreglo_voltajes( file, &(ptrInfo->voltages));
 			break;
 		}
-
 	}
 
 	fclose( file);
-
 }
 
-void write_programming_info( ProgrammingInfo * ptrInfo, const char * filePath) {
+void write_programming_info( ProgramInfo * ptrInfo, const char * filePath) {
 
 	FILE * file = fopen( filePath, "w");
 
@@ -322,6 +322,7 @@ void write_programming_info( ProgrammingInfo * ptrInfo, const char * filePath) {
 	fprintf( file, "o=%c", ptrInfo->operation);
 
 	fprintf( file, "\na=");
+
 	for ( i = 0; i < (ptrInfo->areas).length; ++i) {
 		if( i > 0) {
 			fprintf( file, ",");
@@ -330,6 +331,7 @@ void write_programming_info( ProgrammingInfo * ptrInfo, const char * filePath) {
 	}
 
 	fprintf( file, "\nv=");
+
 	for ( i = 0; i < (ptrInfo->voltages).length; ++i) {
 		if( i > 0) {
 			fprintf( file, ",");
@@ -340,5 +342,4 @@ void write_programming_info( ProgrammingInfo * ptrInfo, const char * filePath) {
 	write_device_buffer( file, &(ptrInfo->buffer));
 
 	fclose( file);
-
 }

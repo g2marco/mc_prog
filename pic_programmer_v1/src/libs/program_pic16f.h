@@ -4,6 +4,6 @@
 
 #include "program_info.h"
 
-int execute_programming_task( ProgrammingInfo * ptrInfo);
+int execute_programming_task( ProgramInfo * ptrInfo);
 
 #endif
