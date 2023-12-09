@@ -5,14 +5,14 @@
 
 FILE * log_file = NULL;
 
-int main(void) {
+int main( int argc, char* argv[]) {
 
     printf("\nPrueba de Programador PIC16FXXX");
 
     ProgramInfo info;
 
     printf( "\n\t - Lectura de archivo de peticion");
-    read_programming_info( &info, "./programming_info_request.txt");
+    read_programming_info( &info, argv[1]);
 
 	printf( "\n\t - Ejecución de tarea de programacion");
     execute_programming_task( &info);
@@ -22,7 +22,7 @@ int main(void) {
     execute_programming_task( &info);
 
     printf( "\n\t - Escritura de archivo de respuesta");
-    write_programming_info( &info, "programming_info_response.txt");
+    write_programming_info( &info, "program_info_response.txt");
 
     printf( "\n\nPrueba terminada con exito\n");
 	
