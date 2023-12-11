@@ -76,7 +76,7 @@ void generate_alive_response() {
 
 void program_device( void) {
 
-    ProgrammingInfo info;
+    ProgramInfo info;
 
     read_programming_info( &info, REQUEST_FILE_PATH);
 
