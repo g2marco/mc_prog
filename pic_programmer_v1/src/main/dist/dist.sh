@@ -5,7 +5,7 @@ echo "Compiling PIC Programmer"
 
 MODULES_PATH=../../modules
 INCLUDE_LIBS=-I../../libs
-TARGET_PATH=/usr/local/pic_programmer/pic16fxxx
+TARGET_PATH=/home/g2marco/work/mc_prog/dist/pic_programmer
 
 
 rm -f $TARGET_PATH
@@ -15,4 +15,4 @@ gcc pic16fxxx_programmer.c  $MODULES_PATH/program_pic16f.c $MODULES_PATH/program
 sudo chown root.root $TARGET_PATH
 sudo chmod +s        $TARGET_PATH
 
-echo "Distribution version installed on /usr/local/pic_programmer/pic16fxxx"
+echo "Distribution version installed on " $TARGET_PATH

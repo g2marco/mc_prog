@@ -1,24 +1,24 @@
 
 
-0011 0000 1100 0100 
+0011 0000 1101 0100
 
 
 11 
 
 0000 
-	FCMEN		0 Fail-safe clock monitor disabled
-	IESO		0 Internal External switcover mode disabled 
-	BOREN1          0
-	BOREN0 		0 BOREN and SBOREN bit disabled
+	FCMEN		0   Fail-safe clock monitor disabled
+	IESO		0   Internal External switcover mode disabled 
+	BOREN1      0
+	BOREN0 		0   BOREN and SBOREN bit disabled
 
 1100 
 	nCPD		1 	data memory   , not protected
-	nCP		1      	program memory, not protected
-	MCLRE		0       MCLR is VPP
-	nPWRTE		0       power-up timer enabled
+	nCP		    1 	program memory, not protected
+	MCLRE		0   MCLR is VPP
+	nPWRTE		1   power-up timer disabled
 
 0100
 	WDTE		0	watchdog timer disbled
 	FOSC2		1
-	FOSC1           0
-	FOSC0           0       INTOSCIO, IO on RA4 and RA5
+	FOSC1       0
+	FOSC0       0       INTOSCIO, IO on RA4 and RA5
