@@ -6,7 +6,7 @@
 #include <stdio.h>
 #include <unistd.h>
 
-#include "programming_info.h"
+#include "program_info.h"
 #include "program_pic16f.h"
 
 
