@@ -12,8 +12,8 @@
 
 FILE * log_file = NULL;
 
-char REQUEST_FILE_PATH[]  = "/tmp/programmer_request.txt";
-char RESPONSE_FILE_PATH[] = "/tmp/programmer_response.txt";
+char REQUEST_FILE_PATH[]  = "/tmp/programmer_request_1.txt";
+char RESPONSE_FILE_PATH[] = "/tmp/programmer_response_1.txt";
 
 unsigned char ALIVE_REQUEST[] = "ggma";
 
