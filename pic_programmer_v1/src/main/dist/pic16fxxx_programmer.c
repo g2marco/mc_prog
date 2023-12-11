@@ -6,8 +6,9 @@
 #include <stdio.h>
 #include <unistd.h>
 
-#include "../programming_info/programming_info.h"
-#include "../pic16fxxx/pic16fxxx_programmer.h"
+#include "programming_info.h"
+#include "program_pic16f.h"
+
 
 FILE * log_file = NULL;
 
@@ -15,6 +16,7 @@ char REQUEST_FILE_PATH[]  = "/tmp/programmer_request.txt";
 char RESPONSE_FILE_PATH[] = "/tmp/programmer_response.txt";
 
 unsigned char ALIVE_REQUEST[] = "ggma";
+
 
 
 void save_request_file( int client_sockfd) {
@@ -122,8 +124,3 @@ int main( void) {
 	
     exit( 0);
 }
-
-
-
-
-
