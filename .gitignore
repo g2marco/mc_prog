@@ -2,3 +2,4 @@
 *.log
 **/target/
 *.jar
+pic_gui/dist/app_properties.xml
