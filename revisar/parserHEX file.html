@@ -1,0 +1,145 @@
+<!doctype html>
+
+<html>
+<head>
+<script>
+
+function getTipoLinea( linea) {
+    let type = linea.substring(7, 9);
+   
+    if( type == '00') {         return 'data';      // linea de datos
+    } else if ( type == '01') { return 'eof';       // linea de fin de registro
+    } else if( type == '04') {  return 'ext';       // registro de direccion extendida
+    }
+    
+    return null;
+}
+
+function validarLinea( linea) {
+    let line = linea.trim();
+    
+    if( line.charAt(0) != ':') {
+        return 'Línea no inicia con el "start code"';
+    }
+    
+    let numeroBytes = ((line.length - 1)/2) - 1; 
+    let offset = suma = numero = 0;
+    
+    for ( let i = 0; i < numeroBytes; ++i) {
+        offset = 1 + i*2;
+        numero = parseInt( line.substring( offset, offset + 2) ,16)
+        suma += ((numero ^ 0xFF) + 1);
+    }
+    
+    suma &= 0x00FF;
+    
+    let longitud = line.length;
+    let checksum = parseInt( line.substring( longitud-2, longitud), 16);
+    
+    return (suma == checksum)? null : 'Checksum no concuerda';
+}
+
+
+function parsearLinea( line) {
+    let byteCount   = parseInt( line.substring(1, 3), 16);
+    let addrX2      = parseInt( line.substring(3, 7), 16);
+    
+    let offset, lowByte, highByte;
+    
+    let values = [];
+    
+    for( let i = 0; i < byteCount/2; i++) {
+        offset = 9 + i*4;
+        lowByte = parseInt( line.substring( offset, offset + 2), 16);
+        highByte= parseInt( line.substring( offset + 2, offset + 4), 16);
+        
+        values.push( ((highByte * 256) + lowByte));
+    }
+    
+    return {
+        addr    : addrX2 / 2,
+        values  : values
+    };
+}
+
+function parsearArchivo( lineas) {
+    
+    let longitud = lineas.length;
+    let linea = null;
+    let mensaje = null;
+     
+    let data = new Array( 1024).fill(0);
+    
+    for ( let i = 0; i < longitud; ++i) {
+        linea = lineas[i];
+        mensaje = validarLinea( linea);
+        if ( mensaje) { return mensaje; }
+        
+        tipo = getTipoLinea( linea);
+        
+        if ( tipo == 'data') {
+            paquete = parsearLinea( linea);
+            
+            for ( let j = 0; j < paquete.values.length; ++j) {
+                data[ paquete.addr + j] = paquete.values[j]
+            }
+            
+        } else if (tipo == 'ext') {
+        
+        }
+    }
+    
+    return data;
+}
+    
+/*
+-- debe identificarse el tipo de memoria y banco donde pertenece la linea de datos
+-- debe pasarse el buffer de dispositivo vacío
+-- 
+*/
+    setTimeout( function() {
+        /*  Prueba USART TX
+        let items = parsearArchivo( [
+            ':080000002720352030202028C4',
+            ':1000400000308500422001308500422020288501B3',
+            ':1000500007309F0003138316FE30850083120800CB',
+            ':10006000FF30A000A00B32280800031383160615EA',
+            ':100070008614023099001812831298178316981666',
+            ':100080008312080066309900000000008316981C57',
+            ':060090004728831208005E',
+            ':00000001FF'
+        ]);
+        */
+        
+        // Prueba USAR TX_RX
+        let items = parsearArchivo( [
+            ':06000000192023200C284A',
+            ':08000800F000030E8312F10069',
+            ':10001000710E8300F00E0900003085003A208C1E1E',
+            ':100020000F281A08013085003A208C1E15281A085E',
+            ':100030000C28850107309F0003138316FE308500CE',
+            ':10004000831228200800FF30A000A00B25280800FC',
+            ':1000500003138316061586140230990018128312B2',
+            ':100060009817382034200800831698168312080049',
+            ':0E007000181608006630990000000000080015',
+            ':00000001FF'
+        ]);
+
+    
+        let cadena = '';
+        
+        for( let i = 0; i < items.length; ++i) {
+            cadena += '\nbank->data[' + i + '] = ' + items[i] + ';';
+        }
+        
+        let item = document.getElementById( 'out');
+        item.innerText = cadena;
+    }, 1000);
+    
+</script>
+
+<head>
+<body>
+    <span id="out"></span>
+</body>
+</html>

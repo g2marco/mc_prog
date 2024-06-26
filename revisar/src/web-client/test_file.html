@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8" />
+	
+	<link rel="stylesheet" href="./recursos/css/bootstrap.min.css" type="text/css"/>
+    <link rel="stylesheet" href="./recursos/font-awesome/css/font-awesome.min.css"  type="text/css"/>  
+    
+	<script type="text/javascript" charset="UTF-8" src="./recursos/jquery/jquery-3.2.1.min.js"></script>
+	<script type="text/javascript" charset="UTF-8" src="./recursos/bootstrap/popper.min.js" ></script>
+    <script type="text/javascript" charset="UTF-8" src="./recursos/bootstrap/bootstrap.min.js"></script>
+    
+    <script type="text/javascript" charset="UTF-8" src="./recursos/handlebars/handlebars-v4.0.11.js"></script>
+    <script type="text/javascript" charset="UTF-8" src="./recursos/scripts/eurk-core.min.js"></script>
+
+	<!--	INICIA: Dependencias del componente	 	-->
+	
+	<script type="text/javascript" charset="UTF-8" src="./recursos/scripts/hex_file_parser.js"></script>	
+    
+    <!--	TERMINA: Dependencias del componente	-->
+    
+	<script type="text/javascript">
+		jQuery.noConflict();
+		
+		jQuery( document).ready(function($) {
+			
+			dom.onClick( jQuery( '.nav-link'), function( event) {
+				jQuery( '.nav-link').removeClass( 'active');
+				jQuery( '.memory').attr( 'hidden', true);
+				
+				let tab = jQuery( event.currentTarget);
+				let tipo = tab.data( 'value');
+				
+				tab.addClass( 'active');
+				dom.getById( tipo).attr( 'hidden', false);
+			});
+			
+			dom.on( 'archivo', 'change', cargar_buffer_from_archivo);
+		
+		});
+		
+		
+		function cargar_buffer_from_archivo( event) {
+		    var file = event.target.files[0]; 
+			
+		    
+			if (file) {
+				let reader = new FileReader();
+				
+				reader.onload = function( onLoadEvent) {
+					server.resource.json( 'PIC16F627A-device-buffer',  function (data) {
+						let deviceBuffer = initBuffer( buffer);
+						hex_parser.parse( deviceBuffer, onLoadEvent.target.result);
+						console.info( deviceBuffer);
+					});
+				};
+				
+				reader.readAsText( file);
+			
+			} else { 
+		      alert( 'No fue posilbe cargar el archivo');			    
+			}
+		}
+		
+		function initBuffer( deviceBuffer) {
+			let bancos = deviceBuffer.program;
+			let banco  = null;
+			
+			for( let i = 0; i < bancos.length; ++i) {
+				banco = bancos[ i];
+				banco.values = new Array( banco.length).fill( 0);
+			}
+			
+			return buffer;
+		}
+	
+	</script>
+</head>
+<body class="container">
+
+	<div class="card">
+		<h5 class="card-header">Programador PIC</h5>
+		<div class="card-body">
+			<form class="form">
+				<div class="row">
+					<div class="col-sm-6">
+						<label for="selectDeviceId">Dispositivo :</label>
+						<select id="selectDeviceId" class="form-control">
+							<option value="pic16f627a">PIC16F627A</option>
+						</select>
+					</div>	
+					<div class="col-sm-6">
+						<label for="inputArchivo">Archivo :</label>
+						<input type="file" id="archivo" class="form-control"/>
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
+	
+	<div class="card">
+		<div class="card-header">
+			<div class="float-left">
+			<ul class="nav nav-tabs card-header-tabs">
+				<li class="nav-item">
+					<a class="nav-link" data-value="config"  href="#">Configuración</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link" data-value="program" href="#">Programa</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link" data-value="data"    href="#">Datos</a>
+				</li>
+			</ul>
+			</div>
+			<div class="float-right">
+				<button type="button" data-value="leer"      class="btn btn-sm btn-primary">Leer</button>
+				<button type="button" data-value="borrar"    class="btn btn-sm btn-primary">Borrar</button>
+				<button type="button" data-value="programar" class="btn btn-sm btn-primary">Programar</button>
+				<button type="button" data-value="verificar" class="btn btn-sm btn-primary">Verificar</button>
+			</div>
+		</div>
+		<div class="card-body">
+			<section id="program" class="memory" hidden="true">
+				<h5 class="card-title">Memoria de Programa</h5>
+				<table>
+					<thead>
+						<tr><td>Dirección</td><td>Valor</td></tr>
+					</thead>
+				</table>
+			</section>
+			<section id="data" class="memory" hidden="true">
+				<h5 class="card-title">Memoria de Datos</h5>
+				<table>
+					<thead>
+						<tr><td>Dirección</td><td>Valor</td></tr>
+					</thead>
+				</table>
+			</section>
+			<section id="config" class="memory" hidden="true">
+				<h5 class="card-title">Configuración</h5>
+				<table>
+					<thead>
+						<tr><td>Dirección</td><td>Valor</td></tr>
+					</thead>
+				</table>
+			</section>
+		</div>
+	</div>	
+	
+
+<script id="contenidoNodo" type="text/x-handler-template">
+</script>
+
+</body>
+</html>

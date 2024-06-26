@@ -1,0 +1,19 @@
+{
+	"program": [
+		{"name": "Banck_0", "startAddress" : 0, "length": 1024, "values": null}
+	],
+	"data": [
+		{"name": "Banck_0", "startAddress" : 0, "length": 1024, "values": null}
+	],
+	"configuration": [
+		{"id":           "ID0", "address": 8192, "read":  true, "write":  true, "value": 0},
+		{"id":           "ID1", "address": 8193, "read":  true, "write":  true, "value": 0},
+		{"id":           "ID2", "address": 8194, "read":  true, "write":  true, "value": 0},
+		{"id":           "ID3", "address": 8195, "read":  true, "write":  true, "value": 0},
+	
+		{"id":      "Reserved", "address": 8196, "read": false, "write": false},
+		{"id":      "Reserved", "address": 8197, "read": false, "write": false},
+		{"id":     "Device ID", "address": 8198, "read":  true, "write": false, "value": 0},
+		{"id": "Configuration", "address": 8199, "read":  true, "write":  true, "value": 0}
+	]
+}
