@@ -11,14 +11,19 @@ int main( int argc, char* argv[]) {
 
     ProgramInfo info;
 
+    // carga archivo indicado en linea de comandos
+
     printf( "\n\t - Lectura de archivo de peticion");
     read_programming_info( &info, argv[1]);
 
-	printf( "\n\t - Ejecución de tarea de programacion");
-    execute_programming_task( &info);
+    if ( info.operation == 'p') {
+        printf( "\n\t - Ejecución de tarea de programacion");
+        execute_programming_task( &info);
+    
+        info.operation = 'r';
+    }
 
-    info.operation = 'r';
-
+    printf( "\n\t - Ejecución de tarea de lectura");
     execute_programming_task( &info);
 
     printf( "\n\t - Escritura de archivo de respuesta");
