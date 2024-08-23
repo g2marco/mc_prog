@@ -34,10 +34,10 @@
 #define CLK_HOLD_TIME           500                 // 0.5 ms
 
 
-#define COMMAND_EXECUTION_TIME                 1000      // tiempo para ejecución de comando
-#define COMMAND_SETUP_TIME                     1000      // tiempo antes de envio de dato
-#define COMMAND_PROGRAMMING_EXECUTION_TIME    10000
-#define INTER_COMMAND_TIME                     1000
+#define COMMAND_EXECUTION_TIME               1000   // tiempo para ejecución de comando
+#define COMMAND_SETUP_TIME                   1000   // tiempo antes de envio de dato
+#define COMMAND_PROGRAMMING_EXECUTION_TIME 10000
+#define INTER_COMMAND_TIME                   1000
     
 //
 //  Métodos de manipulación de señales de control
@@ -230,8 +230,6 @@ unsigned short execute_command( unsigned short command, enum Tipo_Comando tipoCo
         
             dataIn = read_serial_data( DATA_SIZE, READ_DATA_SIZE);
             
-            printf( "\n\t reading: %d", dataIn);
-
             wait_for( INTER_COMMAND_TIME);
 
             break;

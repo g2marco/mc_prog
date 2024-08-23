@@ -80,6 +80,18 @@ static void write_program_memory( DeviceBuffer * bufferPtr) {
     // Borrado: 2o. paso
     execute_command( BULK_ERASE_MEM_PROGRAMA);
 
+    //
+    //   TODO: find a way to implement this variation
+    //
+
+    // Borrado: 3er paso                            // NOTA: este paso es solamente para el PIC 16F84A
+    execute_command( INICIA_CICLO_ERASE_PROGRAM);
+
+    //
+    //
+    //
+
+
     for ( i = 0; i < bank->length; ++i) {
         dato = bank->data[i];
         
@@ -103,8 +115,34 @@ static void write_data_memory( DeviceBuffer * bufferPtr) {
     unsigned short dato;
     unsigned int i;
 
+    //   PIC16F84
+    //   TODO: find a way to implement this variation
+    //
+    
+        // Borrado: 1er. paso
+        dato = 0x3FFF;
+        execute_command( CARGA_DATO_MEM_DATOS);
+
+        // Borrado: 2o. paso
+        execute_command( BULK_ERASE_MEM_DATOS);
+        
+        // Borrado: 3er paso                         
+        execute_command( INICIA_CICLO_ERASE_PROGRAM);
+
+    //
+    //
+    //
+
+    //
+    //  PIC 12F683
+    //
+
     // Borrado: 1er. paso
-    execute_command( BULK_ERASE_MEM_DATOS);
+    //execute_command( BULK_ERASE_MEM_DATOS);
+
+    //
+    //
+    //
 
     for ( i = 0; i < bank->length; ++i) {
         dato = bank->data[i];
