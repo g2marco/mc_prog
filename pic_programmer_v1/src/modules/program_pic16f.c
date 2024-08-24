@@ -43,7 +43,7 @@ static void read_data_memory( DeviceBuffer * buffer) {
 static unsigned int read_device_id() {
     unsigned short dato = 0x0000;
     execute_command( CARGA_DATO_MEM_CONFIG);
-
+    int i;
     for ( i = 0; i < 6; ++i) {    
 		execute_command( INCREMENTA_DIRECCION);
     }
