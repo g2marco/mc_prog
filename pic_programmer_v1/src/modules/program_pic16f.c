@@ -53,6 +53,7 @@ static unsigned int read_device_id() {
     value = value & 0xFFE0;
     printf( "\n\tdevice id: %d", value);
 
+    return value;
 }
 
 static void read_config_memory( DeviceBuffer * buffer) {
