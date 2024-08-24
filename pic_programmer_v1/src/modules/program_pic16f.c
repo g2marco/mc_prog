@@ -211,7 +211,7 @@ int execute_programming_task( ProgramInfo * ptrInfo) {
 		return resultado;
 	}
 
-    unsigned int deviceId = obtener_device_id();
+    //unsigned int deviceId = obtener_device_id();
 
 	char operation = ptrInfo->operation;
 
