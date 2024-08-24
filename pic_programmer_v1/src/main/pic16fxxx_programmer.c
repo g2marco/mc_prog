@@ -122,5 +122,5 @@ int main( void) {
 		close( client_sockfd);
 	}
 	
-    exit( 0);
+    returno 0;
 }
