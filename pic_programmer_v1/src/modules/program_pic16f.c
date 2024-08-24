@@ -137,7 +137,7 @@ static void write_data_memory( DeviceBuffer * bufferPtr) {
     //   PIC16F84
     //   TODO: find a way to implement this variation
     //
-    
+/*    
         // Borrado: 1er. paso
         dato = 0xFFFF;
         execute_command( CARGA_DATO_MEM_DATOS);
@@ -231,7 +231,6 @@ int execute_programming_task( ProgramInfo * ptrInfo) {
 			
 			if ( areas.values[ idxArea] == 'p') {
 			
-while( 1) {
 				init_HVP_mode();
 				
 				if (operation == 'r') {
@@ -241,7 +240,6 @@ while( 1) {
 				}
 				
 				reset_device();
-}
 			}
 		}
 		
