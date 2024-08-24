@@ -101,9 +101,9 @@ static void write_program_memory( DeviceBuffer * bufferPtr) {
     //
 
     // Borrado: 3er paso                            // NOTA: este paso es solamente para el PIC 16F84A
-    execute_command( INICIA_CICLO_ERASE_PROGRAM);
+    execute_command( INICIA_CICLO_PROGRAM);
 
-    wait_for( 100000);
+    wait_for( 200000);
     //
     //
     //
