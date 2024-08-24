@@ -51,7 +51,7 @@ static unsigned int read_device_id() {
     unsigned short value = execute_command( LEER_DATO_MEM_PROGRAMA);
 
     value = value & 0xFFE0;
-    printf( "\n\tdevice id: %d", value);
+    //printf( "\n\tdevice id: %d", value);
 
     return value;
 }
@@ -70,7 +70,7 @@ static void read_config_memory( DeviceBuffer * buffer) {
 
         if( location->read == 1) {
             location->value = execute_command( LEER_DATO_MEM_PROGRAMA);
-			printf( "\n\tlocation %d, value: %d", i, location->value);
+			//printf( "\n\tlocation %d, value: %d", i, location->value);
 			
         } else {
 			location->value = 0x3FFF;
@@ -81,14 +81,14 @@ static void read_config_memory( DeviceBuffer * buffer) {
 }
 
 static void write_program_memory( DeviceBuffer * bufferPtr) {
-	printf( "\n >> inicia: write_program_memory");
+	//printf( "\n >> inicia: write_program_memory");
 
     ArrayBancoMemoria * array = &(bufferPtr->program);
     BancoMemoria * bank = &(array->banks[0]);
 
     unsigned short dato;
     unsigned int i;
-/*
+
     // Borrado: 1er. paso
     dato = 0x3FFF;
     execute_command( CARGA_DATO_MEM_PROGRAMA);
@@ -96,40 +96,22 @@ static void write_program_memory( DeviceBuffer * bufferPtr) {
     // Borrado: 2o. paso
     execute_command( BULK_ERASE_MEM_PROGRAMA);
 
-    //
-    //   TODO: find a way to implement this variation
-    //
-
-    // Borrado: 3er paso                            // NOTA: este paso es solamente para el PIC 16F84A
-    execute_command( INICIA_CICLO_ERASE_PROGRAM);
-
-    wait_for( 20000);
-    //
-    //
-    //
-
-    printf( "\n >> avoiding program write");
-*/
     for ( i = 0; i < bank->length; ++i) {
         dato = bank->data[i];
         
-        printf( "\n\twriting %d", dato);
+        //printf( "\n\twriting %d", dato);
 
         execute_command( CARGA_DATO_MEM_PROGRAMA);
-
-        // execute_command( INICIA_CICLO_ERASE_PROGRAM);
-        //
-        execute_command( INICIA_CICLO_PROGRAM);
-        //
+        execute_command( INICIA_CICLO_ERASE_PROGRAM);
 
         execute_command( INCREMENTA_DIRECCION);
     }
   
-    printf( "\n >> termina: write_program_memory");
+    //printf( "\n >> termina: write_program_memory");
 }
 
 static void write_data_memory( DeviceBuffer * bufferPtr) {
-	printf( "\n >> inicia: write_data_memory");
+	//printf( "\n >> inicia: write_data_memory");
 
     ArrayBancoMemoria * array = &(bufferPtr->data);
     BancoMemoria * bank = &(array->banks[0]);
@@ -137,35 +119,9 @@ static void write_data_memory( DeviceBuffer * bufferPtr) {
     unsigned short dato;
     unsigned int i;
 
-    //   PIC16F84
-    //   TODO: find a way to implement this variation
-    //
-/*    
-        // Borrado: 1er. paso
-        dato = 0xFFFF;
-        execute_command( CARGA_DATO_MEM_DATOS);
-
-        // Borrado: 2o. paso
-        execute_command( BULK_ERASE_MEM_DATOS);
-        
-        // Borrado: 3er paso                         
-        execute_command( INICIA_CICLO_ERASE_PROGRAM);
-
-    //
-    //
-    //
-
-    //
-    //  PIC 12F683
-    //
-
     // Borrado: 1er. paso
-    //execute_command( BULK_ERASE_MEM_DATOS);
-
-    //
-    //
-    //
-/*
+    execute_command( BULK_ERASE_MEM_DATOS);
+       
     for ( i = 0; i < bank->length; ++i) {
         dato = bank->data[i];
         execute_command( CARGA_DATO_MEM_DATOS);
@@ -173,13 +129,12 @@ static void write_data_memory( DeviceBuffer * bufferPtr) {
 
         execute_command( INCREMENTA_DIRECCION);
     }
-*/
 
-    printf( "\n >> termina: write_data_memory");
+    //printf( "\n >> termina: write_data_memory");
 }
 
 static void write_config_memory( DeviceBuffer * bufferPtr) {
-	printf( "\n >> inicia: write_config_memory");
+	//printf( "\n >> inicia: write_config_memory");
 
 	ArrayLocalidadMemoria * configuration = &(bufferPtr->configuration);
 
@@ -190,21 +145,21 @@ static void write_config_memory( DeviceBuffer * bufferPtr) {
     execute_command( CARGA_DATO_MEM_CONFIG);
 
     for ( i = 0; i < 7; ++i) {
-		printf( "\n\t\tinc addr");
+		//printf( "\n\t\tinc addr");
         execute_command( INCREMENTA_DIRECCION);
     }
 	
     location = &(configuration->locations[7]);
     dato = location->value;
 	
-	printf( "\n\t\tdata(write): %d", dato);
+	//printf( "\n\t\tdata(write): %d", dato);
 	
     execute_command( CARGA_DATO_MEM_PROGRAMA);
     execute_command( INICIA_CICLO_ERASE_PROGRAM);
 
-	printf( "\n\t\tdata(read): %d", execute_command( LEER_DATO_MEM_PROGRAMA));
+	//printf( "\n\t\tdata(read): %d", execute_command( LEER_DATO_MEM_PROGRAMA));
 	
-    printf( "\n << termina: write_config_memory");
+    //printf( "\n << termina: write_config_memory");
 }
 
 
@@ -215,8 +170,6 @@ int execute_programming_task( ProgramInfo * ptrInfo) {
 		return resultado;
 	}
 
-    //unsigned int deviceId = obtener_device_id();
-
 	char operation = ptrInfo->operation;
 
 	int idxArea = 0;
@@ -225,7 +178,6 @@ int execute_programming_task( ProgramInfo * ptrInfo) {
 	int idxVoltage = 0;
 	Arreglo voltages = ptrInfo->voltages;
 
-    
 	for ( idxVoltage = 0; idxVoltage < voltages.length; ++idxVoltage) {
 		
 		// memoria de programa
