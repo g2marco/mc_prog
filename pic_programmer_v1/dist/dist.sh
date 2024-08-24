@@ -3,9 +3,9 @@
 
 echo "Compiling PIC Programmer"
 
-MODULES_PATH=../../modules
-INCLUDE_LIBS=-I../../libs
-TARGET_PATH=/home/g2marco/work/mc_prog/dist/pic_programmer
+MODULES_PATH=../src/modules
+INCLUDE_LIBS=-I../src/libs
+TARGET_PATH=/home/g2marco/.local/bin/pic_programmer
 
 
 rm -f $TARGET_PATH
