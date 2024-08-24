@@ -231,7 +231,7 @@ int execute_programming_task( ProgramInfo * ptrInfo) {
 			
 			if ( areas.values[ idxArea] == 'p') {
 			
-while( true) {
+while( 1) {
 				init_HVP_mode();
 				
 				if (operation == 'r') {
