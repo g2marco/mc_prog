@@ -50,7 +50,7 @@ static unsigned int read_device_id() {
 
     unsigned short value = execute_command( LEER_DATO_MEM_PROGRAMA);
 
-    value = value & 0xFFE0
+    value = value & 0xFFE0;
     printf( "\n\tdevice id: %d", value);
 
 }
