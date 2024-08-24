@@ -116,7 +116,11 @@ static void write_program_memory( DeviceBuffer * bufferPtr) {
         printf( "\n\twriting %d", dato);
 
         execute_command( CARGA_DATO_MEM_PROGRAMA);
-        execute_command( INICIA_CICLO_ERASE_PROGRAM);
+
+        // execute_command( INICIA_CICLO_ERASE_PROGRAM);
+        //
+        execute_command( INICIA_CICLO_PROGRAM);
+        //
 
         execute_command( INCREMENTA_DIRECCION);
     }
