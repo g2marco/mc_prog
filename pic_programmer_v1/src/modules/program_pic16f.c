@@ -40,6 +40,21 @@ static void read_data_memory( DeviceBuffer * buffer) {
     }
 }
 
+static unsigned int read_device_id() {
+    unsigned short dato = 0x0000;
+    execute_command( CARGA_DATO_MEM_CONFIG);
+
+    for ( i = 0; i < 6; ++i) {    
+		execute_command( INCREMENTA_DIRECCION);
+    }
+
+    unsigned short value = execute_command( LEER_DATO_MEM_PROGRAMA);
+
+    value = value & 0xFFE0
+    printf( "\n\tdevice id: %d", value);
+
+}
+
 static void read_config_memory( DeviceBuffer * buffer) {
     ArrayLocalidadMemoria * configuration = &(buffer->configuration);
 
@@ -87,11 +102,13 @@ static void write_program_memory( DeviceBuffer * bufferPtr) {
     // Borrado: 3er paso                            // NOTA: este paso es solamente para el PIC 16F84A
     execute_command( INICIA_CICLO_ERASE_PROGRAM);
 
+    wait_for( 100000);
     //
     //
     //
 
-
+    printf( "\n >> avoiding program write");
+    /*
     for ( i = 0; i < bank->length; ++i) {
         dato = bank->data[i];
         
@@ -102,6 +119,7 @@ static void write_program_memory( DeviceBuffer * bufferPtr) {
 
         execute_command( INCREMENTA_DIRECCION);
     }
+    */
 
     printf( "\n >> termina: write_program_memory");
 }
@@ -192,6 +210,8 @@ int execute_programming_task( ProgramInfo * ptrInfo) {
 		return resultado;
 	}
 
+    unsigned int deviceId = obtener_device_id();
+
 	char operation = ptrInfo->operation;
 
 	int idxArea = 0;
@@ -200,6 +220,7 @@ int execute_programming_task( ProgramInfo * ptrInfo) {
 	int idxVoltage = 0;
 	Arreglo voltages = ptrInfo->voltages;
 
+    
 	for ( idxVoltage = 0; idxVoltage < voltages.length; ++idxVoltage) {
 		
 		// memoria de programa
