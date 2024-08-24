@@ -4,7 +4,7 @@
 echo "Compiling PIC Programmer"
 
 MODULES_PATH=../src/modules
-$MAIN_PATH=../src/main
+MAIN_PATH=../src/main
 INCLUDE_LIBS=-I../src/libs
 TARGET_PATH=/home/g2marco/dist/pic_programmer
 
