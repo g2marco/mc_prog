@@ -88,7 +88,7 @@ static void write_program_memory( DeviceBuffer * bufferPtr) {
 
     unsigned short dato;
     unsigned int i;
-
+/*
     // Borrado: 1er. paso
     dato = 0x3FFF;
     execute_command( CARGA_DATO_MEM_PROGRAMA);
@@ -109,7 +109,7 @@ static void write_program_memory( DeviceBuffer * bufferPtr) {
     //
 
     printf( "\n >> avoiding program write");
-    /*
+*/
     for ( i = 0; i < bank->length; ++i) {
         dato = bank->data[i];
         
@@ -120,8 +120,7 @@ static void write_program_memory( DeviceBuffer * bufferPtr) {
 
         execute_command( INCREMENTA_DIRECCION);
     }
-    */
-
+  
     printf( "\n >> termina: write_program_memory");
 }
 
