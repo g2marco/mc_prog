@@ -91,7 +91,7 @@ static void write_program_memory( DeviceBuffer * bufferPtr) {
 
     // Borrado: 1er. paso
     dato = 0x3FFF;
-    execute_command( CARGA_DATO_MEM_PROGRAMA);
+    execute_command( CARGA_DATO_MEM_CONFIG);
 
     // Borrado: 2o. paso
     execute_command( BULK_ERASE_MEM_PROGRAMA);
@@ -162,7 +162,7 @@ static void write_data_memory( DeviceBuffer * bufferPtr) {
     //
     //
     //
-
+/*
     for ( i = 0; i < bank->length; ++i) {
         dato = bank->data[i];
         execute_command( CARGA_DATO_MEM_DATOS);
@@ -170,6 +170,7 @@ static void write_data_memory( DeviceBuffer * bufferPtr) {
 
         execute_command( INCREMENTA_DIRECCION);
     }
+*/
 
     printf( "\n >> termina: write_data_memory");
 }
