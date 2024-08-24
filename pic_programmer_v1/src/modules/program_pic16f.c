@@ -91,7 +91,7 @@ static void write_program_memory( DeviceBuffer * bufferPtr) {
 
     // Borrado: 1er. paso
     dato = 0x3FFF;
-    execute_command( CARGA_DATO_MEM_CONFIG);
+    execute_command( CARGA_DATO_MEM_PROGRAMA);
 
     // Borrado: 2o. paso
     execute_command( BULK_ERASE_MEM_PROGRAMA);
@@ -101,9 +101,9 @@ static void write_program_memory( DeviceBuffer * bufferPtr) {
     //
 
     // Borrado: 3er paso                            // NOTA: este paso es solamente para el PIC 16F84A
-    execute_command( INICIA_CICLO_PROGRAM);
+    execute_command( INICIA_CICLO_ERASE_PROGRAM);
 
-    wait_for( 200000);
+    wait_for( 20000);
     //
     //
     //
@@ -139,7 +139,7 @@ static void write_data_memory( DeviceBuffer * bufferPtr) {
     //
     
         // Borrado: 1er. paso
-        dato = 0x3FFF;
+        dato = 0xFFFF;
         execute_command( CARGA_DATO_MEM_DATOS);
 
         // Borrado: 2o. paso
@@ -231,6 +231,7 @@ int execute_programming_task( ProgramInfo * ptrInfo) {
 			
 			if ( areas.values[ idxArea] == 'p') {
 			
+while( true) {
 				init_HVP_mode();
 				
 				if (operation == 'r') {
@@ -240,6 +241,7 @@ int execute_programming_task( ProgramInfo * ptrInfo) {
 				}
 				
 				reset_device();
+}
 			}
 		}
 		
