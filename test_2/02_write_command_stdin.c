@@ -11,7 +11,7 @@ int main() {
     }
     
     char buffer[BUFSIZ + 1];                                    // crea cadena a la medida
-    sprintf( buffer, "Erase una vez, hace 20 años estaba programan en C y ...\n");
+    sprintf( buffer, "Erase una vez, hace 20 aÃ±os estaba programando en C y ...\n");
     
     fwrite( buffer, sizeof(char), strlen(buffer), write_fp);    // envia la cadena al stdin del comando
 
