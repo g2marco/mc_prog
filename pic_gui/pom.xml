@@ -1,35 +1,43 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-  <modelVersion>4.0.0</modelVersion>
+<project
+    xmlns="http://maven.apache.org/POM/4.0.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
+>
+    <modelVersion>4.0.0</modelVersion>
+    
+    <groupId>com.eureka.ofspapel</groupId>
+    <artifactId>pic.programmer.gui</artifactId>
+    <version>1.0</version>
+    <packaging>jar</packaging>
 
-  <groupId>com.eureka.ofspapel</groupId>
-  <artifactId>pic.programmer.gui</artifactId>
-  <version>1.0</version>
-  <packaging>jar</packaging>
+    <name>pic-programmer-gui</name>
 
-  <name>pic-programmer-gui</name>
-  
-  <properties>
-    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <jdk.version>18</jdk.version>
-  </properties>
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <jdk.version>21</jdk.version>
+    </properties>
 
     <dependencies>
         <dependency>
             <groupId>com.eurk</groupId>
             <artifactId>eurk-core-basic</artifactId>
+            <version>3.0</version>
+        </dependency>
+        
+        <dependency>
+            <groupId>mx.com.neogen</groupId>
+            <artifactId>neogen-core-stdsrvr</artifactId>
             <version>1.0</version>
         </dependency>
-          	
+        
     </dependencies>
   
     <build>
-        
         <plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
-				<version>3.12.1</version>
+				<version>3.13.0</version>
 				<configuration>
 					<source>${jdk.version}</source>
 					<target>${jdk.version}</target>
@@ -40,7 +48,7 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-jar-plugin</artifactId>
-                <version>3.3.0</version>
+                <version>3.4.2</version>
 				<configuration>
 				  <!-- DO NOT include log4j.properties file in your Jar -->
 				  <excludes>
@@ -58,7 +66,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-dependency-plugin</artifactId>
-                <version>3.6.1</version>
+                <version>3.7.1</version>
                 <executions>
                     <execution>
                         <id>copy-dependencies</id>

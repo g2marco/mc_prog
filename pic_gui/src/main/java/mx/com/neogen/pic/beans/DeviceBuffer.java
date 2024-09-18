@@ -10,7 +10,7 @@ public class DeviceBuffer {
 
     private Bank[] program;
     private Bank[] data;
-    private Integer[] configuration;
+    private Integer[] config;
     
 
 	public DeviceBuffer() {
@@ -34,12 +34,12 @@ public class DeviceBuffer {
         this.data = data;
     }
 
-    public Integer[] getConfiguration() {
-        return configuration;
+    public Integer[] getConfig() {
+        return config;
     }
 
-    public void setConfiguration(Integer[] configuration) {
-        this.configuration = configuration;
+    public void setConfig( Integer[] config) {
+        this.config = config;
     }
     
 }

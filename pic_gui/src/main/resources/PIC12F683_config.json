@@ -1,0 +1,77 @@
+{
+	"items" : [
+        {
+            "id"  : "FCMEN", "prompt": "Fail-Safe Clock Monitor", 
+            "bits": [11],
+            "options": [
+                {"label": "Enabled" , "value": "1"},
+                {"label": "Disabled", "value": "0"}
+            ]
+        }, {
+            "id": "IESO", "prompt": "Internal External Switchover",
+            "bits": [10],
+            "options":[
+                {"label": "Enabled" , "value": "1"},
+                {"label": "Disabled", "value": "0"}
+            ]
+        }, {
+            "id": "BOREN", "prompt": "Brown-out Reset",
+            "bits": [9, 8],
+            "options": [
+                {"label": "Enabled"                   , "value": "11"},
+                {"label": "Enabled, disabled in Sleep", "value": "10"},
+                {"label": "Controlled by PCON<SBOREN>", "value": "01"},
+                {"label": "Disabled"                  , "value": "00"}
+            ]
+        }, {
+            "id": "nCPD", "prompt": "Data Memory Code Protection",
+            "bits": [7],
+            "options": [
+                {"label": "Disabled", "value": "1"},
+                {"label": "Enabled" , "value": "0"}
+            ]
+        }, {
+            "id": "nCP", "prompt": "Program Memory Code Protection",
+            "bits": [6],
+            "options": [
+                {"label": "Disabled", "value": "1"},
+                {"label": "Enabled" , "value": "0"}
+            ]
+        }, {
+            "id": "MCLRE", "prompt": "GP3/MCLR pin function",
+            "bits": [5],
+            "options": [
+                {"label": "MCLR", "value": "1"},
+                {"label": "Digital input, MCLR tied to VDD", "value": "0"}
+            ]
+        }, {
+            "id": "nPWRTE", "prompt": "Power-up Timer",
+            "bits": [4],
+            "options": [
+                {"label": "Disabled", "value": "1"},
+                {"label": "Enabled" , "value": "0"}
+            ]
+        }, {
+            "id": "WDTR", "prompt": "Watchdog Timer",
+            "bits": [3],
+            "options": [
+                {"label": "Disabled, can be enabled by WDTCON<SWDTEN>", "value": "0"},
+                {"label": "Enabled", "value": "1"}
+            ]
+        }, {
+            "id": "FOSC", "prompt" : "Oscillator",
+            "bits": [2, 1, 0],
+            "options": [
+                {"label": "[RC      ] CLKOUT on GP4/OSC2/CLKOUT, RC    on GP5/OSC1/CLKIN",      "value": "111"},
+                {"label": "[RCIO    ] I/O    on GP4/OSC2/CLKOUT, RC    on GP5/OSC1/CLKIN",      "value": "110"}, 
+                {"label": "[INTOSC  ] CLKOUT on GP4/OSC2/CLKOUT, I/O   on GP5/OSC1/CLKIN",      "value": "101"}, 
+                {"label": "[INTOSCIO] I/O    on GP4/OSC2/CLKOUT, I/O   on GP5/OSC1/CLKIN",      "value": "100"}, 
+                {"label": "[EC      ] I/O    on GP4/OSC2/CLKOUT, CLKIN on GP5/OSC1/CLKIN",      "value": "011"}, 
+                {"label": "[HS      ] Crystal/resonator on GP4/OSC2/CLKOUT and GP5/OSC1/CLKIN", "value": "010"}, 
+                {"label": "[XT      ] Crystal/resonator on GP4/OSC2/CLKOUT and GP5/OSC1/CLKIN", "value": "001"},   
+                {"label": "[LP      ] Low-power crystal on GP4/OSC2/CLKOUT and GP5/OSC1/CLKIN", "value": "000"}
+            ]
+        }
+    ]  
+
+}

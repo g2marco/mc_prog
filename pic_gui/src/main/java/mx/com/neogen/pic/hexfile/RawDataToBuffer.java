@@ -12,10 +12,13 @@ import mx.com.neogen.pic.beans.metadata.EnumMemoryArea;
 import mx.com.neogen.pic.beans.metadata.LocationMetadata;
 
 public class RawDataToBuffer {
-
-    public DeviceBuffer initDeviceBuffer( File hexFile, DeviceBufferMetadata metadata) throws IOException {        
+    
+    public static DeviceBuffer initDeviceBuffer( File hexFile, DeviceBufferMetadata metadata) throws IOException {        
+        var buffer = initDeviceBuffer( metadata);
         
-        final DeviceBuffer buffer = initDeviceBuffer( metadata);        
+        if ( hexFile == null) {
+            return buffer;
+        }
         
         RawDataPacket packet;
         INHX8MFileReader reader = null;
@@ -34,99 +37,8 @@ public class RawDataToBuffer {
         }
     }
     
-    public String createRequest( DeviceBufferMetadata metadata, DeviceBuffer buffer) {
-        final StringBuilder strb = new StringBuilder();
-              
-        // operacion
-        
-        strb.append( "o=p").append( "\n");
-        
-        // longitud de cada area de memoria
-        
-        strb.append( "a").
-            append( "=c").append( metadata.getConfiguration().length).
-            append( ",p").append( metadata.getProgram().length).
-            append( ",d").append( metadata.getData().length).
-            append( "\n");
-        
-        // voltajes
-        
-        strb.append( "v=n").append( "\n");
- 
-        // bancos de programa
-        
-        int banks;
-        BankMetadata meta;
-        Bank bank;
-        Integer[] locations;
-        
-        banks = metadata.getProgram().length;
-        
-        for( int i = 0; i < banks; ++i) {
-            meta = metadata.getProgram()[i];
-            bank = buffer.getProgram()[i];
-            
-            strb.append( "p").append( i).append( "i=").append( meta.getStartAddress()).append( "\n");
-            strb.append( "p").append( i).append( "l=").append( meta.getLength()).append( "\n");
-            strb.append( "p").append( i).append( "v=");
-
-            locations = bank.getLocations();
-            
-            for( int j = 0 ; j < locations.length; ++j) {
-                if ( j != 0) {
-                  strb.append( ",");
-                }
-                strb.append( locations[j]);
-            }
-        }
-        
-        strb.append( "\n");
-        
-        // bancos de datos
-        
-        banks = metadata.getData().length;
-        
-        for( int i = 0; i < banks; ++i) {
-            meta = metadata.getData()[i];
-            bank = buffer.getData()[i];
-            
-            strb.append( "d").append( i).append( "i=").append( meta.getStartAddress()).append( "\n");
-            strb.append( "d").append( i).append( "l=").append( meta.getLength()).append( "\n");
-            strb.append( "d").append( i).append( "v=");
-
-            locations = bank.getLocations();
-            
-            for( int j = 0 ; j < locations.length; ++j) {
-                if ( j != 0) {
-                  strb.append( ",");
-                }
-                strb.append( locations[j]);
-            }
-        }
-        
-        strb.append( "\n");
-        
-        //  localidades de configuracion
-        
-        int configLocations = metadata.getConfiguration().length;
-        
-        LocationMetadata locationMeta;
-        
-        for ( int i = 0; i < configLocations; ++i) {
-            locationMeta = metadata.getConfiguration()[i];
-            
-            strb.append( "c").append( i).append( "a=").append(         locationMeta.getAddress()).append( "\n");
-            strb.append( "c").append( i).append( "i=").append(            locationMeta.getName()).append( "\n");
-            strb.append( "c").append( i).append( "v=").append(      buffer.getConfiguration()[i]).append( "\n");
-            strb.append( "c").append( i).append( "r=").append(  locationMeta.isRead()? "t" : "f").append( "\n");
-            strb.append( "c").append( i).append( "w=").append( locationMeta.isWrite()? "t" : "f").append( "\n");
-        }
-        
-        return strb.toString();
-    }
-    
-    private DeviceBuffer initDeviceBuffer( DeviceBufferMetadata metadata) {        
-        final DeviceBuffer buffer = new DeviceBuffer();
+    private static DeviceBuffer initDeviceBuffer( DeviceBufferMetadata metadata) {
+        var buffer = new DeviceBuffer();
         
         int banks;
         Bank bank;
@@ -134,45 +46,56 @@ public class RawDataToBuffer {
         
         // inicializa bancos de programa
         
-        banks = metadata.getProgram().length;
-    
-        buffer.setProgram( new Bank[ banks]);
+        if ( metadata.getProgram() == null) {
         
-        for ( int i = 0; i < banks; ++i) {
-            meta = metadata.getProgram()[i];
-            bank = new Bank();
-            buffer.getProgram()[i] = bank;
+        } else {
+            banks = metadata.getProgram().length;
+    
+            buffer.setProgram( new Bank[ banks]);
+        
+            for ( int i = 0; i < banks; ++i) {
+                meta = metadata.getProgram()[i];
+                bank = new Bank();
+                buffer.getProgram()[i] = bank;
             
-            bank.setLocations( new Integer[ meta.getLength()]);
-            Arrays.fill( bank.getLocations(), 0);
+                bank.setLocations( new Integer[ meta.getLength()]);
+                Arrays.fill( bank.getLocations(), 0);
+            }
         }
         
         // inicializa bancos de datos
         
-        banks = metadata.getData().length;
-    
-        buffer.setData( new Bank[ banks]);
+        if ( metadata.getData() == null) {
         
-        for ( int i = 0; i < banks; ++i) {
-            meta = metadata.getData()[i];
-            bank = new Bank();
-            buffer.getData()[i] = bank;
+        } else {
+            banks = metadata.getData().length;
+    
+            buffer.setData( new Bank[ banks]);
+        
+            for ( int i = 0; i < banks; ++i) {
+                meta = metadata.getData()[i];
+                bank = new Bank();
+                buffer.getData()[i] = bank;
             
-            bank.setLocations( new Integer[ meta.getLength()]);
-            Arrays.fill( bank.getLocations(), 0);
+                bank.setLocations( new Integer[ meta.getLength()]);
+                Arrays.fill( bank.getLocations(), 0);
+            }
         }
         
         
         // inicializa localidades de configuracion
+        if ( metadata.getConfig() == null) {
         
-        int locations = metadata.getConfiguration().length;
-        buffer.setConfiguration( new Integer[ locations]);
-        Arrays.fill( buffer.getConfiguration(), 0);
+        } else {
+            int locations = metadata.getConfig().length;
+            buffer.setConfig( new Integer[ locations]);
+            Arrays.fill( buffer.getConfig(), 0);
+        }
         
         return buffer;
     }
- 
-    private void updateBuffer( DeviceBuffer buffer, DeviceBufferMetadata metadata, RawDataPacket packet) {
+    
+    private static void updateBuffer( DeviceBuffer buffer, DeviceBufferMetadata metadata, RawDataPacket packet) {
         
         int address = packet.getStartAddress() / 2;
         
@@ -210,7 +133,7 @@ public class RawDataToBuffer {
             default:        // configuration
                 
                 for( int j = 0; j < packet.getRawData().length; j = j + 2) {
-                    idx = address - metadata.getConfiguration()[0].getAddress();
+                    idx = address - metadata.getConfig()[0].getAddress();
                     
                     locations[idx] = (int) UtilBinary.createWord( packet.getRawData()[j], packet.getRawData()[j +1]);
                     
@@ -220,7 +143,7 @@ public class RawDataToBuffer {
         
     }
 
-    private EnumMemoryArea determinaAreaMemoria( int address, DeviceBufferMetadata metadata) {
+    private static EnumMemoryArea determinaAreaMemoria( int address, DeviceBufferMetadata metadata) {
         int min;
         int max;
         
@@ -242,7 +165,7 @@ public class RawDataToBuffer {
             }
         }
         
-        for( LocationMetadata meta : metadata.getConfiguration()) {
+        for( LocationMetadata meta : metadata.getConfig()) {
             if( address == meta.getAddress()) {
                 return EnumMemoryArea.CONFIGURATION;
             }
@@ -251,15 +174,12 @@ public class RawDataToBuffer {
         throw new IllegalArgumentException( "La dirección esta fuera del alcance del dispositivo: " + address);
     }
     
-    private Integer[] obtenerLocalidades( int address, DeviceBuffer buffer, DeviceBufferMetadata metadata) {
-        
-        int min;
-        int max;
-        
-        int banks;
+    private static Integer[] obtenerLocalidades( int address, DeviceBuffer buffer, DeviceBufferMetadata metadata) {
+        int min, max, banks;
         BankMetadata meta;
         
-        banks= metadata.getProgram().length;
+        //
+        banks = metadata.getProgram().length;
         
         for( int i = 0; i < banks; ++i) {
             meta = metadata.getProgram()[i];
@@ -272,7 +192,9 @@ public class RawDataToBuffer {
             }
         }
         
+        //
         banks = metadata.getData().length;
+        
         for( int i = 0; i < banks; ++i) {
             meta = metadata.getData()[i];
             
@@ -283,10 +205,11 @@ public class RawDataToBuffer {
                 return buffer.getData()[i].getLocations();
             }
         }
-            
-        for( LocationMetadata locationMeta : metadata.getConfiguration()) {
+        
+        //
+        for( LocationMetadata locationMeta : metadata.getConfig()) {
             if( address == locationMeta.getAddress()) {
-                return buffer.getConfiguration();
+                return buffer.getConfig();
             }
         }
         
@@ -295,7 +218,7 @@ public class RawDataToBuffer {
     }
     
     
-     private BankMetadata obtenerBankMetadata( int address, BankMetadata[] banks) {
+    private static BankMetadata obtenerBankMetadata( int address, BankMetadata[] banks) {
         
         int min;
         int max;

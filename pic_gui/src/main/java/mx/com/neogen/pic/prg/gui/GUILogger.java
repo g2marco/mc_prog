@@ -1,8 +1,8 @@
-package mx.com.neogen.pic.programmer.service;
+package mx.com.neogen.pic.prg.gui;
 
 import com.eurk.core.util.UtilText;
-
 import javax.swing.*;
+import mx.com.neogen.commons.messages.Logger;
 
 public class GUILogger implements Logger {
 
@@ -16,7 +16,7 @@ public class GUILogger implements Logger {
 
 
     @Override
-    public void info(Object data) {
+    public void print( Object data) {
         if ( data == null) {
             item.append( "null");
         }
@@ -27,14 +27,23 @@ public class GUILogger implements Logger {
         } else {
             item.append( data.toString());
         }
-
+    }
+    
+    @Override
+    public void println( Object data) {
+        print( data);
         item.append( "\n");
     }
 
     @Override
+    public void error(String message) {
+        println( "[ERROR] " + message);
+    }
+    
+    @Override
     public void error(String message, Throwable causa) {
-        info( "[ERROR] " + message);
-        info( causa);
+        error( message);
+        println( causa);
     }
 
 }

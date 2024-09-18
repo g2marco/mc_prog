@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+
+<html lang="es">
+<head>
+    <title>Programador de PICs</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+ 
+    <link rel="stylesheet" href="estilos.css">
+    <link rel="stylesheet" href="loader.css">
+    
+    <script src="./jquery.min.js"></script>
+    <script src="./handlebars.js"></script>
+    <script src="./pic_prog_services.js"></script>
+        
+    <script>
+        jQuery.noConflict();
+        
+        jQuery( document).ready(function( $) {
+    
+        });
+        
+        function invoke_action( action) {
+            let server = jQuery( '#server').val();
+            let device = jQuery( '#device').val();
+            
+            component.setParams( server, device, action);
+            component.invoke();                       
+        }
+        
+    </script>
+</head>
+<body>
+    
+    <div id="loader"></div>
+
+    <fieldset>
+        <legend>Programador de PICs</legend>
+        
+        <table class="normal">
+            <tr>
+                <td><label for="server">Local Server:</label></td>
+                <td><input type="text" id="server" value="http://localhost:9191/neogen_service" style="width: 400px;"/></td>
+            </tr>
+            <tr>
+                <td><label for="device">Dispositivo:</label></td>
+                <td>
+                    <select id="device" style="width: 200px;">
+                        <option value="PIC12F683">PIC12F683</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2" style="text-align: center;">
+                    <button type="button" onclick="javascript: invoke_action('read_config');">Read Config</button>
+                </td>
+            </tr>
+        </table>
+    </fieldset>
+    
+    <div id="container" style="text-align: center;"></div>
+    
+<script id="_card_item_" type="text/x-handlebars-template">
+    <fieldset><legend>{{title}}</legend>{{#each values}}<table id="{{name}}" class="{{className}}"></table>{{/each}}</fieldset>
+</script>
+
+<script id="_message_" type="text/x-handlebars-template">
+    <div class="messages">{{{message}}}</div>
+</script>
+
+<script id="_bank_header_" type="text/x-handlebars-template">
+<tr>
+    <td class="ns"></td>
+    <th>00H</th><th>01H</th><th>02H</th><th>03H</th><th>04H</th><th>05H</th><th>06H</th><th>07H</th>
+    <th>08H</th><th>09H</th><th>0AH</th><th>0BH</th><th>0CH</th><th>0DH</th><th>0EH</th><th>0FH</th>
+</tr>
+</script>
+
+<!-- 
+    addr    :  direccion inicial de la linea
+    addrBits:  bits para formatear la direccion
+    bits    :  bits para formatear los valores
+    values  :  valores de la linea
+-->
+<script id="_prog_line_" type="text/x-handlebars-template">
+<tr><th>{{format addr 'hex' addrBits}}</th>{{#each values}}<td>{{format this 'hex' ../bits}}</td>{{/each}}</tr>
+</script>
+
+
+<script id="_cfgd_header_" type="text/x-handlebars-template">
+<tr><th>Flag Name</th><th>Description</th><th>Value</th><th></th></tr>
+</script>
+
+<script id="_cfgd_line_" type="text/x-handlebars-template">
+{{#each values}}
+<tr>
+    <td>{{name}}</td><td>{{desc}}</td><td>{{value}}</td><td>{{meaning}}</td>
+</tr>
+{{/each}}
+</script>
+
+<script id="_cfgw_tbl_" type="text/x-handlebars-template"> 
+<tr>{{#each values}}{{#moduloIf @index 4}}<td class="ns"></td>{{/moduloIf}}<td>{{name}} </td>{{/each}}</tr>
+<tr>{{#each values}}{{#moduloIf @index 4}}<td class="ns"></td>{{/moduloIf}}<td>{{value}}</td>{{/each}}</tr>
+</script>
+
+<script id="_nibles_line_" type="text/x-handlebars-template">
+<tr>{{#each values}}{{#moduloIf @index 4}}<td class="ns"></td>{{/moduloIf}}<td>{{this}}</td>{{/each}}</tr>
+</script>
+
+</body>
+</html>
+

@@ -1,0 +1,52 @@
+body {
+    font-family: Verdana, sans-serif;
+    font-size: 12px;
+}
+fieldset {
+    width: 1024px;
+    margin: 0 auto;         /* center the fieldset horizontally */ 
+    padding: 2em;           /* padding around the fieldset      */ 
+} 
+legend { 
+    padding: 0.5em;         /*  padding around the legend       */ 
+    font-size: 14px;
+    font-weight: bold;
+}
+table, th, td {
+    border: 1px solid black;
+    border-collapse: collapse;
+}
+table {
+    width: 100%;
+}
+th {
+    font-size: 13px;
+    font-weight: bold;
+}        
+th, td {
+    padding: 6px 10px;
+    text-align: center;
+}
+table.normal td {
+    text-align: left;
+}
+td.ns {
+    padding: 3px;
+    width: 10px;
+    background-color: lightgray;
+}
+input {
+    margin: 5px;
+}
+button {
+    margin: 5px;
+}
+.messages {
+    padding: 50px;
+    color: crimson;
+    font-size: 1.2em;
+    text-align: left;
+    max-width: 1024px;
+    margin-left: auto;
+    margin-right: auto;
+}

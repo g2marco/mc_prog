@@ -1,13 +1,11 @@
 package mx.com.neogen.pic.beans.metadata;
 
-import com.eurk.core.util.UtilReflection;
-
 
 public class DeviceBufferMetadata {
     
     private BankMetadata[] program;
     private BankMetadata[] data;
-    private LocationMetadata[] configuration;
+    private LocationMetadata[] config;
 
     
     public DeviceBufferMetadata() {
@@ -31,12 +29,12 @@ public class DeviceBufferMetadata {
         this.data = data;
     }
 
-    public LocationMetadata[] getConfiguration() {
-        return configuration;
+    public LocationMetadata[] getConfig() {
+        return config;
     }
 
-    public void setConfiguration(LocationMetadata[] configuration) {
-        this.configuration = configuration;
+    public void setConfig( LocationMetadata[] config) {
+        this.config = config;
     }
     
     
@@ -57,7 +55,7 @@ public class DeviceBufferMetadata {
         }
         
         strb.append( "\n\tconfiguraion:");
-        for( LocationMetadata location : configuration) {
+        for( LocationMetadata location : config) {
             strb.append( "\n\t\t").append( location);
         }
         
