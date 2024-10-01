@@ -3,6 +3,7 @@ import java.io.File;
 import java.io.IOException;
 import mx.com.neogen.commons.messages.Logger;
 import mx.com.neogen.pic.prg.components.TicketManager;
+import mx.com.neogen.pic.prg.services.MetadataRequestServlet;
 import mx.com.neogen.pic.prg.services.TicketRequestServlet;
 import mx.com.neogen.pic.prg.services.TicketResponseServlet;
 import mx.com.neogen.server.enums.HttpMethodEnum;
@@ -29,8 +30,9 @@ public class App {
         //
         var server = new ServerThread( LOG);
                     
-        server.addRoute( HttpMethodEnum.POST, "/_data_/manage/device/{id}", new TicketRequestServlet( LOG) );
-        server.addRoute( HttpMethodEnum.GET , "/_data_/get/ticket/{id}"   , new TicketResponseServlet());
+        server.addRoute( HttpMethodEnum.GET , "/_data_/get/metadata/{id}"   , new MetadataRequestServlet()  );
+        server.addRoute( HttpMethodEnum.POST, "/_data_/manage/device/{id}", new TicketRequestServlet( LOG));
+        server.addRoute( HttpMethodEnum.GET , "/_data_/get/ticket/{id}"   , new TicketResponseServlet()   );
                     
         TicketManager.init();
                     
