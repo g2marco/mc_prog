@@ -4,6 +4,8 @@
 
 #include "program_info.h"
 
+int reset_programmer();
+
 int execute_programming_task( ProgramInfo * ptrInfo);
 
 #endif

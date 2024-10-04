@@ -105,7 +105,9 @@ int main( void) {
 	
 	int client_sockfd;
 	int client_len;
-	
+
+    reset_programmer();
+
 	while( 1) {
 		client_sockfd = accept( server_sockfd, (struct sockaddr *) &client_address, &client_len);
 		

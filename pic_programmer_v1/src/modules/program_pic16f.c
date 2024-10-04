@@ -162,6 +162,17 @@ static void write_config_memory( DeviceBuffer * bufferPtr) {
     //printf( "\n << termina: write_config_memory");
 }
 
+int reset_programmer() {
+    int resultado = init_driver( BASE);
+	if ( resultado != 0) {
+		return resultado;
+	}
+    
+    reset_device();
+
+    return release_driver();
+}
+
 
 int execute_programming_task( ProgramInfo * ptrInfo) {
 
@@ -236,5 +247,5 @@ int execute_programming_task( ProgramInfo * ptrInfo) {
 		
 	}
 
-	return;
+	release_driver();
 }
