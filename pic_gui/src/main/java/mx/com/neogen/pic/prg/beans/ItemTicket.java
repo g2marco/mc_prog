@@ -1,15 +1,14 @@
 package mx.com.neogen.pic.prg.beans;
 
-import java.util.Map;
 import mx.com.neogen.pic.beans.DeviceBuffer;
 
 
 public class ItemTicket {
+    
     private String ticket;
     private boolean done;
-    
     private DeviceBuffer data;
-    private String metadata;
+    private String device;
     
     
     public ItemTicket() {
@@ -17,8 +16,7 @@ public class ItemTicket {
     }
     
     public ItemTicket( String ticket) {
-        super();
-        
+        super();    
         this.ticket = ticket;
     }
     
@@ -47,12 +45,12 @@ public class ItemTicket {
         this.data = data;
     }
 
-    public String getMetadata() {
-        return metadata;
+    public String getDevice() {
+        return device;
     }
 
-    public void setMetadata( String metadata) {
-        this.metadata = metadata;
+    public void setDevice(String device) {
+        this.device = device;
     }
     
 }

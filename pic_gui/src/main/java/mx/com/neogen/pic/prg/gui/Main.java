@@ -13,6 +13,7 @@ import mx.com.neogen.commons.messages.Logger;
 import mx.com.neogen.pic.prg.components.ServerDetector;
 import mx.com.neogen.pic.prg.components.SmartScroller;
 import mx.com.neogen.pic.prg.components.TicketManager;
+import mx.com.neogen.pic.prg.services.BufferRequestServlet;
 import mx.com.neogen.pic.prg.services.MetadataRequestServlet;
 import mx.com.neogen.pic.prg.services.TicketRequestServlet;
 import mx.com.neogen.pic.prg.services.TicketResponseServlet;
@@ -187,9 +188,10 @@ public class Main {
                 try {
                     var server = new ServerThread( LOG);
                     
-                    server.addRoute( HttpMethodEnum.GET , "/_data_/get/metadata/{id}"   , new MetadataRequestServlet());
-                    server.addRoute( HttpMethodEnum.POST, "/_data_/manage/device/{id}", new TicketRequestServlet( LOG) );
-                    server.addRoute( HttpMethodEnum.GET , "/_data_/get/ticket/{id}"   , new TicketResponseServlet()    );
+                    server.addRoute( HttpMethodEnum.GET , "/_data_/get/metadata/{id}" , new MetadataRequestServlet()  );
+                    server.addRoute( HttpMethodEnum.POST, "/_data_/get/buffer/{id}"   , new BufferRequestServlet( LOG));
+                    server.addRoute( HttpMethodEnum.POST, "/_data_/manage/device/{id}", new TicketRequestServlet( LOG));
+                    server.addRoute( HttpMethodEnum.GET , "/_data_/get/ticket/{id}"   , new TicketResponseServlet()   );
                     
                     TicketManager.init();
                     
@@ -207,24 +209,4 @@ public class Main {
         return thread;
     }
     
-
-    static void setAutomaticScroolDown( JScrollPane scrollPane) {
-        final JScrollBar bar = scrollPane.getVerticalScrollBar();
-
-        bar.addAdjustmentListener( new AdjustmentListener() {
-            private final BoundedRangeModel brm = bar.getModel();
-            private boolean wasAtBottom = true;
-
-            @Override
-            public void adjustmentValueChanged( AdjustmentEvent e) {
-                if (!brm.getValueIsAdjusting()) {
-                    if (wasAtBottom) {
-                        brm.setValue( brm.getMaximum());
-                    } else {
-                        wasAtBottom = ((brm.getValue() + brm.getExtent()) == brm.getMaximum());
-                    }
-                }
-            }
-        });
-    }
 }

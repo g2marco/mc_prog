@@ -9,8 +9,7 @@
     <link rel="stylesheet" href="styles/estilos.css">
     <link rel="stylesheet" href="styles/loader.css">
 </head>
-<body>
-    
+<body>    
     <div id="loader"></div>
 
     <fieldset>
@@ -22,16 +21,19 @@
                 <td><input type="text" id="server" value="http://localhost:9191/neogen_service" style="width: 400px;"/></td>
             </tr>
             <tr>
-                <td><label for="device">Dispositivo:</label></td>
+                <td><label for="device">Dispositivo (*): </label></td>
                 <td>
                     <select id="device" style="width: 200px;">
+                        <option value="">Seleccione el dispositivo</option>
                         <option value="PIC12F683">PIC12F683</option>
+                        <option value="PIC16F84A">PIC16F84A</option>
                     </select>
                 </td>
             </tr>
             <tr>
                 <td colspan="2" style="text-align: center;">
-                    <button type="button" onclick="javascript: invoke_action('read_config');">Read Config</button>
+                    <button type="button" class="action" onclick="javascript: server.invokeAction( 'read' );" hidden>Read</button>
+                    <button type="button" class="action" onclick="javascript: server.invokeAction( 'write');" hidden>Write</button>
                 </td>
             </tr>
         </table>
@@ -40,7 +42,7 @@
     <div id="container" style="text-align: center;"></div>
     
     <script id="_card_item_" type="text/x-handlebars-template">
-        <fieldset><legend>{{title}}</legend>{{#each values}}<table id="{{name}}" class="{{className}}"></table>{{/each}}</fieldset>
+        <fieldset class="{{className}}"><legend>{{title}}</legend>{{#each values}}<table id="{{name}}" class="{{className}}"></table>{{/each}}</fieldset>
     </script>
 
     <script id="_message_" type="text/x-handlebars-template">
@@ -55,21 +57,24 @@
         </tr>
     </script>
 
+    <!--  [dialog box] hex file selector -->
+    
     <dialog id="dialog_box" style="min-width: 450px; margin-top: 250px; padding: 0px;">
-        <form name="hex_file_form">
+        <form id="hex_file_form">
             <section>
                 <h3 style="padding: 0px 10px;">Archivo de Programa (*.hex)</h3>
                 <hr>
             </section>
-            <section style="text-align: center; padding: 14px;">
-                <input type="hidden" name="device">
+            
+            <div style="text-align: center; padding: 14px;">
                 <label for="hexfile">Archivo:</label>
-                <input type="file" name="hexfile" id="hexfile" accept=".hex">
-            </section>
-            <section style="text-align: right; padding: 10px;">
-                <button onclick="javascript: document.getElementById( 'dialog_box').close();">Cancel</button>
-                <button type="button" onclick="javascript: dialog.submit();">Confirm</button>
-            </section>
+                <input type="file" name="hexfile" accept=".hex">
+            </div>
+            
+            <div style="text-align: right; padding: 10px;">
+                <button type="button" onclick="javascript: document.getElementById( 'dialog_box').close();">Cancel</button>
+                <button type="button" onclick="javascript: dialog.submit( () => component.invoke() );"     >Submit</button>
+            </div>
         </form>
     </dialog>
 
@@ -90,7 +95,7 @@
     <script id="_cfgd_line_" type="text/x-handlebars-template">
         {{#each values}}
         <tr>
-            <td>{{name}}</td><td>{{desc}}</td><td>{{value}}</td><td>{{meaning}}</td>
+            <td>{{name}}</td><td>{{desc}}</td><td style="text-align: center;">{{value}}</td><td>{{meaning}}</td>
         </tr>
         {{/each}}
     </script>
@@ -104,31 +109,80 @@
         <tr>{{#each values}}{{#moduloIf @index 4}}<td class="ns"></td>{{/moduloIf}}<td>{{this}}</td>{{/each}}</tr>
     </script>
 
-    <script src="js/jquery.min.js"></script>
     <script src="js/handlebars.js"></script>
     
-    <script src="scripts/templates.js"        ></script>
     <script src="scripts/util.js"             ></script>
+    <script src="scripts/templates.js"        ></script>
     <script src="scripts/device_card.js"      ></script>
     <script src="scripts/pic_prog_services.js"></script>
     
     <script>
-        jQuery.noConflict();
-        
-        jQuery( document).ready(function( $) {
-            jQuery( '#device').on( 'change', server.on_change_device);
-        });
-        
-        function invoke_action( action) {
-            let server = jQuery( '#server').val();
-            let device = jQuery( '#device').val();
+        const server = (function() {
+            function on_change_device( event) {
+                let server = dom.getById( 'server').value;
+                let device = event.target.value;
+                    
+                let isValid = device.length > 0;
+                
+                j( 'container').empty();
+                hide_show_actions( false);
+                
+                if ( !isValid) { return; }
+                
+                popup.init();
+                
+                // obtiene y establece metadata del dispositivo
+                fetch( server + '/_data_/get/metadata/' + device).
+                then(
+                    rsp => rsp.json()
+                ).
+                then( function( rsp) {
+                    if ( rsp.codigo !== 200) {
+                        popup.stop( rsp);
+                        
+                    } else {
+                        popup.stop();
+                        hide_show_actions( true);
+                        
+                        card.setMetadata( rsp.item);
+                    }
+                }).
+                catch( function( error) {
+                    popup.stop({
+                        codigo: 600, clave: 'error.desconocido',
+                        mensajes: [ {mensaje: "local server not avalilable or misconfigured [" + error + "]"}]
+                    });
+                });
+            }
             
-            component.setParams( server, device, action);
-            component.invoke();                       
-        }
+            function hide_show_actions( flag) {
+                let items = document.getElementsByClassName( "action");
+                for ( let item of items) { item.hidden = !flag; }
+            }
+            
+            function invoke_action( action) {
+                let server = dom.getById( 'server').value;
+                let device = dom.getById( 'device').value;
+                
+                component.setParams( server, device, action);
+                
+                switch( action.split( '_')[0]) {
+                    case 'read' : component.invoke(); break;
+                    case 'write': dialog.open();      break;
+                    default     : alert( '[ERROR] Prefijo de accion no considerado: ' + action);
+                }
+            }
+            
+            return {
+                onChangeDevice: on_change_device,
+                invokeAction  : invoke_action
+            };
+        })();
+        
+        //  init 
+        dom.on( 'device', 'change', server.onChangeDevice);
         
     </script>
-
 </body>
 </html>
 

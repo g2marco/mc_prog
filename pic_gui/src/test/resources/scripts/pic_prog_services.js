@@ -4,7 +4,8 @@
 const component = (function() {
     const env = {};
     
-    const resource_device = '/_data_/manage/device/{pic}?action={action}'; 
+    const resource_buffer = '/_data_/get/buffer/{pic}?action={action}';
+    const resource_device = '/_data_/manage/device/{pic}?action={action}';
     const resource_ticket = '/_data_/get/ticket/{ticket}';
     
     function set_params( server, device, action) {
@@ -16,22 +17,25 @@ const component = (function() {
     function invoke_service() {
         console.log( "invoking device action: " + env.action);
         
-        let resource = resource_device.replace( '{pic}', env.device).replace( '{action}', env.action);
+        let action = env.action.split( '_')[0];
+        let resource = action === 'write'? resource_buffer      : resource_device;
+        let callback = action === 'write'? buffer_done_callback : device_callback;
+        
+        resource = resource.replace( '{pic}', env.device).replace( '{action}', env.action);
         
         popup.init();
         
-        jQuery.ajax({
-            url        : env.server + resource,
-            method     : 'POST',
-            crossDomain: true  ,
-            contentType: false ,
-            cache      : false ,                
-            processData: false ,
-            success: device_callback,
-            error: function (xhr, status) {
-                popup.stop( {codigo: 600, clave: 'error.desconocido', mensajes: [ {mensaje: "local server not avalilable or misconfigured"}]});
-            }
+        fetch( env.server + resource, requestOptions( env.action)).then( rsp => rsp.json()).then( callback).
+        catch( function( error) {
+            popup.stop( {codigo: 600, clave: 'error.desconocido', mensajes: [ {mensaje: "local server not avalilable or misconfigured: [" + error + "]"}]});
         });
+    }
+    
+    function requestOptions( action) {
+        return {
+            method: 'POST',
+            body  : action.split( '_')[0] === 'write'? new FormData( hex_file_form) : undefined
+        };
     }
     
     function device_callback( rsp) {
@@ -44,24 +48,33 @@ const component = (function() {
         
         let resource = resource_ticket.replace( '{ticket}', env.ticket);
         
-        jQuery.ajax({
-            url        : env.server + resource,
-            method     : 'GET',
-            crossDomain: true ,
-            contentType: false,
-            cache      : false,                
-            processData: false,
-            success: ticket_done_callback,
-            error: function (xhr, status) {
-                console.info( xhr);
-                console.info( status);
-            }
+        fetch( env.server + resource).then( rsp => rsp.json()).then( ticket_done_callback).
+        catch( function( error) {
+            console.info( error);
         });
     }
     
-    function ticket_done_callback( rsp) {
-        console.info( rsp);
+    function buffer_done_callback( rsp) {
+        if ( rsp.codigo !== 200) {
+            popup.stop( rsp);
+            return;
+        }
         
+        card.update( rsp.item);
+
+        /*
+        let resource = resource_device.replace( '{pic}', env.device).replace( '{action}', env.action);
+        
+        popup.init();
+        
+        fetch( env.server + resource, requestOptions( env.action)).then( rsp => rsp.json()).then( device_callback).
+        catch( function( error) {
+            popup.stop( {codigo: 600, clave: 'error.desconocido', mensajes: [ {mensaje: "local server not avalilable or misconfigured"}]});
+        });
+        */
+    }
+    
+    function ticket_done_callback( rsp) {
         if ( rsp.codigo !== 200) {
             clearTimeout( env.handler);
             popup.stop( rsp);

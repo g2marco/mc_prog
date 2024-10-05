@@ -5,7 +5,7 @@
 	"data": [
 		{"name": "Bank_0", "startAddress" : 0, "length": 64}
 	],
-	"configuration": [
+	"config": [
 		{"name":           "ID0", "address": 8192, "read":  true, "write": false, "value": "1111 1111"},
 		{"name":           "ID1", "address": 8193, "read":  true, "write": false, "value": "1111 1111"},
 		{"name":           "ID2", "address": 8194, "read":  true, "write": false, "value": "1111 1111"},

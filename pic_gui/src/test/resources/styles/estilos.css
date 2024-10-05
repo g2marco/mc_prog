@@ -6,7 +6,12 @@ fieldset {
     width: 1024px;
     margin: 0 auto;         /* center the fieldset horizontally */ 
     padding: 2em;           /* padding around the fieldset      */ 
+    
 } 
+fieldset.bank {
+    height: 350px;
+    overflow: auto;
+}
 legend { 
     padding: 0.5em;         /*  padding around the legend       */ 
     font-size: 14px;
@@ -40,6 +45,7 @@ input {
 }
 button {
     margin: 5px;
+    padding: 5px 10px;
 }
 .messages {
     padding: 50px;

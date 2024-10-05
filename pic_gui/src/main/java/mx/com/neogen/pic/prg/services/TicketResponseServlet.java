@@ -6,8 +6,6 @@ import com.eurk.core.util.UtilBean;
 import com.eurk.core.util.UtilStream;
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
-import java.util.Map;
 import mx.com.neogen.commons.exception.InfraestructuraException;
 import mx.com.neogen.pic.beans.DeviceBuffer;
 import mx.com.neogen.pic.prg.beans.ItemTicket;
@@ -39,7 +37,6 @@ public class TicketResponseServlet extends HttpBaseRunner {
     }
     
     private RespuestaWS generarRespuesta( String ticket) {
-        
         var item = new ItemTicket( ticket);      
         
         try {
@@ -50,7 +47,8 @@ public class TicketResponseServlet extends HttpBaseRunner {
                 item.setData( data);
                 
                 if ( data.getConfig() != null && data.getConfig().length != 0) {
-                    item.setMetadata( readMetadata( data.getConfig()));
+                    var device = PicDeviceEnum.find( data.getConfig()[6]);
+                    item.setDevice( device == null? "DESCONOCIDO" : device.name());
                 }
             }
             
@@ -63,7 +61,9 @@ public class TicketResponseServlet extends HttpBaseRunner {
     
     private DeviceBuffer parseResponse( String path, String ticket) {
         var file = new File( path, "rsp_" + ticket + ".txt");
+        
         var lines = UtilStream.leerLineasArchivo( file);
+        file.delete();
         
         if ( lines.isEmpty()) {
             throw new InfraestructuraException( "Respuesta vacía, situación de error desconocida");
@@ -76,18 +76,5 @@ public class TicketResponseServlet extends HttpBaseRunner {
         
         return DataFormatter.parseResponse( lines);
     }
-    
-    private String readMetadata( Integer[] locations) throws IOException {
-        var device = PicDeviceEnum.find( locations[6]);
-        
-        try (
-            InputStream inputStream = UtilStream.obtenerRecursoAsStream( device.name() + "_config.json");
-        ) {
-            var mapa = (Map) UtilBean.parseBean( inputStream, Map.class);
-            mapa.put( "device", device.name());
-            
-            return new String( UtilBean.objectToByteArray( mapa));
-        }
-    }
-    
+
 }

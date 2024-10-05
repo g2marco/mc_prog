@@ -1,0 +1,35 @@
+{
+	"items" : [
+        {
+            "id": "nCP", "prompt": "Program Memory Code Protection",
+            "bits": [13, 12,  11, 10, 9, 8,  7, 6, 5, 4],
+            "options": [
+                {"label": "Disabled", "value": "1111111111"},
+                {"label": "Enabled" , "value": "0000000000"}
+            ]
+        }, {
+            "id": "nPWRTEN", "prompt": "Power-up Timer",
+            "bits": [3],
+            "options": [
+                {"label": "Disabled", "value": "1"},
+                {"label": "Enabled" , "value": "0"}
+            ]
+        }, {
+            "id": "WDTEN", "prompt": "Watchdog Timer",
+            "bits": [2],
+            "options": [
+                {"label": "Disabled", "value": "0"},
+                {"label": "Enabled" , "value": "1"}
+            ]
+        }, {
+            "id": "FOSC", "prompt" : "Oscillator",
+            "bits": [1, 0],
+            "options": [
+                {"label": "[RC ]", "value": "11"},
+                {"label": "[HS ]", "value": "10"}, 
+                {"label": "[XT ]", "value": "01"},   
+                {"label": "[LP ]", "value": "00"}
+            ]
+        }
+    ]
+}
