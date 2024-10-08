@@ -56,8 +56,10 @@ void execute_init_reset_loop() {
 }
 
 void execute_comman_loop() {
+    int dato;
     while( running == 1) {
-        execute_command( 0x31, COMANDO_SIMPLE, 0);
+        dato = 0xFFFF;
+        execute_command( 0x02, COMANDO_ESCRITURA_DATO, ((dato << 1) & 0x7FFE));
     }
 }
 
