@@ -40,7 +40,6 @@ typedef struct {
     
 } DeviceBuffer;
 
-
 typedef struct {
 	char values[10];
 	int length;
@@ -48,9 +47,17 @@ typedef struct {
 } Arreglo;
 
 typedef struct {
+    unsigned short bulkEraseType;           // e = [1 | 2 | 3 | ...], [1 | 2 | 3 | ...], [NNNN]
+    unsigned short protectDsblType;         //
+    unsigned short protectDsblData;         //
+} EraseOpts;
+
+typedef struct {
 	char      operation;
 	Arreglo       areas;
 	Arreglo    voltages;
+    EraseOpts eraseOpts;
+
 	DeviceBuffer buffer;
 
 } ProgramInfo;

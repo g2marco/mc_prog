@@ -55,7 +55,8 @@ static unsigned short * read_arreglo( int length, FILE * file) {
 }
 
 static void init_arreglo_areas( FILE * file, DeviceBuffer * buffer, Arreglo * areas) {
-	fgetc( file);
+	fgetc( file);           // ignora el signo =
+
 	char caracter;
 	int terminar = 0;
 	int indice = 0;
@@ -88,9 +89,23 @@ static void init_arreglo_areas( FILE * file, DeviceBuffer * buffer, Arreglo * ar
 	areas->length = indice;
 }
 
+static void init_erase_options( FILE * file, EraseOpts * eraseOpts) {
+    fgetc( file);           // ignora signo =
+    
+    eraseOpts->bulkEraseType = read_integer( file);
+    fgetc( file);
+
+    eraseOpts->protectDsblType = read_integer( file);
+    fgetc( file);
+
+    eraseOpts->protectDsblData = read_integer( file);
+    fgetc( file);
+}
+
 static void init_arreglo_voltajes( FILE * file, Arreglo * areas) {
-	fgetc( file);
-	char caracter;
+	fgetc( file);           // ignora signo =
+	
+    char caracter;
 	int terminar = 0;
 	int indice = 0;
 
@@ -202,6 +217,15 @@ static void init_configuration_location ( int indice, FILE * file, DeviceBuffer 
 	}
 }
 
+static void write_erase_options( FILE * file, EraseOpts * eraseOpts) {
+    fprintf( file, "%d", eraseOpts->bulkEraseType  );
+    fprintf( file, ",");
+    
+    fprintf( file, "%d", eraseOpts->protectDsblType);
+    fprintf( file, ",");
+    
+    fprintf( file, "%d", eraseOpts->protectDsblData);
+}
 
 static void write_device_buffer( FILE * file, DeviceBuffer * buffer) {
 	BancoMemoria * banco;
@@ -289,6 +313,10 @@ void read_programming_info( ProgramInfo * ptrInfo, const char * filePath) {
 			init_data_buffer( indice, file, &(ptrInfo->buffer));
 			break;
 
+        case 'e':
+            init_erase_options( file, &(ptrInfo->eraseOpts));
+            break;
+
 		case 'o':
 			fgetc( file);
 			ptrInfo->operation = init_operacion( fgetc(file));
@@ -319,7 +347,11 @@ void write_programming_info( ProgramInfo * ptrInfo, const char * filePath) {
 
 	int i = 0;
 
+    // operacion
+
 	fprintf( file, "o=%c", ptrInfo->operation);
+
+    // arreglos de areas
 
 	fprintf( file, "\na=");
 
@@ -330,6 +362,8 @@ void write_programming_info( ProgramInfo * ptrInfo, const char * filePath) {
 		fprintf( file, "%c", (ptrInfo->areas).values[i]);
 	}
 
+    // voltajes
+
 	fprintf( file, "\nv=");
 
 	for ( i = 0; i < (ptrInfo->voltages).length; ++i) {
@@ -338,6 +372,13 @@ void write_programming_info( ProgramInfo * ptrInfo, const char * filePath) {
 		}
 		fprintf( file, "%c", (ptrInfo->voltages).values[i]);
 	}
+
+    // opciones de borrado
+
+    fprintf( file, "\ne=");
+    write_erase_options( file, &(ptrInfo->eraseOpts));
+
+    // buffers de memoria
 
 	write_device_buffer( file, &(ptrInfo->buffer));
 
