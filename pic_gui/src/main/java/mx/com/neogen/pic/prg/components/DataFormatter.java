@@ -16,7 +16,14 @@ public class DataFormatter {
               
         // operacion
         
-        strb.append( "o=").append( "write".equals( operation)? 'p' : 'r').append( "\n");
+        strb.append( "o=").append(
+            switch (operation) { 
+                case "write" -> 'p';
+                case "read"  -> 'r';
+                case "reset" -> 'e';
+                default -> throw new IllegalArgumentException( "Invalid value for operation argument: [" + operation + "]"); 
+            }
+        ).append( "\n");
         
         // longitud de cada area de memoria
         

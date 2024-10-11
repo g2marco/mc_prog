@@ -31,18 +31,30 @@
                 </td>
             </tr>
             <tr>
-                <td colspan="2" style="text-align: center;">
-                    <button type="button" class="action" onclick="javascript: server.invokeAction( 'read' );" hidden>Read</button>
-                    <button type="button" class="action" onclick="javascript: server.invokeAction( 'write');" hidden>Write</button>
+                <td colspan="2" style="text-align: center; min-height: 30px;">
+                    <button type="button" class="action" onclick="javascript: server.invokeNormalAction( 'read'        );" hidden>Read          </button>
+                    <button type="button" class="action" onclick="javascript: server.invokeNormalAction( 'reset'       );" hidden>Reset Device  </button>
+                    <button type="button" class="action" onclick="javascript: server.invokeVerifyAction( 'read_verify' );" hidden>Read  / Verify</button>
+                    <button type="button" class="action" onclick="javascript: server.invokeVerifyAction( 'write_verify');" hidden>Write / Verify</button>
                 </td>
             </tr>
         </table>
     </fieldset>
     
-    <div id="container" style="text-align: center;"></div>
+    <div id="messages" style="text-align: center;"></div>
+    
+    <table style="border: 0px;">
+        <tr>
+            <td style="border: 0px;"><div id="source" class="column" style="text-align: center;"></div></td>
+            <td style="border: 0px;"><div id="target" class="column" style="text-align: center;"></div></td>
+        </tr>
+    </table>
     
     <script id="_card_item_" type="text/x-handlebars-template">
-        <fieldset class="{{className}}"><legend>{{title}}</legend>{{#each values}}<table id="{{name}}" class="{{className}}"></table>{{/each}}</fieldset>
+        <fieldset class="{{className}}">
+            <legend>{{title}}</legend>
+            {{#each values}}<table id="{{name}}" class="{{className}}"></table>{{/each}}
+        </fieldset>
     </script>
 
     <script id="_message_" type="text/x-handlebars-template">
@@ -73,7 +85,7 @@
             
             <div style="text-align: right; padding: 10px;">
                 <button type="button" onclick="javascript: document.getElementById( 'dialog_box').close();">Cancel</button>
-                <button type="button" onclick="javascript: dialog.submit( () => component.invoke() );"     >Submit</button>
+                <button type="button" onclick="javascript: server.onClickSubmit();"     >Submit</button>
             </div>
         </form>
     </dialog>
@@ -124,12 +136,13 @@
                     
                 let isValid = device.length > 0;
                 
-                j( 'container').empty();
+                j( 'messages').empty();
                 hide_show_actions( false);
                 
                 if ( !isValid) { return; }
                 
                 popup.init();
+                card.clean();
                 
                 // obtiene y establece metadata del dispositivo
                 fetch( server + '/_data_/get/metadata/' + device).
@@ -160,26 +173,35 @@
                 for ( let item of items) { item.hidden = !flag; }
             }
             
-            function invoke_action( action) {
+            function invoke_verify_action( action) {
                 let server = dom.getById( 'server').value;
                 let device = dom.getById( 'device').value;
                 
                 component.setParams( server, device, action);
+                dialog.open();
+            }
+            
+            function invoke_normal_action( action) {
+                let server = dom.getById( 'server').value;
+                let device = dom.getById( 'device').value;
                 
-                switch( action.split( '_')[0]) {
-                    case 'read' : component.invoke(); break;
-                    case 'write': dialog.open();      break;
-                    default     : alert( '[ERROR] Prefijo de accion no considerado: ' + action);
-                }
+                component.setParams( server, device, action);
+                component.invoke();
+            }
+            
+            function on_click_submit() {
+                dialog.submit( () => component.invoke() );
             }
             
             return {
-                onChangeDevice: on_change_device,
-                invokeAction  : invoke_action
+                onChangeDevice    : on_change_device    ,
+                onClickSubmit     : on_click_submit     ,
+                invokeVerifyAction: invoke_verify_action,
+                invokeNormalAction: invoke_normal_action
             };
         })();
         
-        //  init 
+        //  initial config
         dom.on( 'device', 'change', server.onChangeDevice);
         
     </script>

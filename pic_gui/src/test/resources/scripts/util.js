@@ -4,8 +4,8 @@ function j( id) {
     return new _(id);
 }
 
-function _( id) {
-    this.item = dom.getById( id);
+function _( value) {
+    this.item = typeof( value) === 'string'? dom.getById( value) : value;
 }
 
 _.prototype = (function() {
@@ -48,11 +48,16 @@ _.prototype = (function() {
         return this;
     }
     
+    function find( id) {
+        return new _( this.item.querySelector( '#' + id));
+    }
+    
     return {
-        empty   : empty,
-        append  : append, 
-        hide    : hide,
-        show    : show, 
+        empty   : empty ,
+        append  : append,
+        find    : find  ,
+        hide    : hide  ,
+        show    : show  , 
         addClass: add_class,
         removeClass: remove_class
     };
@@ -117,12 +122,12 @@ const _frmt = (function() {
 
 const popup = {
     init: () => {
-        j( 'container').empty().append( _templates.fill( '_message_', {message: 'Esperando respuesta del servidor'}));
+        j( 'messages').empty().append( _templates.fill( '_message_', {message: 'Esperando respuesta del servidor'}));
         j( 'loader').show().addClass( 'loading');
     },
     
     stop: rsp => {
-        let ctnr = j( 'container').empty();
+        let ctnr = j( 'messages').empty();
         
         if ( rsp && rsp.codigo) {
             let ctx = {message: '[error code: '+ rsp.codigo + '] ' +  rsp.clave + ': ' + rsp.mensajes[0].mensaje.replaceAll( '\n', '<br/>')};   

@@ -1,61 +1,66 @@
 "use strict";
 
 const card = (function() {
-    const env = {metadata: null};
+    const env = {metadata: null, source: null, target: null};
     
     function set_metadata ( metadata) {
         env.metadata = metadata;
     }
     
-    function update( item) {
-        init_container();
+    function clean() {
+        env.source = (env.source || j( 'source')).empty();
+        env.target = (env.target || j( 'target')).empty();
+    }
+    
+    function update( name, item) {
+        init_container( name);
         
         if ( item.data.config) {
             let values;
             let config = item.data.config;
             
-            fill_device_id( 'device_id', {name: item.device, value: '--' + _frmt.format( config[ 6], 'bin', 14)});
+            fill_device_id( name, 'device_id', {name: item.device, value: '--' + _frmt.format( config[ 6], 'bin', 14)});
             
             values = [
                 '--' + _frmt.format( config[0], 'bin', 14), '--' + _frmt.format( config[1], 'bin', 14),
                 '--' + _frmt.format( config[2], 'bin', 14), '--' + _frmt.format( config[3], 'bin', 14)
             ];
             
-            fill_serial_words( 'serial', values);
+            fill_serial_words( name, 'serial', values);
         
             values = set_config_bits( config[7], env.metadata);
-            fill_config_word( 'config_word', values);
+            fill_config_word( name, 'config_word', values);
             
             values = set_config_values( config[7], env.metadata);
-            fill_config_desc( 'config_desc', values);
+            fill_config_desc( name, 'config_desc', values);
         }
         
-        fill_memory_bank( 'prog_mem', 0, 14, 14, item.data.program[0].locations);
-        fill_memory_bank( 'data_mem', 0, 10,  8, item.data.data[0].locations   );
+        fill_memory_bank( name, 'prog_mem', 0, 14, 14, item.data.program[0].locations);
+        fill_memory_bank( name, 'data_mem', 0, 10,  8, item.data.data[0].locations   );
     }
     
-    function fill_device_id( idTable, deviceId) {
-        let ctnr = j( idTable);
+    function fill_device_id( name, idTable, deviceId) {
+        let ctnr = env[name].find( idTable);
     
         ctnr.append( _templates.fill( '_nibles_line_', {values: deviceId.value.split( '')}));
         ctnr.append( '<tr><td colspan="20" style="font-size: 1.2em;"><b>' + deviceId.name + '</b></td></tr>');
     }
     
-    function fill_serial_words( idTable, values) {
-        let ctnr = j( idTable);
+    function fill_serial_words( name, idTable, values) {
+        let ctnr = env[name].find( idTable);
     
         for ( let value of values) {
             ctnr.append( _templates.fill( '_nibles_line_', {values: value.split( '')}));
         }
     }
        
-    function fill_config_word( idTable, values) {
-        let ctnr = j( idTable);
+    function fill_config_word( name, idTable, values) {
+        let ctnr = env[name].find( idTable);
         ctnr.append( _templates.fill( '_cfgw_tbl_', {values: values}));
     }
     
-    function fill_config_desc( idTable, values) {
-        let ctnr = j( idTable);
+    function fill_config_desc( name, idTable, values) {
+        let ctnr = env[name].find( idTable);
     
         ctnr.append( _templates.fill( '_cfgd_header_', {}));
         ctnr.append( _templates.fill( '_cfgd_line_', {values: values}));
@@ -72,8 +77,8 @@ const card = (function() {
      * 
      * @returns  nothing
      */
-    function fill_memory_bank( idTable, startAddr, addrBits, bits, values) {
-        let ctnr = j( idTable);
+    function fill_memory_bank( name, idTable, startAddr, addrBits, bits, values) {
+        let ctnr = env[name].find( idTable);
     
         ctnr.append( _templates.fill( '_bank_header_', {}));
         
@@ -90,8 +95,8 @@ const card = (function() {
         }
     }
 
-    function init_container() {
-        let ctnr = j( 'container');
+    function init_container( name) {
+        let ctnr = env[ name];
         
         ctnr.empty();
         
@@ -160,6 +165,7 @@ const card = (function() {
     }
     
     return {
+        clean      : clean       ,
         update     : update      ,
         setMetadata: set_metadata
     };
