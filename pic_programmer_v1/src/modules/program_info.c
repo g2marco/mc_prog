@@ -132,7 +132,7 @@ static void init_arreglo_voltajes( FILE * file, Arreglo * areas) {
 
 
 static char init_operacion( char caracter) {
-	if( caracter == 'r' || caracter == 'p') {
+	if( caracter == 'r' || caracter == 'p' || caracter == 'e') {
 		return caracter;
 	} else {
 		return -1;

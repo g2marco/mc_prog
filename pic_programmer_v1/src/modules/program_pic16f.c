@@ -199,10 +199,10 @@ int execute_programming_task( ProgramInfo * ptrInfo) {
 			
 				init_HVP_mode();
 				
-				if (operation == 'r') {
-					read_program_memory( &(ptrInfo->buffer));
-				} else {
-					write_program_memory( &(ptrInfo->buffer));
+				switch ( operation) {
+                    case 'r': read_program_memory(  &(ptrInfo->buffer)); break;
+                    case 'p': write_program_memory( &(ptrInfo->buffer), (ptrInfo->eraseOpts).bulkEraseType); break;
+                    case 'e': disable_code_protection( &(ptrInfo->eraseOpts)); break;
 				}
 				
 				reset_device();
@@ -217,10 +217,9 @@ int execute_programming_task( ProgramInfo * ptrInfo) {
 				
 				init_HVP_mode();
 
-				if (operation == 'r') {
-					read_data_memory( &(ptrInfo->buffer));
-				} else {
-					write_data_memory( &(ptrInfo->buffer));
+                switch ( operation) {
+                    case 'r': read_data_memory(  &(ptrInfo->buffer   )); break;
+    				case 'p': write_data_memory( &(ptrInfo->buffer   ), (ptrInfo->eraseOpts).bulkEraseType); break;                 
 				}
 				
 				reset_device();
@@ -235,16 +234,14 @@ int execute_programming_task( ProgramInfo * ptrInfo) {
 				
 				init_HVP_mode();
 				
-				if (operation == 'r') {
-					read_config_memory( &(ptrInfo->buffer));
-				} else {
-					write_config_memory( &(ptrInfo->buffer));
+                switch ( operation) {
+                    case 'r': read_config_memory(  &(ptrInfo->buffer)); break;
+                    case 'p': write_config_memory( &(ptrInfo->buffer)); break;
 				}
 				
 				reset_device();
 			}
 		}
-		
 	}
 
 	release_driver();
