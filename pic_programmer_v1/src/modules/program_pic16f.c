@@ -79,7 +79,7 @@ static void write_program_memory( DeviceBuffer * bufferPtr, unsigned short bulkE
     unsigned short dato;
     unsigned int i;
 
-    bulk_erase_program_memory( bulkEraseType);
+    //bulk_erase_program_memory( bulkEraseType);
 
     for ( i = 0; i < bank->length; ++i) {
         dato = bank->data[i];
@@ -99,7 +99,7 @@ static void write_data_memory( DeviceBuffer * bufferPtr, unsigned short bulkEras
     unsigned short dato;
     unsigned int i;
 
-    bulk_erase_data_memory( bulkEraseType);
+    //bulk_erase_data_memory( bulkEraseType);
        
     for ( i = 0; i < bank->length; ++i) {
         dato = bank->data[i];

@@ -16,11 +16,6 @@ int main( int argc, char* argv[]) {
     printf( "\n\t - Lectura de archivo de peticion");
     read_programming_info( &info, argv[1]);
     
-    while ( 1) {
-        execute_programming_task( &info);
-    }
-
-    /*
     if ( info.operation == 'p' || info.operation == 'e') {
         printf( "\n\t - Ejecución de tarea de programacion");
         execute_programming_task( &info);
@@ -37,7 +32,7 @@ int main( int argc, char* argv[]) {
     printf( "\n\nPrueba terminada con exito\n");
 	
 	printf("\n");
-	*/
+	
 
     return 0;
 
