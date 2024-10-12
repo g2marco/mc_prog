@@ -48,7 +48,7 @@ static void bulk_erase_type_2( unsigned char memoryArea) {
         execute_command( BULK_ERASE_MEM_PROGRAMA);
 
         // begin programming
-        execute_command ( INICIA_CICLO_PROGRAM  );
+        execute_command( INICIA_CICLO_ERASE_PROGRAM);
 
         wait_for( 10000);
     }
@@ -63,7 +63,7 @@ static void bulk_erase_type_2( unsigned char memoryArea) {
         execute_command( BULK_ERASE_MEM_DATOS );
 
         // begin programming
-        execute_command ( INICIA_CICLO_PROGRAM);
+        execute_command( INICIA_CICLO_ERASE_PROGRAM);
         
         wait_for( 10000);
     }
@@ -98,7 +98,7 @@ static void disable_code_protection_type_2( unsigned short dato) {
     execute_command( 0x01, COMANDO_SIMPLE, 0);
     execute_command( 0x07, COMANDO_SIMPLE, 0);
     
-    execute_command ( INICIA_CICLO_PROGRAM);
+    execute_command( INICIA_CICLO_ERASE_PROGRAM);
     wait_for( 10000);
 
     execute_command( 0x01, COMANDO_SIMPLE, 0);

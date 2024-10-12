@@ -83,9 +83,6 @@ static void write_program_memory( DeviceBuffer * bufferPtr, unsigned short bulkE
 
     for ( i = 0; i < bank->length; ++i) {
         dato = bank->data[i];
-        
-        //printf( "\n\twriting %d", dato);
-
         execute_command( CARGA_DATO_MEM_PROGRAMA);
         execute_command( INICIA_CICLO_ERASE_PROGRAM);
 
