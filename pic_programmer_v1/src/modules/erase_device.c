@@ -74,6 +74,15 @@ static void disable_code_protection_type_1( unsigned short dato) {
 
 }
 
+/**
+ *  disable code protection tipo 2
+ *  
+ *  devices: 
+ */
+static void disable_code_protection_type_2( unsigned short dato) {
+
+}
+
 void disable_code_protection( EraseOpts * eraseOpts) {
     switch( eraseOpts->protectDsblType) {
         case 1: disable_code_protection_type_1( eraseOpts->protectDsblData);
