@@ -80,7 +80,7 @@ static void read_config_memory( DeviceBuffer * buffer) {
     }
 }
 
-static void write_program_memory( DeviceBuffer * bufferPtr) {
+static void write_program_memory( DeviceBuffer * bufferPtr, unsigned short bulkEraseType) {
 	//printf( "\n >> inicia: write_program_memory");
 
     ArrayBancoMemoria * array = &(bufferPtr->program);
@@ -89,12 +89,7 @@ static void write_program_memory( DeviceBuffer * bufferPtr) {
     unsigned short dato;
     unsigned int i;
 
-    // Borrado: 1er. paso
-    dato = 0x3FFF;
-    execute_command( CARGA_DATO_MEM_PROGRAMA);
-
-    // Borrado: 2o. paso
-    execute_command( BULK_ERASE_MEM_PROGRAMA);
+    bulk_erase_program_memory( bulkEraseType);
 
     for ( i = 0; i < bank->length; ++i) {
         dato = bank->data[i];
@@ -110,7 +105,7 @@ static void write_program_memory( DeviceBuffer * bufferPtr) {
     //printf( "\n >> termina: write_program_memory");
 }
 
-static void write_data_memory( DeviceBuffer * bufferPtr) {
+static void write_data_memory( DeviceBuffer * bufferPtr, unsigned short bulkEraseType) {
 	//printf( "\n >> inicia: write_data_memory");
 
     ArrayBancoMemoria * array = &(bufferPtr->data);
@@ -119,8 +114,7 @@ static void write_data_memory( DeviceBuffer * bufferPtr) {
     unsigned short dato;
     unsigned int i;
 
-    // Borrado: 1er. paso
-    execute_command( BULK_ERASE_MEM_DATOS);
+    bulk_erase_data_memory( bulkEraseType);
        
     for ( i = 0; i < bank->length; ++i) {
         dato = bank->data[i];

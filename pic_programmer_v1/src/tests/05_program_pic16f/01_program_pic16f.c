@@ -16,7 +16,7 @@ int main( int argc, char* argv[]) {
     printf( "\n\t - Lectura de archivo de peticion");
     read_programming_info( &info, argv[1]);
 
-    if ( info.operation == 'p') {
+    if ( info.operation == 'p' || info.operation == 'e') {
         printf( "\n\t - Ejecución de tarea de programacion");
         execute_programming_task( &info);
     

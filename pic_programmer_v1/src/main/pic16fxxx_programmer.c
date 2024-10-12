@@ -77,12 +77,12 @@ void generate_alive_response() {
 void program_device( void) {
 
     ProgramInfo info;
-
     read_programming_info( &info, REQUEST_FILE_PATH);
 
-    execute_programming_task( &info);
-	
-	info.operation = 'r';
+    if ( info.operation == 'p' || info.operation == 'e') {
+        execute_programming_task( &info);
+        info.operation = 'r';
+    }
 	
 	execute_programming_task( &info);
 		
