@@ -93,13 +93,13 @@ static void disable_code_protection_type_2( unsigned short dato) {
         execute_command( INCREMENTA_DIRECCION);
     }
     
-    execute_command( 0x01, COMANDO_SIMPLE, 0)
+    execute_command( 0x01, COMANDO_SIMPLE, 0);
     execute_command( 0x07, COMANDO_SIMPLE, 0);
     
     execute_command ( INICIA_CICLO_PROGRAM);
     wait_for( 10000);
 
-    execute_command( 0x01, COMANDO_SIMPLE, 0)
+    execute_command( 0x01, COMANDO_SIMPLE, 0);
     execute_command( 0x07, COMANDO_SIMPLE, 0);
 }
 
