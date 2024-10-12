@@ -10,7 +10,7 @@
 
 
 static void read_program_memory( DeviceBuffer * buffer) {
-    print( "\t[read program memory]");
+    printf( "\t[read program memory]");
 
     ArrayBancoMemoria * array = &(buffer->program);
     BancoMemoria * bank = &(array->banks[0]);
@@ -28,7 +28,7 @@ static void read_program_memory( DeviceBuffer * buffer) {
 }
 
 static void read_data_memory( DeviceBuffer * buffer) {
-    print( "\t[read data memory]");
+    printf( "\t[read data memory]");
 
     ArrayBancoMemoria * array = &(buffer->data);
     BancoMemoria * bank = &(array->banks[0]);
@@ -45,7 +45,7 @@ static void read_data_memory( DeviceBuffer * buffer) {
 }
 
 static void read_config_memory( DeviceBuffer * buffer) {
-    print( "\t[read config memory]");
+    printf( "\t[read config memory]");
 
     ArrayLocalidadMemoria * configuration = &(buffer->configuration);
 
@@ -71,7 +71,7 @@ static void read_config_memory( DeviceBuffer * buffer) {
 }
 
 static void write_program_memory( DeviceBuffer * bufferPtr, unsigned short bulkEraseType) {
-	print( "\t[write program memory]");
+	printf( "\t[write program memory]");
 
     ArrayBancoMemoria * array = &(bufferPtr->program);
     BancoMemoria * bank = &(array->banks[0]);
@@ -94,7 +94,7 @@ static void write_program_memory( DeviceBuffer * bufferPtr, unsigned short bulkE
 }
 
 static void write_data_memory( DeviceBuffer * bufferPtr, unsigned short bulkEraseType) {
-	print( "\t[write data memory]");
+	printf( "\t[write data memory]");
 
     ArrayBancoMemoria * array = &(bufferPtr->data);
     BancoMemoria * bank = &(array->banks[0]);
@@ -114,7 +114,7 @@ static void write_data_memory( DeviceBuffer * bufferPtr, unsigned short bulkEras
 }
 
 static void write_config_memory( DeviceBuffer * bufferPtr) {
-	print( "\t[write config memory]");
+	printf( "\t[write config memory]");
 
 	ArrayLocalidadMemoria * configuration = &(bufferPtr->configuration);
 
