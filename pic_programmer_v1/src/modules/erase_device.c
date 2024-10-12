@@ -91,7 +91,7 @@ static void disable_code_protection_type_2( unsigned short dato) {
     unsigned int i;
 
     for( i = 0; i < 7 ; ++i) {
-        print( "addr: %d", (i + 1));
+        printf( "addr: %d", (i + 1));
         execute_command( INCREMENTA_DIRECCION);
     }
     
