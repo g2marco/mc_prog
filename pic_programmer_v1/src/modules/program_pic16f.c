@@ -10,6 +10,8 @@
 
 
 static void read_program_memory( DeviceBuffer * buffer) {
+    print( "\t[read program memory]");
+
     ArrayBancoMemoria * array = &(buffer->program);
     BancoMemoria * bank = &(array->banks[0]);
 
@@ -26,6 +28,8 @@ static void read_program_memory( DeviceBuffer * buffer) {
 }
 
 static void read_data_memory( DeviceBuffer * buffer) {
+    print( "\t[read data memory]");
+
     ArrayBancoMemoria * array = &(buffer->data);
     BancoMemoria * bank = &(array->banks[0]);
 
@@ -40,23 +44,9 @@ static void read_data_memory( DeviceBuffer * buffer) {
     }
 }
 
-static unsigned int read_device_id() {
-    unsigned short dato = 0x0000;
-    execute_command( CARGA_DATO_MEM_CONFIG);
-    int i;
-    for ( i = 0; i < 6; ++i) {    
-		execute_command( INCREMENTA_DIRECCION);
-    }
-
-    unsigned short value = execute_command( LEER_DATO_MEM_PROGRAMA);
-
-    value = value & 0xFFE0;
-    //printf( "\n\tdevice id: %d", value);
-
-    return value;
-}
-
 static void read_config_memory( DeviceBuffer * buffer) {
+    print( "\t[read config memory]");
+
     ArrayLocalidadMemoria * configuration = &(buffer->configuration);
 
     LocalidadMemoria * location;
@@ -81,7 +71,7 @@ static void read_config_memory( DeviceBuffer * buffer) {
 }
 
 static void write_program_memory( DeviceBuffer * bufferPtr, unsigned short bulkEraseType) {
-	//printf( "\n >> inicia: write_program_memory");
+	print( "\t[write program memory]");
 
     ArrayBancoMemoria * array = &(bufferPtr->program);
     BancoMemoria * bank = &(array->banks[0]);
@@ -101,12 +91,10 @@ static void write_program_memory( DeviceBuffer * bufferPtr, unsigned short bulkE
 
         execute_command( INCREMENTA_DIRECCION);
     }
-  
-    //printf( "\n >> termina: write_program_memory");
 }
 
 static void write_data_memory( DeviceBuffer * bufferPtr, unsigned short bulkEraseType) {
-	//printf( "\n >> inicia: write_data_memory");
+	print( "\t[write data memory]");
 
     ArrayBancoMemoria * array = &(bufferPtr->data);
     BancoMemoria * bank = &(array->banks[0]);
@@ -123,12 +111,10 @@ static void write_data_memory( DeviceBuffer * bufferPtr, unsigned short bulkEras
 
         execute_command( INCREMENTA_DIRECCION);
     }
-
-    //printf( "\n >> termina: write_data_memory");
 }
 
 static void write_config_memory( DeviceBuffer * bufferPtr) {
-	//printf( "\n >> inicia: write_config_memory");
+	print( "\t[write config memory]");
 
 	ArrayLocalidadMemoria * configuration = &(bufferPtr->configuration);
 
@@ -150,10 +136,6 @@ static void write_config_memory( DeviceBuffer * bufferPtr) {
 	
     execute_command( CARGA_DATO_MEM_PROGRAMA);
     execute_command( INICIA_CICLO_ERASE_PROGRAM);
-
-	//printf( "\n\t\tdata(read): %d", execute_command( LEER_DATO_MEM_PROGRAMA));
-	
-    //printf( "\n << termina: write_config_memory");
 }
 
 int reset_programmer() {
