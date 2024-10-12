@@ -84,7 +84,7 @@ static void disable_code_protection_type_1( unsigned short dato) {
  *  devices: PIC16F84A
  */
 static void disable_code_protection_type_2( unsigned short dato) {
-    printf( "\n\t[disable cp 2]");
+    printf( "\n\t[disable cp 2] dato: %d", dato);
     
     // carga palabra de configuracion
     execute_command( CARGA_DATO_MEM_CONFIG);
@@ -98,12 +98,13 @@ static void disable_code_protection_type_2( unsigned short dato) {
     execute_command( 0x01, COMANDO_SIMPLE, 0);
     execute_command( 0x07, COMANDO_SIMPLE, 0);
     
-    execute_command( CARGA_DATO_MEM_CONFIG);
-    execute_command( INICIA_CICLO_PROGRAM);
+    execute_command( INICIA_CICLO_ERASE_PROGRAM);
     wait_for( 10000);
 
     execute_command( 0x01, COMANDO_SIMPLE, 0);
     execute_command( 0x07, COMANDO_SIMPLE, 0);
+
+    wait_for( 10000);
 }
 
 void disable_code_protection( EraseOpts * eraseOpts) {
