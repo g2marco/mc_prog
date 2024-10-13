@@ -62,14 +62,12 @@ static void read_config_memory( DeviceBuffer * buffer) {
     }
 }
 
-static void write_program_memory( DeviceBuffer * bufferPtr, unsigned short bulkEraseType) {
+static void write_program_memory( DeviceBuffer * bufferPtr) {
     ArrayBancoMemoria * array = &(bufferPtr->program);
     BancoMemoria * bank = &(array->banks[0]);
 
     unsigned short dato;
     unsigned int i;
-
-    bulk_erase_program_memory( bulkEraseType);
 
     for ( i = 0; i < bank->length; ++i) {
         dato = bank->data[i];
@@ -80,14 +78,12 @@ static void write_program_memory( DeviceBuffer * bufferPtr, unsigned short bulkE
     }
 }
 
-static void write_data_memory( DeviceBuffer * bufferPtr, unsigned short bulkEraseType) {
+static void write_data_memory( DeviceBuffer * bufferPtr) {
     ArrayBancoMemoria * array = &(bufferPtr->data);
     BancoMemoria * bank = &(array->banks[0]);
 
     unsigned short dato;
     unsigned int i;
-
-    bulk_erase_data_memory( bulkEraseType);
        
     for ( i = 0; i < bank->length; ++i) {
         dato = bank->data[i];
@@ -145,7 +141,22 @@ int execute_programming_task( ProgramInfo * ptrInfo) {
 	Arreglo voltages = ptrInfo->voltages;
 
 	for ( idxVoltage = 0; idxVoltage < voltages.length; ++idxVoltage) {
-		// memoria de configuracion
+		
+        for ( idxArea = 0; idxArea < areas.length ; ++idxArea) {
+			
+			if ( areas.values[ idxArea] == 'c' && operation == 'p') {
+				init_HVP_mode();
+                bulk_erase_program_memory( (ptrInfo->eraseOpts).bulkEraseType));
+                reset_device();
+                init_HVP_mode();
+                bulk_erase_config_memory(  (ptrInfo->eraseOpts).bulkEraseType));
+                reset_device();
+                init_HVP_mode();
+                bulk_erase_data_memory(    (ptrInfo->eraseOpts).bulkEraseType));
+			}
+		}
+
+        // memoria de configuracion
 		
 		for ( idxArea = 0; idxArea < areas.length ; ++idxArea) {
 			
@@ -173,7 +184,7 @@ int execute_programming_task( ProgramInfo * ptrInfo) {
 				
 				switch ( operation) {
                     case 'r': read_program_memory(  &(ptrInfo->buffer)); break;
-                    case 'p': write_program_memory( &(ptrInfo->buffer), (ptrInfo->eraseOpts).bulkEraseType); break;
+                    case 'p': write_program_memory( &(ptrInfo->buffer)); break;
 				}
 				
 				reset_device();
@@ -190,7 +201,7 @@ int execute_programming_task( ProgramInfo * ptrInfo) {
 
                 switch ( operation) {
                     case 'r': read_data_memory(  &(ptrInfo->buffer   )); break;
-    				case 'p': write_data_memory( &(ptrInfo->buffer   ), (ptrInfo->eraseOpts).bulkEraseType); break;                 
+    				case 'p': write_data_memory( &(ptrInfo->buffer   )); break;                 
 				}
 				
 				reset_device();

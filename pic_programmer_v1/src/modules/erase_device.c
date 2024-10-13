@@ -22,6 +22,15 @@ static void bulk_erase_type_1( unsigned char memoryArea) {
         execute_command( BULK_ERASE_MEM_PROGRAMA);
     }
 
+    if ( memoryArea == 'c') { 
+        // load 1's
+        dato = 0x3FFF;
+        execute_command( CARGA_DATO_MEM_CONFIG);
+
+        // bulk erase
+        execute_command( BULK_ERASE_MEM_PROGRAMA);
+    }
+
     if ( memoryArea == 'd') {
         // bulk erase
         execute_command( BULK_ERASE_MEM_DATOS);
@@ -40,6 +49,20 @@ static void bulk_erase_type_2( unsigned char memoryArea) {
         // load 1's
         dato = 0x3FFF;
         execute_command( CARGA_DATO_MEM_PROGRAMA);
+
+        // bulk erase 
+        execute_command( BULK_ERASE_MEM_PROGRAMA);
+
+        // begin programming
+        execute_command( INICIA_CICLO_ERASE_PROGRAM);
+
+        wait_for( 10000);
+    }
+
+    if ( memoryArea == 'c') { 
+        // load 1's
+        dato = 0x3FFF;
+        execute_command( CARGA_DATO_MEM_CONFIG);
 
         // bulk erase 
         execute_command( BULK_ERASE_MEM_PROGRAMA);
@@ -76,6 +99,9 @@ static void disable_code_protection_type_1( unsigned short dato) {
 
     execute_command( CARGA_DATO_MEM_CONFIG  );
     execute_command( BULK_ERASE_MEM_PROGRAMA);
+
+    execute_command( CARGA_DATO_MEM_CONFIG  );
+    execute_command( BULK_ERASE_MEM_DATOS);
 }
 
 /**
@@ -115,6 +141,13 @@ void bulk_erase_program_memory( unsigned short bulkEraseType) {
     switch( bulkEraseType) {
         case 1: bulk_erase_type_1( 'p');  break;
         case 2: bulk_erase_type_2( 'p');  break;
+    }
+}
+
+void bulk_erase_config_memory( unsigned short bulkEraseType) {
+    switch( bulkEraseType) {
+        case 1: bulk_erase_type_1( 'c');  break;
+        case 2: bulk_erase_type_2( 'c');  break;
     }
 }
 
