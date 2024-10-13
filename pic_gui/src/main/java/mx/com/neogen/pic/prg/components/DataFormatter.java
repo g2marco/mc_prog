@@ -1,5 +1,7 @@
 package mx.com.neogen.pic.prg.components;
 
+import com.eurk.core.util.UtilBean;
+import com.eurk.core.util.UtilBinary;
 import java.util.ArrayList;
 import java.util.List;
 import mx.com.neogen.pic.beans.Bank;
@@ -37,6 +39,15 @@ public class DataFormatter {
         
         strb.append( "v=n").append( "\n");
  
+        // opciones de borrado
+        var options = metadata.getErase();
+        
+        strb.append( "e=").
+        append( options.getBulkEraseType()).append( ",").
+        append( options.getCpDisableType()).append( ",").
+        append( UtilBinary.parseBinaryString( options.getCpDisableWord())).
+        append( "\n");
+        
         int banks;
         BankMetadata meta;
         Bank bank;
