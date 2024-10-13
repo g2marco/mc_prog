@@ -146,15 +146,15 @@ int execute_programming_task( ProgramInfo * ptrInfo) {
 			
 			if ( areas.values[ idxArea] == 'c' && operation == 'p') {
 				init_HVP_mode();
-                bulk_erase_program_memory( (ptrInfo->eraseOpts).bulkEraseType));
+                bulk_erase_program_memory( (ptrInfo->eraseOpts).bulkEraseType);
                 reset_device();
 
                 init_HVP_mode();
-                bulk_erase_config_memory(  (ptrInfo->eraseOpts).bulkEraseType));
+                bulk_erase_config_memory(  (ptrInfo->eraseOpts).bulkEraseType);
                 reset_device();
 
                 init_HVP_mode();
-                bulk_erase_data_memory(    (ptrInfo->eraseOpts).bulkEraseType));
+                bulk_erase_data_memory(    (ptrInfo->eraseOpts).bulkEraseType);
                 reset_device();
 			}
 		}
