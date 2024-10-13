@@ -148,11 +148,14 @@ int execute_programming_task( ProgramInfo * ptrInfo) {
 				init_HVP_mode();
                 bulk_erase_program_memory( (ptrInfo->eraseOpts).bulkEraseType));
                 reset_device();
+
                 init_HVP_mode();
                 bulk_erase_config_memory(  (ptrInfo->eraseOpts).bulkEraseType));
                 reset_device();
+
                 init_HVP_mode();
                 bulk_erase_data_memory(    (ptrInfo->eraseOpts).bulkEraseType));
+                reset_device();
 			}
 		}
 
@@ -200,8 +203,8 @@ int execute_programming_task( ProgramInfo * ptrInfo) {
 				init_HVP_mode();
 
                 switch ( operation) {
-                    case 'r': read_data_memory(  &(ptrInfo->buffer   )); break;
-    				case 'p': write_data_memory( &(ptrInfo->buffer   )); break;                 
+                    case 'r': read_data_memory(  &(ptrInfo->buffer)); break;
+    				case 'p': write_data_memory( &(ptrInfo->buffer)); break;                 
 				}
 				
 				reset_device();
