@@ -10,8 +10,6 @@
 
 
 static void read_program_memory( DeviceBuffer * buffer) {
-    printf( "\n\t[read program memory]");
-
     ArrayBancoMemoria * array = &(buffer->program);
     BancoMemoria * bank = &(array->banks[0]);
 
@@ -24,12 +22,9 @@ static void read_program_memory( DeviceBuffer * buffer) {
         bank->data[i] = execute_command( LEER_DATO_MEM_PROGRAMA);
         execute_command( INCREMENTA_DIRECCION);
     }
-
 }
 
 static void read_data_memory( DeviceBuffer * buffer) {
-    printf( "\n\t[read data memory]");
-
     ArrayBancoMemoria * array = &(buffer->data);
     BancoMemoria * bank = &(array->banks[0]);
 
@@ -45,8 +40,6 @@ static void read_data_memory( DeviceBuffer * buffer) {
 }
 
 static void read_config_memory( DeviceBuffer * buffer) {
-    printf( "\n\t[read config memory]");
-
     ArrayLocalidadMemoria * configuration = &(buffer->configuration);
 
     LocalidadMemoria * location;
@@ -60,8 +53,7 @@ static void read_config_memory( DeviceBuffer * buffer) {
 
         if( location->read == 1) {
             location->value = execute_command( LEER_DATO_MEM_PROGRAMA);
-			//printf( "\n\tlocation %d, value: %d", i, location->value);
-			
+
         } else {
 			location->value = 0x3FFF;
         }
@@ -71,8 +63,6 @@ static void read_config_memory( DeviceBuffer * buffer) {
 }
 
 static void write_program_memory( DeviceBuffer * bufferPtr, unsigned short bulkEraseType) {
-	printf( "\n\t[write program memory]");
-
     ArrayBancoMemoria * array = &(bufferPtr->program);
     BancoMemoria * bank = &(array->banks[0]);
 
@@ -91,8 +81,6 @@ static void write_program_memory( DeviceBuffer * bufferPtr, unsigned short bulkE
 }
 
 static void write_data_memory( DeviceBuffer * bufferPtr, unsigned short bulkEraseType) {
-	printf( "\n\t[write data memory]");
-
     ArrayBancoMemoria * array = &(bufferPtr->data);
     BancoMemoria * bank = &(array->banks[0]);
 
@@ -111,8 +99,6 @@ static void write_data_memory( DeviceBuffer * bufferPtr, unsigned short bulkEras
 }
 
 static void write_config_memory( DeviceBuffer * bufferPtr) {
-	printf( "\n\t[write config memory]");
-
 	ArrayLocalidadMemoria * configuration = &(bufferPtr->configuration);
 
     LocalidadMemoria * location;
@@ -122,14 +108,11 @@ static void write_config_memory( DeviceBuffer * bufferPtr) {
     execute_command( CARGA_DATO_MEM_CONFIG);
 
     for ( i = 0; i < 7; ++i) {
-		//printf( "\n\t\tinc addr");
         execute_command( INCREMENTA_DIRECCION);
     }
 	
     location = &(configuration->locations[7]);
     dato = location->value;
-	
-	//printf( "\n\t\tdata(write): %d", dato);
 	
     execute_command( CARGA_DATO_MEM_PROGRAMA);
     execute_command( INICIA_CICLO_ERASE_PROGRAM);
@@ -145,7 +128,6 @@ int reset_programmer() {
 
     return release_driver();
 }
-
 
 int execute_programming_task( ProgramInfo * ptrInfo) {
 
@@ -163,7 +145,24 @@ int execute_programming_task( ProgramInfo * ptrInfo) {
 	Arreglo voltages = ptrInfo->voltages;
 
 	for ( idxVoltage = 0; idxVoltage < voltages.length; ++idxVoltage) {
+		// memoria de configuracion
 		
+		for ( idxArea = 0; idxArea < areas.length ; ++idxArea) {
+			
+			if ( areas.values[ idxArea] == 'c') {
+				
+				init_HVP_mode();
+				
+                switch ( operation) {
+                    case 'r': read_config_memory(  &(ptrInfo->buffer)); break;
+                    case 'p': write_config_memory( &(ptrInfo->buffer)); break;
+                    case 'e': disable_code_protection( &(ptrInfo->eraseOpts)); break;
+				}
+				
+				reset_device();
+			}
+		}
+
 		// memoria de programa
 		
 		for ( idxArea = 0; idxArea < areas.length ; ++idxArea) {
@@ -175,7 +174,6 @@ int execute_programming_task( ProgramInfo * ptrInfo) {
 				switch ( operation) {
                     case 'r': read_program_memory(  &(ptrInfo->buffer)); break;
                     case 'p': write_program_memory( &(ptrInfo->buffer), (ptrInfo->eraseOpts).bulkEraseType); break;
-                    case 'e': disable_code_protection( &(ptrInfo->eraseOpts)); break;
 				}
 				
 				reset_device();
@@ -193,23 +191,6 @@ int execute_programming_task( ProgramInfo * ptrInfo) {
                 switch ( operation) {
                     case 'r': read_data_memory(  &(ptrInfo->buffer   )); break;
     				case 'p': write_data_memory( &(ptrInfo->buffer   ), (ptrInfo->eraseOpts).bulkEraseType); break;                 
-				}
-				
-				reset_device();
-			}
-		}
-		
-		// memoria de configuracion
-		
-		for ( idxArea = 0; idxArea < areas.length ; ++idxArea) {
-			
-			if ( areas.values[ idxArea] == 'c') {
-				
-				init_HVP_mode();
-				
-                switch ( operation) {
-                    case 'r': read_config_memory(  &(ptrInfo->buffer)); break;
-                    case 'p': write_config_memory( &(ptrInfo->buffer)); break;
 				}
 				
 				reset_device();

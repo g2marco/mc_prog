@@ -14,7 +14,6 @@ static void bulk_erase_type_1( unsigned char memoryArea) {
     unsigned short dato;
     
     if ( memoryArea == 'p') { 
-        printf( "\n\t[bulk erase program 1]");
         // load 1's
         dato = 0x3FFF;
         execute_command( CARGA_DATO_MEM_PROGRAMA);
@@ -24,7 +23,6 @@ static void bulk_erase_type_1( unsigned char memoryArea) {
     }
 
     if ( memoryArea == 'd') {
-        printf( "\n\t[bulk erase data 1]");
         // bulk erase
         execute_command( BULK_ERASE_MEM_DATOS);
     }
@@ -39,7 +37,6 @@ static void bulk_erase_type_2( unsigned char memoryArea) {
     unsigned short dato;
     
     if ( memoryArea == 'p') { 
-        printf( "\n\t[bulk erase program 2]");
         // load 1's
         dato = 0x3FFF;
         execute_command( CARGA_DATO_MEM_PROGRAMA);
@@ -54,7 +51,6 @@ static void bulk_erase_type_2( unsigned char memoryArea) {
     }
 
     if ( memoryArea == 'd') {
-        printf( "\n\t[bulk erase data 2]");
         // load 1's
         dato = 0x3FFF;
         execute_command( CARGA_DATO_MEM_DATOS );
@@ -72,10 +68,14 @@ static void bulk_erase_type_2( unsigned char memoryArea) {
 /**
  *  disable code protection tipo 1
  *  
- *  devices: 
+ *  devices: PIC12F683
  */
 static void disable_code_protection_type_1( unsigned short dato) {
-    printf( "\n\t[disable cp 1]");
+    execute_command( CARGA_DATO_MEM_CONFIG  );
+    execute_command( BULK_ERASE_MEM_PROGRAMA);
+
+    execute_command( CARGA_DATO_MEM_CONFIG  );
+    execute_command( BULK_ERASE_MEM_PROGRAMA);
 }
 
 /**
@@ -84,14 +84,12 @@ static void disable_code_protection_type_1( unsigned short dato) {
  *  devices: PIC16F84A
  */
 static void disable_code_protection_type_2( unsigned short dato) {
-    printf( "\n\t[disable cp 2] dato: %d", dato);
     
     // carga palabra de configuracion
     execute_command( CARGA_DATO_MEM_CONFIG);
     unsigned int i;
 
     for( i = 0; i < 7 ; ++i) {
-        printf( "addr: %d", (i + 1));
         execute_command( INCREMENTA_DIRECCION);
     }
     
