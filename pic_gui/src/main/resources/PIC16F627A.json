@@ -11,13 +11,13 @@
         {"name": "Bank_0", "startAddress" : 0, "length":  128}
     ],
     "config": [
-        {"name":           "ID0", "address": "2000H", "read":  true, "write": false},
-        {"name":           "ID1", "address": "2001H", "read":  true, "write": false},
-        {"name":           "ID2", "address": "2002H", "read":  true, "write": false},
-        {"name":           "ID3", "address": "2003H", "read":  true, "write": false},
-        {"name":      "Reserved", "address": "2004H", "read": false, "write": false},
-        {"name":      "Reserved", "address": "2005H", "read": false, "write": false},
-        {"name":     "Device ID", "address": "2006H", "read":  true, "write": false},
-        {"name": "Configuration", "address": "2007H", "read":  true, "write":  true}
+        {"name":           "ID0", "address": 8192, "read":  true, "write": false},
+        {"name":           "ID1", "address": 8193, "read":  true, "write": false},
+        {"name":           "ID2", "address": 8194, "read":  true, "write": false},
+        {"name":           "ID3", "address": 8195, "read":  true, "write": false},
+        {"name":      "Reserved", "address": 8196, "read": false, "write": false},
+        {"name":      "Reserved", "address": 8197, "read": false, "write": false},
+        {"name":     "Device ID", "address": 8198, "read":  true, "write": false},
+        {"name": "Configuration", "address": 8199, "read":  true, "write":  true}
     ]
 }
