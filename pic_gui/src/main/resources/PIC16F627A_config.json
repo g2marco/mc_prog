@@ -1,58 +1,66 @@
 {
 	"items" : [
         {
-            "id":  "CP", "prompt": "Memoria de Programa",
+            "id":  "nCP", "prompt": "Program Memory Code Protection",
+            "bits": [13],
             "options": [
-                {"label": "No Protegida", "value": "1"},
-                {"label":    "Protegida", "value": "0"}
+                {"label": "Disabled", "value": "1"},
+                {"label":  "Enabled", "value": "0"}
             ]
         }, {
-            "id": "CPD", "prompt": "Protección de Memoria de Datos",
+            "id": "nCPD", "prompt": "Data Memory Code Protectio",
+            "bits": [8],
             "options":[
-                {"label": "No Protegida", "value": "1"},
-                {"label": "   Protegida", "value": "0"}
+                {"label": "Disabled", "value": "1"},
+                {"label":  "Enabled", "value": "0"}
             ]
         }, {
-            "id": "LVP", "prompt": "Programación de Bajo Voltaje",
+            "id": "LVP", "prompt": "Low Voltage Programming",
+            "bits": [7],
             "options": [
-                {"label": "RB4/PGM es entrada/salida digital", "value": "0"},
-                {"label":         "RB4/PGM es PGM (LVP mode)", "value": "1"}
+                {"label": "Disabled [RB4 is digital I/O]", "value": "0"},
+                {"label":          "Enabled [RB4 is PGM]", "value": "1"}
             ]
         }, {
             "id": "BOREN", "prompt": "Brown-out Reset",
+            "bits": [6],
             "options": [
-                {"label": "No Habilitado", "value": "0"},
-                {"label":    "Habilitado", "value": "1"}
+                {"label": "Disabled", "value": "0"},
+                {"label":  "Enabled", "value": "1"}
             ]
         }, {
-            "id": "MCLRE", "prompt": "Master Clear",
+            "id": "MCLRE", "prompt": "GP3/MCLR pin function",
+            "bits": [5],
             "options": [
-                {"label": "RA5/MCLR es entrada/salida digital", "value": "0"},
-                {"label":                   "RA5/MCLR es MCLR", "value": "1"}
+                {"label": "MCLR", "value": "1"},
+                {"label": "Digital input, MCLR tied to VDD", "value": "0"}
             ]
         }, {
-            "id": "PWRTE", "prompt": "Power-up Timer",
+            "id": "nPWRTE", "prompt": "Power-up Timer",
+            "bits": [3],
             "options": [
-                {"label": "No Habilitado", "value": "1"},
-                {"label":    "Habilitado", "value": "0"}
+                {"label": "Disabled", "value": "1"},
+                {"label": "Enabled" , "value": "0"}
             ]
         }, {
-            "id": "WDTR", "prompt": "Watchdog Timer",
+            "id": "WDTE", "prompt": "Watchdog Timer",
+            "bits": [2],
             "options": [
-                {"label": "No Habilitado", "value": "0"},
-                {"label":    "Habilitado", "value": "1"}
+                {"label": "Disabled", "value": "0"},
+                {"label":  "Enabled", "value": "1"}
             ]
         }, {
-            "id": "FOSC", "prompt" : "Selección de Oscilador",
+            "id": "FOSC", "prompt" : "Oscillator",
+            "bits": [4, 1, 0],
             "options": [
-                {"label": "RC     RA6/OSC2/CLKOUT es CLOCKOUT, RA7/OSC1/CLKIN con   RC  ", "value": "111"}, 
-                {"label": "RC     RA6/OSC2/CLKOUT es E/S     , RA7/OSC1/CLKIN con   RC  ", "value": "110"},
-                {"label": "INTOSC RA6/OSC2/CLKOUT es CLOCKOUT, RA7/OSC1/CLKIN es   E/S  ", "value": "101"},
-                {"label": "INTOSC RA6/OSC2/CLKOUT es E/S     , RA7/OSC1/CLKIN es   E/S  ", "value": "100"},
-                {"label": "EC     RA6/OSC2/CLKOUT es E/S     , RA7/OSC1/CLKIN es CLKIN  ", "value": "011"},
-                {"label": "HS     RA6/OSC2/CLKOUT y RA7/OSC1/CLKIN con cristal/resonador HS", "value": "010"},
-                {"label": "XT     RA6/OSC2/CLKOUT y RA7/OSC1/CLKIN con cristal/resonador", "value": "001"},
-                {"label": "LP     RA6/OSC2/CLKOUT y RA7/OSC1/CLKIN con cristal LP       ", "value": "000"}
+                {"label": "[RC      ] CLKOUT on RA6/OSC2/CLKOUT, RC    on RA7/OSC1/CLKIN",      "value": "111"},
+                {"label": "[RCIO    ] I/O    on RA6/OSC2/CLKOUT, RC    on RA7/OSC1/CLKIN",      "value": "110"}, 
+                {"label": "[INTOSC  ] CLKOUT on RA6/OSC2/CLKOUT, I/O   on RA7/OSC1/CLKIN",      "value": "101"}, 
+                {"label": "[INTOSCIO] I/O    on RA6/OSC2/CLKOUT, I/O   on RA7/OSC1/CLKIN",      "value": "100"}, 
+                {"label": "[EXTCLK  ] I/O    on RA6/OSC2/CLKOUT, I/O   on RA7/OSC1/CLKIN",      "value": "011"}, 
+                {"label": "[HS      ] Crystal/resonator on RA6/OSC2/CLKOUT and RA7/OSC1/CLKIN", "value": "010"}, 
+                {"label": "[XT      ] Crystal/resonator on RA6/OSC2/CLKOUT and RA7/OSC1/CLKIN", "value": "001"},   
+                {"label": "[LP      ] Low-power crystal on Ra6/OSC2/CLKOUT and RA7/OSC1/CLKIN", "value": "000"}
             ]
         }
     ]
