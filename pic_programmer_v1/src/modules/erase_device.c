@@ -135,8 +135,10 @@ static void disable_code_protection_type_2( unsigned short dato) {
  *  devices: PIC16F874A
  */
 static void disable_code_protection_type_3( unsigned short dato) {
-    execute_command( CARGA_DATO_MEM_PROGRAMA);
-    execute_command( 0x1F, COMANDO_PROGRAMACION, 0);
+    dato = 0x3FFF;
+    execute_command( CARGA_DATO_MEM_CONFIG);
+    execute_command( 0x1F, COMANDO_PROGRAMACION, 0);        // chip erase
+    execute_command( 0x17, COMANDO_SIMPLE, 0);              // end programming
 }
 
 void disable_code_protection( EraseOpts * eraseOpts) {
