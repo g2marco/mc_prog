@@ -40,7 +40,7 @@ static void bulk_erase_type_1( unsigned char memoryArea) {
 /**
  *  bulk erase tipo 2
  *  
- *  devices: PIC16F84A
+ *  devices: PIC16F84A, PIC16F874A
  */
 static void bulk_erase_type_2( unsigned char memoryArea) {
     unsigned short dato;
@@ -127,13 +127,23 @@ static void disable_code_protection_type_2( unsigned short dato) {
 
     execute_command( 0x01, COMANDO_SIMPLE, 0);
     execute_command( 0x07, COMANDO_SIMPLE, 0);
+}
 
+/**
+ *  disable code protection tipo 3
+ *
+ *  devices: PIC16F874A
+ */
+static void disable_code_protection_type_3( unsigned short dato) {
+    execute_command( CARGA_DATO_MEM_PROGRAMA);
+    execute_command( 0x1F, COMANDO_SIMPLE, 0);
 }
 
 void disable_code_protection( EraseOpts * eraseOpts) {
     switch( eraseOpts->protectDsblType) {
         case 1: disable_code_protection_type_1( eraseOpts->protectDsblData);
         case 2: disable_code_protection_type_2( eraseOpts->protectDsblData);
+        case 3: disable_code_protection_type_3( eraseOpts->protectDsblData);
     }
 }
 
