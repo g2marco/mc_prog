@@ -77,44 +77,15 @@ static void write_program_memory( DeviceBuffer * bufferPtr) {
     }
     */
     
-    i = 0;
-    do {
-        dato = bank->data[ i++];
-        execute_command( CARGA_DATO_MEM_PROGRAMA);      // 1
-        
-        execute_command( INCREMENTA_DIRECCION);
-        dato = bank->data[ i++];
-        execute_command( CARGA_DATO_MEM_PROGRAMA);      // 2
+    for ( i = 0; i < bank->length; ++i) {
+        dato = bank->data[i];
+        execute_command( CARGA_DATO_MEM_PROGRAMA);
+
+        execute_command( 0x18, COMANDO_PROGRAMACION, 0);        // begin programming only
+        execute_command( 0x17, COMANDO_SIMPLE, 0);              // end programming
 
         execute_command( INCREMENTA_DIRECCION);
-        dato = bank->data[ i++];
-        execute_command( CARGA_DATO_MEM_PROGRAMA);      // 3
-        
-        execute_command( INCREMENTA_DIRECCION);
-        dato = bank->data[ i++];
-        execute_command( CARGA_DATO_MEM_PROGRAMA);      // 4
-        
-
-        execute_command( INCREMENTA_DIRECCION);
-        dato = bank->data[ i++];
-        execute_command( CARGA_DATO_MEM_PROGRAMA);      // 5
-
-        execute_command( INCREMENTA_DIRECCION);
-        dato = bank->data[ i++];
-        execute_command( CARGA_DATO_MEM_PROGRAMA);      // 6
-
-        execute_command( INCREMENTA_DIRECCION);
-        dato = bank->data[ i++];
-        execute_command( CARGA_DATO_MEM_PROGRAMA);      // 7
-
-        execute_command( INCREMENTA_DIRECCION);
-        dato = bank->data[ i++];
-        execute_command( CARGA_DATO_MEM_PROGRAMA);      // 8
-    
-        execute_command( INICIA_CICLO_ERASE_PROGRAM);
-        execute_command( INCREMENTA_DIRECCION);
-
-    } while( i < bank->length);
+    }
 }
 
 static void write_data_memory( DeviceBuffer * bufferPtr) {
@@ -134,44 +105,16 @@ static void write_data_memory( DeviceBuffer * bufferPtr) {
     }
     */
 
-    i = 0;
-    do {
-        dato = bank->data[ i++];
-        execute_command( CARGA_DATO_MEM_DATOS);     // 1
-
-        execute_command( INCREMENTA_DIRECCION);
-        dato = bank->data[ i++];
-        execute_command( CARGA_DATO_MEM_DATOS);     // 2
-
-        execute_command( INCREMENTA_DIRECCION);
-        dato = bank->data[ i++];
-        execute_command( CARGA_DATO_MEM_DATOS);     // 3
-
-        execute_command( INCREMENTA_DIRECCION);
-        dato = bank->data[ i++];
-        execute_command( CARGA_DATO_MEM_DATOS);     // 4
-
-
-        execute_command( INCREMENTA_DIRECCION);
-        dato = bank->data[ i++];
-        execute_command( CARGA_DATO_MEM_DATOS);     // 5
-
-        execute_command( INCREMENTA_DIRECCION);
-        dato = bank->data[ i++];
-        execute_command( CARGA_DATO_MEM_DATOS);     // 6
+    for ( i = 0; i < bank->length; ++i) {        
+        dato = bank->data[i];
+        execute_command( CARGA_DATO_MEM_DATOS);
         
-        execute_command( INCREMENTA_DIRECCION);
-        dato = bank->data[ i++];
-        execute_command( CARGA_DATO_MEM_DATOS);     // 7
+        execute_command( 0x18, COMANDO_PROGRAMACION, 0);        // begin programming only
+        execute_command( 0x17, COMANDO_SIMPLE, 0);              // end programming
 
         execute_command( INCREMENTA_DIRECCION);
-        dato = bank->data[ i++];
-        execute_command( CARGA_DATO_MEM_DATOS);     // 8
+    }
 
-        execute_command( INICIA_CICLO_ERASE_PROGRAM);
-        execute_command( INCREMENTA_DIRECCION);
-
-    } while( i < bank->length);
 }
 
 static void write_config_memory( DeviceBuffer * bufferPtr) {
@@ -190,8 +133,18 @@ static void write_config_memory( DeviceBuffer * bufferPtr) {
     location = &(configuration->locations[7]);
     dato = location->value;
 	
+    /*
     execute_command( CARGA_DATO_MEM_PROGRAMA);
     execute_command( INICIA_CICLO_ERASE_PROGRAM);
+    */
+
+    //
+    execute_command( CARGA_DATO_MEM_PROGRAMA);
+    
+    execute_command( 0x18, COMANDO_PROGRAMACION, 0);        // begin programming only
+    execute_command( 0x17, COMANDO_SIMPLE, 0);              // end programming
+    //
+
 }
 
 int reset_programmer() {
