@@ -138,7 +138,8 @@ static void disable_code_protection_type_3( unsigned short dato) {
     dato = 0x3FFF;
     execute_command( CARGA_DATO_MEM_CONFIG);
     execute_command( 0x1F, COMANDO_PROGRAMACION, 0);        // chip erase
-    execute_command( 0x17, COMANDO_SIMPLE, 0);              // end programming
+    
+    wait_for( 10000);
 }
 
 void disable_code_protection( EraseOpts * eraseOpts) {
