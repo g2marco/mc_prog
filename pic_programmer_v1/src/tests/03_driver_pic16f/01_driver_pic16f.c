@@ -58,16 +58,16 @@ void execute_init_reset_loop() {
 void execute_comman_loop() {
     int dato;
 
-    init_HVP_mode();
-    wait_for( 800);
-    
     while( running == 1) {
+        init_HVP_mode();
+        wait_for( 800);
+
         dato = 0xFFFF;
         execute_command( 0x02, COMANDO_ESCRITURA_DATO, ((dato << 1) & 0x7FFE));
-    }
 
-    reset_device();
-    wait_for( 4000);
+        reset_device();
+        wait_for( 4000);
+    }
 }
 
 typedef struct {
