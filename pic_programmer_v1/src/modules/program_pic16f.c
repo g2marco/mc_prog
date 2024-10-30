@@ -178,7 +178,6 @@ int execute_programming_task( ProgramInfo * ptrInfo) {
         for ( idxArea = 0; idxArea < areas.length ; ++idxArea) {
 			
 			if ( areas.values[ idxArea] == 'c' && operation == 'p') {
-			/*
             	init_HVP_mode();
                 bulk_erase_program_memory( (ptrInfo->eraseOpts).bulkEraseType);
                 reset_device();
@@ -190,18 +189,6 @@ int execute_programming_task( ProgramInfo * ptrInfo) {
                 init_HVP_mode();
                 bulk_erase_data_memory(    (ptrInfo->eraseOpts).bulkEraseType);
                 reset_device();
-            */
-
-            //
-            init_HVP_mode();
-
-            int dato = 0x3FFF;
-            execute_command( CARGA_DATO_MEM_CONFIG);
-            execute_command( 0x1F, COMANDO_PROGRAMACION, 0);        // chip erase
-            execute_command( 0x17, COMANDO_SIMPLE, 0);              // end programming
-            
-            reset_device();
-            //
 			}
 		}
 
