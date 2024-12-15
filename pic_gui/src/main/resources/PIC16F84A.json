@@ -1,8 +1,9 @@
 {
-    "erase": {
-        "bulkEraseType": 2,
-        "cpDisableType": 2,
-        "cpDisableWord": "11 1111 1111 1001"
+    "options": {
+		"programmingType": 0,
+        "bulkEraseType"  : 2,
+        "cpDisableType"  : 2,
+        "cpDisableWord" : "11 1111 1111 1001"
     },
 	"program": [
 		{"name": "Bank_0", "startAddress" : 0, "length": 1024}

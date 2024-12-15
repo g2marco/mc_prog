@@ -3,7 +3,7 @@ package mx.com.neogen.pic.beans.metadata;
 
 public class DeviceBufferMetadata {
     
-    private EraseOptions erase;
+    private ProgrammingOptions options;
     private BankMetadata[] program;
     private BankMetadata[] data;
     private LocationMetadata[] config;
@@ -14,12 +14,12 @@ public class DeviceBufferMetadata {
     }
 
     
-    public EraseOptions getErase() {
-        return erase;
+    public ProgrammingOptions getOptions() {
+        return options;
     }
 
-    public void setErase(EraseOptions erase) {
-        this.erase = erase;
+    public void setOptions( ProgrammingOptions options) {
+        this.options = options;
     }
     
     public BankMetadata[] getProgram() {

@@ -6,7 +6,7 @@
 # exit when any error
 set -e
 
-export JAVA_HOME=/home/g2marco/software/java/jdk-21.0.2
+export JAVA_HOME=/home/g2marco/software/java/jdk-23.0.1
 export PATH=$PATH:$JAVA_HOME/bin
 
 PROJECT_DIR=/home/g2marco/work/c_code/mc_prog

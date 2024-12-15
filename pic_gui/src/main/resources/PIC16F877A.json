@@ -1,15 +1,15 @@
 {
 	"options": {
-        "programmingType": 0,
-        "bulkEraseType"  : 1,
-        "cpDisableType"  : 1,
+        "programmingType": 1,
+        "bulkEraseType"  : 2,
+        "cpDisableType"  : 3,
         "cpDisableWord"  : "00 0000 0000 0000"
     },
     "program": [
-        {"name": "Bank_0", "startAddress" : 0, "length": 1024}
+        {"name": "Bank_0", "startAddress" : 0, "length": 8192}
     ],
     "data": [
-        {"name": "Bank_0", "startAddress" : 0, "length":  128}
+        {"name": "Bank_0", "startAddress" : 0, "length":  256}
     ],
     "config": [
         {"name":           "ID0", "address": 8192, "read":  true, "write": false},

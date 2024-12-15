@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
 <properties>
-<comment>Propiedades de aplicacion [17/09/2024 22:19:577]</comment>
+<comment>Propiedades de aplicacion [02/12/2024 11:38:247]</comment>
 <entry key="app_context">neogen_service</entry>
 <entry key="app_port">9191</entry>
 <entry key="client_hostname">localhost</entry>
 <entry key="serverPort">9734</entry>
 <entry key="response_path">/home/g2marco/work/tmp</entry>
 <entry key="allow_origin">*</entry>
-<entry key="serverHost">192.168.1.71</entry>
+<entry key="serverHost">192.168.1.75</entry>
 </properties>

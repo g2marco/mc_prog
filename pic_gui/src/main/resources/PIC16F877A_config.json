@@ -1,0 +1,72 @@
+{
+	"items" : [
+        {
+            "id":  "CP", "prompt": "Program Memory Code Protection",
+            "bits": [13],
+            "options": [
+                {"label": "Disabled", "value": "1"},
+                {"label":  "Enabled", "value": "0"}
+            ]
+        }, {
+            "id":  "DEBUG", "prompt": "Background Debugger Mode",
+            "bits": [11],
+            "options": [
+                {"label": "Disabled", "value": "1"},
+                {"label":  "Enabled", "value": "0"}
+            ]
+        }, {
+            "id":  "WRT", "prompt": "Flash Memory Write Protection",
+            "bits": [10, 9],
+            "options": [
+                {"label": "Disabled", "value": "11"},
+                {"label": "Enabled for 0000H-00FFH, 0100H-1FFFH controlled by EECON", "value": "10"},
+                {"label": "Enabled for 0000H-07FFH, 0800H-1FFFH controlled by EECON", "value": "01"},
+                {"label": "Enabled for 0000H-FFFFH, 1000H-1FFFH controlled by EECON", "value": "00"}
+            ]
+        }, {
+            "id": "nCPD", "prompt": "Data Memory Code Protection",
+            "bits": [8],
+            "options":[
+                {"label": "Disabled", "value": "1"},
+                {"label":  "Enabled", "value": "0"}
+            ]
+        }, {
+            "id": "LVP", "prompt": "Low Voltage Programming",
+            "bits": [7],
+            "options": [
+                {"label":          "Enabled [RB3 is PGM]", "value": "1"},
+                {"label": "Disabled [RB3 is digital I/O]", "value": "0"}
+            ]
+        }, {
+            "id": "BOREN", "prompt": "Brown-out Reset",
+            "bits": [6],
+            "options": [
+                {"label": "Disabled", "value": "0"},
+                {"label":  "Enabled", "value": "1"}
+            ]
+        }, {
+            "id": "nPWRTEN", "prompt": "Power-up Timer",
+            "bits": [3],
+            "options": [
+                {"label": "Disabled", "value": "1"},
+                {"label": "Enabled" , "value": "0"}
+            ]
+        }, {
+            "id": "WDTEN", "prompt": "Watchdog Timer",
+            "bits": [2],
+            "options": [
+                {"label": "Disabled", "value": "0"},
+                {"label":  "Enabled", "value": "1"}
+            ]
+        }, {
+            "id": "FOSC", "prompt" : "Oscillator",
+            "bits": [1, 0],
+            "options": [
+                {"label": "[RC  ]", "value": "11"},
+                {"label": "[HS  ]", "value": "10"}, 
+                {"label": "[XT  ]", "value": "01"},   
+                {"label": "[LP  ]", "value": "00"}
+            ]
+        }
+    ]
+}

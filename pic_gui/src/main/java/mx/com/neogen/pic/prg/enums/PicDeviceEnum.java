@@ -22,7 +22,14 @@ public enum PicDeviceEnum {
     // PIC16F84A datasheet
     
     PIC16F84A(  "00 0101 011x xxxx"),
+   
+    // PIC16F87XA
     
+    PIC16F873A( "00 1110 0100 xxxx"),
+    PIC16F874A( "00 1110 0110 xxxx"),
+    PIC16F876A( "00 1110 0000 xxxx"),
+    PIC16F877A( "00 1110 0010 xxxx"),
+   
     // PIC16F627A datasheet
     
     PIC16F627A( "01 0000 010x xxxx"),
