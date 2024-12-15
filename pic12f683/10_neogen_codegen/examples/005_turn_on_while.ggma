@@ -1,0 +1,25 @@
+/**
+ *  One input activates the input when pressed an automatically deactivates after an specific time
+ */
+
+// input and output definition
+
+switchA is input   switch on pin GP0;
+switchB is input   switch on pin GP1;
+outputA is output         on pin GP5;
+
+// ouput function
+outputA is ON while switchB'close when switchA'rise;
+
+/**
+ *  It must be enfasised the fact that an events are not easily translate to logical functions (due to the 'state' concept)
+ *  
+ *  The following form may seem equivalent but it is only evaluate when switchA rises
+ *
+ *  output is switchB.closed when switchA'rise;
+ *
+ *  The following form is equivalent but more verbose, and the reset condition must be inverted
+ *  
+ *  output is ON  when switchA'rise,
+ *            OFF when switchB'open;
+ */

@@ -89,16 +89,19 @@ static void init_arreglo_areas( FILE * file, DeviceBuffer * buffer, Arreglo * ar
 	areas->length = indice;
 }
 
-static void init_erase_options( FILE * file, EraseOpts * eraseOpts) {
+static void init_programming_options( FILE * file, ProgrammingOpts * options) {
     fgetc( file);           // ignora signo =
-    
-    eraseOpts->bulkEraseType = read_integer( file);
+
+    options->programmingType = read_integer( file);
     fgetc( file);
 
-    eraseOpts->protectDsblType = read_integer( file);
+    options->bulkEraseType = read_integer( file);
     fgetc( file);
 
-    eraseOpts->protectDsblData = read_integer( file);
+    options->protectDsblType = read_integer( file);
+    fgetc( file);
+
+    options->protectDsblData = read_integer( file);
     fgetc( file);
 }
 
@@ -217,14 +220,17 @@ static void init_configuration_location ( int indice, FILE * file, DeviceBuffer 
 	}
 }
 
-static void write_erase_options( FILE * file, EraseOpts * eraseOpts) {
-    fprintf( file, "%d", eraseOpts->bulkEraseType  );
+static void write_programming_options( FILE * file, ProgrammingOpts * options) {
+    fprintf( file, "%d", options->programmingType  );
     fprintf( file, ",");
     
-    fprintf( file, "%d", eraseOpts->protectDsblType);
+    fprintf( file, "%d", options->bulkEraseType  );
     fprintf( file, ",");
     
-    fprintf( file, "%d", eraseOpts->protectDsblData);
+    fprintf( file, "%d", options->protectDsblType);
+    fprintf( file, ",");
+    
+    fprintf( file, "%d", options->protectDsblData);
 }
 
 static void write_device_buffer( FILE * file, DeviceBuffer * buffer) {
@@ -314,7 +320,7 @@ void read_programming_info( ProgramInfo * ptrInfo, const char * filePath) {
 			break;
 
         case 'e':
-            init_erase_options( file, &(ptrInfo->eraseOpts));
+            init_programming_options( file, &(ptrInfo->options));
             break;
 
 		case 'o':
@@ -376,7 +382,7 @@ void write_programming_info( ProgramInfo * ptrInfo, const char * filePath) {
     // opciones de borrado
 
     fprintf( file, "\ne=");
-    write_erase_options( file, &(ptrInfo->eraseOpts));
+    write_programming_options( file, &(ptrInfo->options));
 
     // buffers de memoria
 

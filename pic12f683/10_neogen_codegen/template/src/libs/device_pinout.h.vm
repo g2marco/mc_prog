@@ -1,0 +1,22 @@
+#ifndef _device_pinout_
+\#define _device_pinout_
+
+/**
+ *  Pin definition
+ */
+
+#foreach( $signal in $data.signals)
+#if( $signal.type == 'input')
+\#define config_$signal.name  TRISIO$signal.target.index = $signal.type.direction // input signal
+\#define raw_$signal.name $signal.target.name
+#end
+#end
+
+#foreach( $signal in $data.signals)
+#if( $signal.type == 'output')
+\#define config_$signal.name  TRISIO$signal.target.index = $signal.type.direction // output signal
+\#define $signal.name $signal.target.name
+#end
+#end
+
+#endif

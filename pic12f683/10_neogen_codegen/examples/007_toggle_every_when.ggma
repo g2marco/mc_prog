@@ -1,0 +1,18 @@
+/**
+ *  Example: turn on and off an output every 200 ms, only when a condition is met
+ */
+
+// input and output definition
+inputA  is input  switch  on pin GP0;
+outputA is output         on pin GP5;
+
+// ouput function
+outputA is ON for 1000'ms every 2000'ms when inputA == 0;
+
+/**
+    The action is triggered for the set condition (when), and then it runs forever
+
+    The action can be stopped when another condition stops being met (while)
+    
+    outputA is ON form 1000'ms every 2000'ms while <condition> when <condition>
+*/

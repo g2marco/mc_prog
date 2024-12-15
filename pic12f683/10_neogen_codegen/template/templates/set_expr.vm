@@ -1,0 +1,14 @@
+        #if( $section == 'switch')
+    		case $foreach.index:                // state of element index
+                
+    			break;	
+		#end
+        #if ( $section == 'default')
+             #if ( $element.conditionWhen)
+                if $element.conditionWhen {
+                    ${assignment.signal} = ${element.expression};
+                }
+            #else
+                ${assignment.signal} = ${element.expression};
+            #end
+        #end

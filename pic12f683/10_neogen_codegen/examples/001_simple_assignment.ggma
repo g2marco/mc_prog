@@ -1,0 +1,19 @@
+/**
+ *  The easiest description
+ */
+
+// input and output definition
+
+switchA is input   switch on pin GP0;
+
+outputA is output on pin GP5;
+
+// ouput function
+outputA is switchA;
+
+/**
+ * A more verbose description could be:
+ * outputA is ON when switchA is closed, OFF otherwise;
+ */
+
+ 

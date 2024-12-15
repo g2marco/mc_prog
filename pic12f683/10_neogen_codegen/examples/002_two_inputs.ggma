@@ -1,0 +1,14 @@
+/**
+ *  Output as a function of two inputs
+ */
+
+// input and output definition
+
+switchA is input   switch on pin GP0;
+switchB is input   switch on pin GP1;
+
+outputA is output on pin GP5;
+
+// output function
+outputA is not switchA and switchB;
+

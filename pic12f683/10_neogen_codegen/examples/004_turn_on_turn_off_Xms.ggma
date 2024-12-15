@@ -1,0 +1,12 @@
+/**
+ *  One input activates the input when pressed an automatically deactivates after an specific time
+ */
+
+// input and output definition
+
+switchA is input   switch on pin GP0;
+outputA is output         on pin GP5;
+
+// ouput function
+outputA is ON for 1000'ms when switchA'rise;
+

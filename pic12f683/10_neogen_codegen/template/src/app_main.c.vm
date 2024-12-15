@@ -1,0 +1,91 @@
+\#include <xc.h>
+\#include <stdbool.h>
+
+\#include "libs\device_pinout.h"
+
+/**
+ *  Every Timer2 interruption sets tick = true
+ */  
+
+bool tick;
+
+void __interrupt() general_isr( void) {
+	if (TMR2IE && TMR2IF) {
+        TMR2IF = 0;
+		tick = true;
+    }
+}
+
+/**
+ *  Inputs debouncing routines
+ */ 
+#foreach( $signal in $data.signals)
+#if( $signal.type == 'input')
+
+bool isDebouncing_${signal.target.index} = false;
+bool hasChanged_${signal.name} = false;
+unsigned char ticks_${signal.target.index} = 0;
+__bit ${signal.name}; 
+
+void debounce_input_${signal.target.index}() {
+    hasChanged_${signal.name} = false;
+
+    if( isDebouncing_${signal.target.index}) {              //  input GP${signal.target.index} is debouncing
+        if( --ticks_${signal.target.index} == 0) {          //  the number of ticks has passed
+            hasChanged_${signal.name} = (${signal.name} != raw_${signal.name});
+            // sets change flag before assign new value
+            ${signal.name} = raw_${signal.name};            //  ends debouncing
+            isDebouncing_${signal.target.index} = false;
+        }
+    
+    } else {
+        if ( raw_${signal.name} != ${signal.name}) {
+            ticks_${signal.target.index} = 100;
+            isDebouncing_${signal.target.index} = true;
+        }
+    }
+}
+#end
+#end
+
+#foreach( $assignment in $data.assignments)/**
+ *  Output control variables for $assignment.signal
+ */
+int ${assignment.signal}_state   = -1;
+int ${assignment.signal}_counter = 0;
+int ${assignment.signal}_cycle   = 0;
+#end
+
+/**
+ *  Main loop method
+ */
+
+void loop( void) {
+    if ( tick) {
+#foreach( $signal in $data.signals)
+    #if( $signal.type == 'input')
+        debounce_input_${signal.target.index}();
+    #end
+#end
+        
+    #foreach( $assignment in $data.assignments)
+        switch( ${assignment.signal}_state) {
+        #foreach( $element in $assignment.elements) 
+            #set( $section  = 'switch')
+            #set( $template = "templates/set_${element.template}.vm")
+    		#parse( $template)
+		#end
+		
+            default: 							// no state
+        #foreach( $element in $assignment.elements) 
+            #set( $section = 'default')
+            #set( $template = "templates/set_${element.template}.vm")
+    		#parse( $template)
+		#end
+        }
+    #end
+
+        tick = false;
+    }
+}
+

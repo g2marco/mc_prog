@@ -1,0 +1,28 @@
+        #if( $section == 'switch')
+    		case $foreach.index:                // state of element index
+    		    if( ${assignment.signal}_cycle == 0) {
+                    ${assignment.signal}_counter = $element.conditionFor;
+                    ${assignment.signal}_cycle = $element.conditionEvery;
+                    ${assignment.signal} = ${element.expression};
+                }
+
+                if( ${assignment.signal} == ${element.expression} && ${assignment.signal}_counter == 0) {
+    				${assignment.signal} = !${assignment.signal};
+    			}
+                
+                --${assignment.signal}_counter;
+                --${assignment.signal}_cycle;
+			
+    			break;
+		#end
+		#if( $section == 'default')
+            #if ( $element.conditionWhen)
+                if $element.conditionWhen {
+                    ${assignment.signal}_state = ${foreach.index};
+                    ${assignment.signal} = ${element.expression};
+                }
+            #else
+                ${assignment.signal}_state = ${foreach.index};
+    			${assignment.signal} = ${element.expression};
+            #end
+		#end

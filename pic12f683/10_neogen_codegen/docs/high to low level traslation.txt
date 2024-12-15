@@ -1,0 +1,16 @@
+traduccion de sentencias de alto nivel a bajo nivel
+
+1) construccion de arboles para cada expresion
+  - La construccion de estos arboles de sintaxis permitiran la traduccion
+	de cada elemento dentro del arbol a una o mas sentencias de bajo 
+	nivel de una forma neutra (independiente de la implementacion)
+	
+2) traduccion de cada elemento de arbol a expresiones de bajo nivel
+  - Se provee una implementacion generica por default pero es posible
+	proveer cualquier implementacion o redefinir cualquier punto de
+	la implementacion por default
+
+3) ambiente de trabajo del codigo de bajo nivel
+  - El codigo de bajo nivel se ejecuta dentro de un ambiente de trabajo
+	con ciertas prestaciones y ciertas restricciones
+	

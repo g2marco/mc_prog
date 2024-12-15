@@ -1,0 +1,74 @@
+// general form for signal evaluation
+
+>> signal is {set_expression} [while {reset_condition} | for XX [ms]] when {set_condition}; 
+
+	- when set_condition is met, set_expression is evaluated and the value is assigned to the signal
+	- if while clausule is present, signal waits for reset_condition is met in order to toggle its value 
+	- if for clausule is present, signal waits for XX ms in order to toggle its value
+		reset_condition = (--ticks_signal == 00)
+
+- General form:
+	signal is {set_expresion} [reset_clausule {reset_condition}] when (set_condition}
+
+
+// c-language translation
+	
+	
+	// declarations
+	
+	#foreach( signal in signals) 
+		int {signal.name}_state = -1;
+		int {signal.name}_counter = 0;
+		. . .
+	#end
+	
+	
+	// main loop
+
+	#foreach( assigment in assignments) 
+	
+	switch( {signal.name}_state) {
+		#foreach( element in elements) 
+	
+		case {element_index}: 				// element
+			
+			#if ( reset_clausule == 'while')
+				if reset_condition {
+					{signal.name}_state = -1;
+					{signal.name} = ~{signal.name};
+				}
+			#end
+			#if ( reset_clausule == 'for')
+				if( --{signal.name}_counter == 0) {
+					{signal.name}_state = -1;
+					{signal.name} = ~{signal.name};
+				}
+			#end
+			
+			break;
+		
+		#end
+		
+		default: 							// no state
+			#foreach( element in elements) 
+	
+			if {set_condition} {
+			
+				#if ( reset_clausule == 'while')
+					{signal.name}_state = {element_index};
+				#end
+				#if ( reset_clausule == 'for')
+					{signal.name}_state = {element_index};
+					{signal.name}_counter = XX;
+				#end
+				
+				{signal_name} = {set_expression};
+			}
+			
+			#end
+	}
+
+	#end
+
+
+

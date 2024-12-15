@@ -1,0 +1,25 @@
+\#include <xc.h>
+\#include "libs\device_setup.h"
+
+extern void loop( void);
+#foreach( $signal in $data.signals)
+#if( $signal.type == 'input')
+extern __bit ${signal.name}; 
+#end
+#end
+
+void main( void) {
+	setup();
+    
+    interruptions();
+    
+    #foreach( $signal in $data.signals)
+    #if( $signal.type == 'input')
+    ${signal.name} = 1; 
+    #end
+    #end
+    
+	while( 1) {
+	    loop();
+	}
+}

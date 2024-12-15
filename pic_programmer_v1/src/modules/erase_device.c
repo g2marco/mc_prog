@@ -142,11 +142,11 @@ static void disable_code_protection_type_3( unsigned short dato) {
     wait_for( 10000);
 }
 
-void disable_code_protection( EraseOpts * eraseOpts) {
-    switch( eraseOpts->protectDsblType) {
-        case 1: disable_code_protection_type_1( eraseOpts->protectDsblData);
-        case 2: disable_code_protection_type_2( eraseOpts->protectDsblData);
-        case 3: disable_code_protection_type_3( eraseOpts->protectDsblData);
+void disable_code_protection( ProgrammingOpts * options) {
+    switch( options->protectDsblType) {
+        case 1: disable_code_protection_type_1( options->protectDsblData);
+        case 2: disable_code_protection_type_2( options->protectDsblData);
+        case 3: disable_code_protection_type_3( options->protectDsblData);
     }
 }
 

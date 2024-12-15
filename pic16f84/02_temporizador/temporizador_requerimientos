@@ -1,0 +1,55 @@
+# Proyecto: Temporizador Electrónico
+
+
+
+### Objetivo
+
+Activar una carga por un tiempo preestablecido
+
+
+
+### Requerimientos
+
+1. Se contará con un botón de inicio y un botón de paro, distinguibles sin lugar a dudas.
+
+   - Inicialmente (estado desocupado), se muestra el valor 00 : 00, de forma intermitente (intermitencia corta)
+
+   - Al activar el botón de inicio se mostrara el tiempo inicial de forma intermitente (estado preparado). Si el botón de inicio no se pulsa nuevamente dentro de un lapso de 10 segundos, se regresa al estado desocupado
+
+   - Al activar nuevamente el botón de inicio, se activará la carga y se iniciará una cuenta regresiva (estado de ejecución)
+
+   - Pulsar el botón de inicio durante el estado de ejecución no tendrá ningún efecto, por el contrario, pulsar el botón de paro, desactivará la carga inmediatamente y detendrá el tiempo, quedando de forma intermitente larga ( estado de pausa)
+
+   - El estado de pausa, quedará registrado en el dispositivo, incluso este es apagado
+
+   - Para salir del estado de pausa, basta con pulsar nuevamente el botón de inicio (estado preparado, intermitencia corta) y nuevamente el botón de inicio (estado de ejecución) dentro de un lapso no mayor a 10 segundos. Caso contrario, se regresará nuevamente al estado de pausa
+   - Al llegar el tiempo a ceros, se desactivará la carga, se activará un mecanismo de alarma que notifique el final de la temporización, regresando al estado desocupado
+
+2. El tiempo que la carga es activada puede ser modificado por el usuario
+   - El tiempo se indica en el formato: minutos (0-59) : segundos (0-59) 
+   - El mínimo tiempo de activación es de  0 minutos y 5 segundos
+   - El máximo tiempo de activación es 59 minutos : 59 segundos
+   - Una vez configurado un valor, este queda registrado como el nuevo tiempo por default. El primer valor por default es de 01:00
+
+
+
+### Mecanismos de seguridad
+
+1.  Máximo tiempo acumulado
+   - La carga no podrá activarse por más de MMMM:SS acumulados dentro de un periodo de YY horas
+
+2. Detección de corriente de carga
+
+   - Al activarse la carga debe validarse que exista una corriente de carga, de lo contrario debe activarse un mecanismo de alarma (low level error).
+
+   - Esta situación podría deberse a causas tales como:
+
+     - La fuente de energía para la carga no está conectada, no está correctamente conectada la carga, la carga esta descompuesta o simplemente no hay energía
+     - Un fallo en el mecanismo de activación de la carga
+
+     Unicamente el segundo caso, el problema cae dentro de la responsabilidad del sistema. Para detectar esta situación se contará con un mecanismo que permita saber si el dispositivo de activación de la carga está funcionando correctamente
+
+   - Al desactivarse la carga debe validarse que deje de existir una corriente de carga, de lo contrario debe activarse un mecanismo redundante de protección que desconecte la carga. En caso de que tal mecanismo también falle, debe activarse un mecanismo de alarma (error crítico) .
+
+   - Cada dispositivo de activación (normal y redundante) deberán contar con un mecanismo que brinde información sobre su correcta activación / desactivación. Aunado con la detección de corriente de carga, ambos mecanismos servirán para determinar el punto donde se presenta la falla
+

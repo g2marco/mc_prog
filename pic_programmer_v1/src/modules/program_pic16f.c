@@ -26,7 +26,7 @@ static void read_program_memory( DeviceBuffer * buffer) {
 
 static void read_data_memory( DeviceBuffer * buffer) {
     ArrayBancoMemoria * array = &(buffer->data);
-    BancoMemoria * bank = &(array->banks[0]);
+    BancoMemoria * bank = &( array->banks[0]);
 
     unsigned short dato = 0x0000;
     unsigned int i;
@@ -34,7 +34,7 @@ static void read_data_memory( DeviceBuffer * buffer) {
     execute_command( CARGA_DATO_MEM_DATOS);
 
     for ( i = 0; i < bank->length ; ++i) {
-        bank->data[i] = execute_command( LEER_DATO_MEM_DATOS);
+        bank->data[i] = execute_command( LEER_DATO_MEM_DATOS) & 0x00FF;
         execute_command( INCREMENTA_DIRECCION);
     }
 }
@@ -62,62 +62,52 @@ static void read_config_memory( DeviceBuffer * buffer) {
     }
 }
 
-static void write_program_memory( DeviceBuffer * bufferPtr) {
+static void program_location( unsigned short programmingType) {
+    if ( programmingType == 1) {
+        execute_command( 0x18, COMANDO_PROGRAMACION, 0);        // begin programming only
+        execute_command( 0x17, COMANDO_SIMPLE, 0);              // end programming
+
+    } else {
+        execute_command( INICIA_CICLO_ERASE_PROGRAM);
+        
+    }
+}
+
+static void write_program_memory( DeviceBuffer * bufferPtr, ProgrammingOpts * options) {
     ArrayBancoMemoria * array = &(bufferPtr->program);
     BancoMemoria * bank = &(array->banks[0]);
 
     unsigned short dato;
     unsigned int i;
-    /*
-    for ( i = 0; i < bank->length; ++i) {
-        dato = bank->data[i];
-        execute_command( CARGA_DATO_MEM_PROGRAMA);
-        execute_command( INICIA_CICLO_ERASE_PROGRAM);
-        execute_command( INCREMENTA_DIRECCION);
-    }
-    */
     
     for ( i = 0; i < bank->length; ++i) {
         dato = bank->data[i];
         execute_command( CARGA_DATO_MEM_PROGRAMA);
 
-        execute_command( 0x18, COMANDO_PROGRAMACION, 0);        // begin programming only
-        execute_command( 0x17, COMANDO_SIMPLE, 0);              // end programming
+        program_location( options->programmingType);
 
         execute_command( INCREMENTA_DIRECCION);
     }
 }
 
-static void write_data_memory( DeviceBuffer * bufferPtr) {
+static void write_data_memory( DeviceBuffer * bufferPtr, ProgrammingOpts * options) {
     ArrayBancoMemoria * array = &(bufferPtr->data);
     BancoMemoria * bank = &(array->banks[0]);
 
     unsigned short dato;
     unsigned int i;
     
-    /*
-    for ( i = 0; i < bank->length; ++i) {
-        
-        dato = bank->data[i];
-        execute_command( CARGA_DATO_MEM_DATOS);
-        execute_command( INICIA_CICLO_ERASE_PROGRAM);
-        execute_command( INCREMENTA_DIRECCION);
-    }
-    */
-
     for ( i = 0; i < bank->length; ++i) {        
         dato = bank->data[i];
         execute_command( CARGA_DATO_MEM_DATOS);
         
-        execute_command( 0x18, COMANDO_PROGRAMACION, 0);        // begin programming only
-        execute_command( 0x17, COMANDO_SIMPLE, 0);              // end programming
+        program_location( options->programmingType);
 
         execute_command( INCREMENTA_DIRECCION);
     }
-
 }
 
-static void write_config_memory( DeviceBuffer * bufferPtr) {
+static void write_config_memory( DeviceBuffer * bufferPtr, ProgrammingOpts * options) {
 	ArrayLocalidadMemoria * configuration = &(bufferPtr->configuration);
 
     LocalidadMemoria * location;
@@ -133,19 +123,12 @@ static void write_config_memory( DeviceBuffer * bufferPtr) {
     location = &(configuration->locations[7]);
     dato = location->value;
 	
-    /*
     execute_command( CARGA_DATO_MEM_PROGRAMA);
-    execute_command( INICIA_CICLO_ERASE_PROGRAM);
-    */
 
-    //
-    execute_command( CARGA_DATO_MEM_PROGRAMA);
-    
-    execute_command( 0x18, COMANDO_PROGRAMACION, 0);        // begin programming only
-    execute_command( 0x17, COMANDO_SIMPLE, 0);              // end programming
-    //
-
+    program_location( 0);
 }
+
+// public method
 
 int reset_programmer() {
     int resultado = init_driver( BASE);
@@ -157,6 +140,8 @@ int reset_programmer() {
 
     return release_driver();
 }
+
+// public method
 
 int execute_programming_task( ProgramInfo * ptrInfo) {
 
@@ -178,16 +163,16 @@ int execute_programming_task( ProgramInfo * ptrInfo) {
         for ( idxArea = 0; idxArea < areas.length ; ++idxArea) {
 			
 			if ( areas.values[ idxArea] == 'c' && operation == 'p') {
+                init_HVP_mode();
+                bulk_erase_config_memory(  (ptrInfo->options).bulkEraseType);
+                reset_device();
+
             	init_HVP_mode();
-                bulk_erase_program_memory( (ptrInfo->eraseOpts).bulkEraseType);
+                bulk_erase_program_memory( (ptrInfo->options).bulkEraseType);
                 reset_device();
 
                 init_HVP_mode();
-                bulk_erase_config_memory(  (ptrInfo->eraseOpts).bulkEraseType);
-                reset_device();
-
-                init_HVP_mode();
-                bulk_erase_data_memory(    (ptrInfo->eraseOpts).bulkEraseType);
+                bulk_erase_data_memory(    (ptrInfo->options).bulkEraseType);
                 reset_device();
 			}
 		}
@@ -201,9 +186,9 @@ int execute_programming_task( ProgramInfo * ptrInfo) {
 				init_HVP_mode();
 				
                 switch ( operation) {
-                    case 'r': read_config_memory(  &(ptrInfo->buffer)); break;
-                    case 'p': write_config_memory( &(ptrInfo->buffer)); break;
-                    case 'e': disable_code_protection( &(ptrInfo->eraseOpts)); break;
+                    case 'r': read_config_memory(  &(ptrInfo->buffer));                      break;
+                    case 'p': write_config_memory( &(ptrInfo->buffer), &(ptrInfo->options)); break;
+                    case 'e': disable_code_protection( &(ptrInfo->options));                 break;
 				}
 				
 				reset_device();
@@ -220,7 +205,7 @@ int execute_programming_task( ProgramInfo * ptrInfo) {
 				
 				switch ( operation) {
                     case 'r': read_program_memory(  &(ptrInfo->buffer)); break;
-                    case 'p': write_program_memory( &(ptrInfo->buffer)); break;
+                    case 'p': write_program_memory( &(ptrInfo->buffer), &(ptrInfo->options)); break;
 				}
 				
 				reset_device();
@@ -237,7 +222,7 @@ int execute_programming_task( ProgramInfo * ptrInfo) {
 
                 switch ( operation) {
                     case 'r': read_data_memory(  &(ptrInfo->buffer)); break;
-    				case 'p': write_data_memory( &(ptrInfo->buffer)); break;                 
+    				case 'p': write_data_memory( &(ptrInfo->buffer), &(ptrInfo->options)); break;                 
 				}
 				
 				reset_device();

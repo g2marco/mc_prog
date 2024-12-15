@@ -47,16 +47,17 @@ typedef struct {
 } Arreglo;
 
 typedef struct {
+    unsigned short programmingType;         // 0: erase_program | 1: program only + end programming | 
     unsigned short bulkEraseType;           // e = [1 | 2 | 3 | ...], [1 | 2 | 3 | ...], [NNNN]
     unsigned short protectDsblType;         //
     unsigned short protectDsblData;         //
-} EraseOpts;
+} ProgrammingOpts;
 
 typedef struct {
 	char      operation;
 	Arreglo       areas;
 	Arreglo    voltages;
-    EraseOpts eraseOpts;
+    ProgrammingOpts options;
 
 	DeviceBuffer buffer;
 

@@ -13,7 +13,7 @@
 #pragma config PWRTE = OFF
 #pragma config CP 	 = OFF
 
-#define _XTAL_FREQ 		2000000        // crystal oscilator
+#define _XTAL_FREQ 		4000000        // crystal oscilator
 
 void setup( void );
 
