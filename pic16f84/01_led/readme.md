@@ -1,4 +1,7 @@
 # Práctica 1: Pin toggle
 
-- El pin GP0 es complementado dentro de un loop infinito
-- Se utiliza el reloj interno (4 MHz), por lo que la frecuencia de toggle es algo menor a 500 kHz
+- El pin RA0 es complementado dentro de un loop infinito
+- Se utiliza un crystak de 4 MHz, se encuentra que las instrucciones de ensamblador utilizadas comprenden un total de 
+  9 ciclos
+  Se espera un periodo de 2 * 9 us = 18 us ( 55.55 kHz)
+
